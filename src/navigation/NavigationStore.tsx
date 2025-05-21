@@ -2,7 +2,7 @@
 import { makeAutoObservable } from 'mobx';
 
 class NavigationStore {
-  currentRoute: string = '';
+  currentRoute: string = 'Home';
 
   constructor() {
     makeAutoObservable(this);

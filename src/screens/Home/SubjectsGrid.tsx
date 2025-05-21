@@ -70,7 +70,7 @@ const SubjectsGrid = () => {
   const { width } = useWindowDimensions();
   const cardWidth = Platform.isPad ? vs(cardSize) : s(cardSize);
 
-  const containerSize = width - vs(40); // 20 padding слева и справа
+  const containerSize = width - (Platform.isPad? vs(40) : s(40)); // 20 padding слева и справа
   const columns = Math.floor(containerSize / cardWidth);
   const usedWidth = columns * cardWidth;
   const leftoverSpace = containerSize - usedWidth; // <- вот это остаток
@@ -79,7 +79,7 @@ const SubjectsGrid = () => {
   return (
     <View style={[styles.container, {columnGap: columnGap, rowGap: vs(15), justifyContent: leftoverSpace > (2.5 / 3 * cardSize)? 'center' : 'flex-start'}]}>
       {subjects.map((item) => (
-        <View key={item.id} style={[styles.card, { width: Platform.isPad? vs(cardSize) : s(cardSize), height: 'auto', backgroundColor: 'white'}]}>
+        <View key={item.id} style={[styles.card, { width: Platform.isPad? vs(cardSize) : s(cardSize), height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
             <View style={{width: '100%', height: vs(100), backgroundColor: item.color, borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: 'center', alignItems: 'center'}}>
               {item.icon}
             </View>
