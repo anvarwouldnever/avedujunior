@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Pressable, Platform } from 'react-native';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import { navigationStore } from '../NavigationStore';
+import { useScale } from '../../hooks/useScale';
 
 const menuItems = [
   { screen: 'Home', icon: 'home', label: 'Главная' },
@@ -15,6 +16,7 @@ const menuItems = [
 
 const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
     const navigation = useNavigation();
+    const { s, vs } = useScale()
 
     const handleNavigate = (screen: string) => {
         if (navigationStore.currentRoute !== screen) {
@@ -29,7 +31,7 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
     };
   
     return (
-      <View style={styles.container}>
+      <View style={{ padding: Platform.isPad? vs(14) : s(14), backgroundColor: '#FFFFFF'}}>
         {menuItems.map((item) => {
           const isActive = navigationStore.currentRoute === item.screen;
           return (
@@ -39,14 +41,15 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
               style={[
                 styles.item,
                 isActive && styles.itemActive,
+                {marginBottom: Platform.isPad? vs(20) : s(20), padding: Platform.isPad? vs(14) : s(14),}
               ]}
             >
             <Ionicons
                 name={item.icon as any}
-                size={24}
+                size={vs(20)}
                 color={isActive ? '#FFFFFF' : '#B390EF'}
             />
-            <Text style={[styles.text, { color: isActive ? '#FFFFFF' : '#B390EF' }]}>
+            <Text style={[styles.text, { color: isActive ? '#FFFFFF' : '#B390EF', fontSize: Platform.isPad? vs(16) : s(16), marginLeft: Platform.isPad? vs(15) : s(15)}]}>
                 {item.label}
             </Text>
             </Pressable>
@@ -57,23 +60,15 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
   });
 
   const styles = StyleSheet.create({
-    container: {
-      padding: 20,
-      backgroundColor: '#FFFFFF',
-    },
     item: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 30,
-      padding: 12,
       borderRadius: 16,
     },
     itemActive: {
       backgroundColor: '#B390EF',
     },
     text: {
-      fontSize: 18,
-      marginLeft: 15,
       flexShrink: 1,
       fontWeight: '600',
     },

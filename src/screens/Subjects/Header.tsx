@@ -12,16 +12,16 @@ const Header = () => {
     const { s, vs } = useScale()
 
     return (
-        <View style={{ width: '100%', height: vs(250), justifyContent: 'center', alignItems: 'center',  gap: vs(5) }}>
-            <Text style={{ fontSize: vs(20) }}>
+        <View style={{ width: '100%', height: Platform.isPad? vs(250) : s(250), justifyContent: 'center', alignItems: 'center',  gap: vs(5) }}>
+            <Text style={{ fontSize: Platform.isPad? vs(20) : s(20) }}>
                 <Text style={{ fontWeight: 'bold' }}>
                     {capitalizedMonth}
                 </Text>{' '}
                 {today.getFullYear()}
             </Text>
-            <Image style={{width: Platform.isPad? vs(150) : s(140), height: vs(140), resizeMode: 'contain'}} source={require('../../../assets/subjectsCar.png')}/>
-            <TouchableOpacity style={{width: s(180), height: vs(40), backgroundColor: '#8ac46a', borderRadius: 40, alignItems: 'center', flexDirection: 'row', gap: s(6), justifyContent: 'center'}}>
-                <Ionicons name='star' color={'yellow'} size={24}/>
+            <Image style={{width: Platform.isPad? vs(150) : s(140), height: Platform.isPad? vs(140) : s(140), resizeMode: 'contain'}} source={require('../../../assets/subjectsCar.png')}/>
+            <TouchableOpacity style={{width: s(180), height: Platform.isPad? vs(40) : s(40), backgroundColor: '#8ac46a', borderRadius: 40, alignItems: 'center', flexDirection: 'row', gap: s(6), justifyContent: 'center'}}>
+                <Ionicons name='star' color={'yellow'} size={vs(24)}/>
                 <Text style={{fontSize: vs(15), color: 'white', fontWeight: '600'}}>Пройденные темы</Text>
             </TouchableOpacity>
         </View> 

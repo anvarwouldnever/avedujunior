@@ -15,11 +15,11 @@ const MenuGirlContainer = () => {
 
     return (
         <View style={{width: '100%', height: 'auto', borderRadius: vs(30), backgroundColor: '#cc3184', padding: vs(20)}}>
-            <View style={{flexDirection: isInline ? 'row' : 'column', alignItems: isInline ? 'center' : 'flex-start', gap: vs(15)}}>
-                <Image style={{backgroundColor: 'white', borderRadius: vs(30), width: imageWidth, height: vs(150), resizeMode: 'contain'}} source={require('../../../assets/aveduMenuGirl.png')} />
-                <View style={{flexShrink: 1, gap: vs(10)}}>
-                    <Text style={{fontSize: vs(18), color: 'white', fontWeight: '600', lineHeight: vs(22), marginBottom: vs(5)}}>Добро пожаловать, Группа: Демо (3)!</Text>
-                    <Text style={{fontSize: vs(16), color: 'white', fontWeight: '400', lineHeight: vs(22)}}>Не забудьте проверить своё расписание занятий на завтра! Все ли задания вы сделали?</Text>
+            <View style={{flexDirection: isInline ? 'row' : 'column', alignItems: isInline ? 'center' : 'flex-start', gap: Platform.isPad? vs(15) : s(15)}}>
+                <Image style={{backgroundColor: 'white', borderRadius: vs(30), width: imageWidth, height: Platform.isPad? vs(150) : s(150), resizeMode: 'contain'}} source={require('../../../assets/aveduMenuGirl.png')} />
+                <View style={{flexShrink: 1, gap: Platform.isPad? vs(10) : s(10)}}>
+                    <Text style={{fontSize: Platform.isPad? vs(18) : s(18), color: 'white', fontWeight: '600', lineHeight: Platform.isPad? vs(22) : s(22), marginBottom: vs(5)}}>Добро пожаловать, Группа: Демо (3)!</Text>
+                    <Text style={{fontSize: Platform.isPad? vs(16) : s(16), color: 'white', fontWeight: '400', lineHeight: Platform.isPad? vs(22) : s(22)}}>Не забудьте проверить своё расписание занятий на завтра! Все ли задания вы сделали?</Text>
                 </View>
             </View>
         </View>

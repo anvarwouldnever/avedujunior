@@ -15,11 +15,11 @@ const Subjects = ({ selectedIndex, setSelectedIndex, materials }) => {
             {materials.map((material, index) => {
                 const isSelected = selectedIndex === index
                 return (
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedIndex(index)} key={index} style={{width: subjectWidth, height: vs(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: s(15)}}>
-                        <Image source={material.icon} style={{width: Platform.isPad? vs(35) : s(35), height: vs(35), borderRadius: 10}}/>
-                        <View style={{height: vs(35), width: '80%', justifyContent: 'space-between'}}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: vs(14), color: isSelected ? 'white' : '#6A5AE0', width: '90%'}}>{material.title}</Text>
-                            <Text style={{fontWeight: '400', fontSize: vs(12), color: isSelected ? 'white' : '#6A5AE0'}}>{material.topicsAmount}</Text>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedIndex(index)} key={index} style={{width: subjectWidth, height: Platform.isPad? vs(80) : s(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: s(15)}}>
+                        <Image source={material.icon} style={{width: Platform.isPad? vs(35) : s(35), height: Platform.isPad? vs(35) : s(35), borderRadius: 10}}/>
+                        <View style={{height: Platform.isPad? vs(35) : s(35), width: '80%', justifyContent: 'space-between'}}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14), color: isSelected ? 'white' : '#6A5AE0', width: '90%'}}>{material.title}</Text>
+                            <Text style={{fontWeight: '400', fontSize: Platform.isPad? vs(12) : s(12), color: isSelected ? 'white' : '#6A5AE0'}}>{material.topicsAmount}</Text>
                         </View>
                     </TouchableOpacity>
                 )

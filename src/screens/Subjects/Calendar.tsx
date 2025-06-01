@@ -86,7 +86,7 @@ const Calendar = () => {
                             style={{
                                 padding: 10,
                                 width: Platform.isPad? vs(200) : s(200),
-                                height: vs(200),
+                                height: Platform.isPad? vs(200) : s(200),
                                 justifyContent: 'flex-start',
                                 alignItems: 'center',
                                 borderRightWidth: index !== row.length - 1 ? 1 : 0,
@@ -96,18 +96,18 @@ const Calendar = () => {
                         >
                             <Text
                                 style={{
-                                    fontSize: vs(14),
+                                    fontSize: Platform.isPad? vs(14) : s(14),
                                     color: date.getMonth() === month ? 'black' : '#aaa' // Серый цвет, если не текущий месяц
                                 }}
                             >
                                 {date.getDate()}
                             </Text>
-                            <View style={{width: '100%', height: '90%', padding: vs(10), gap: vs(10)}}>
+                            <View style={{width: '100%', height: '90%', padding: vs(10), gap: Platform.isPad? vs(10) : s(10)}}>
                                 {subjects.map((subject, index) => {
                                     return (
-                                        <View key={index} style={{backgroundColor: subject.accentColor, width: '100%', height: vs(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: vs(8)}}>
-                                            <View style={{backgroundColor: subject.color, width: Platform.isPad? vs(7) : s(7), height: vs(7), borderRadius: 100}}/>
-                                            <Text numberOfLines={1} ellipsizeMode='tail' style={{ width: '95%', fontSize: vs(12) }}>{subject.title}</Text>
+                                        <View key={index} style={{backgroundColor: subject.accentColor, width: '100%', height: Platform.isPad? vs(20) : s(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: Platform.isPad? vs(8) : s(8)}}>
+                                            <View style={{backgroundColor: subject.color, width: Platform.isPad? vs(7) : s(7), height: Platform.isPad? vs(7) : s(7), borderRadius: 100}}/>
+                                            <Text numberOfLines={1} ellipsizeMode='tail' style={{ width: '95%', fontSize: Platform.isPad? vs(12) : s(12) }}>{subject.title}</Text>
                                         </View>
                                     )
                                 })}

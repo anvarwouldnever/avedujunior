@@ -5,6 +5,9 @@ import { Ionicons } from '@expo/vector-icons'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import Subjects from './Catalog/Subjects'
 import SubjectTable from './Catalog/SubjectTable'
+import { bgAssets } from '../components/BgAssets'
+import { store } from '../store/store'
+import { observer } from 'mobx-react-lite'
 
 const CatalogScreen = () => {
 
@@ -74,15 +77,15 @@ const CatalogScreen = () => {
     }
 
     return (
-        <Animated.ScrollView layout={LinearTransition.duration(1000)} style={{flex: 1, backgroundColor: 'white'}}>
-            <ImageBackground style={{ flex: 1, padding: Platform.isPad ? vs(20) : vs(20), justifyContent: 'center'}} source={require('../../assets/aveduBackground.png')}>
+        <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
+            <ScrollView style={{flex: 1,  padding: Platform.isPad ? vs(20) : vs(20),}}>
                 <Text style={{color: 'black', fontSize: vs(22), fontWeight: '700', marginVertical: vs(20)}}>{getMonthYear()}</Text>
                 <Subjects selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} materials={materials}/>
 
                 <SubjectTable selectedIndex={selectedIndex} materials={materials} setExpandedTopicId={setExpandedTopicId} expandedTopicId={expandedTopicId}/>
-            </ImageBackground>
-        </Animated.ScrollView>
+            </ScrollView>
+        </ImageBackground>
     )
 }
 
-export default CatalogScreen;
+export default observer(CatalogScreen);

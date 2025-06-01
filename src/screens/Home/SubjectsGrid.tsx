@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, Platform, useWindowDimensions, TouchableOpacity } from 'react-native';
 import {
     MaterialCommunityIcons,
     FontAwesome5,
@@ -9,6 +9,7 @@ import {
     MaterialIcons,
   } from '@expo/vector-icons';
 import { useScale } from '../../hooks/useScale';
+import { useNavigation } from '@react-navigation/native';
 
 const subjects = [
     {
@@ -64,7 +65,7 @@ const subjects = [
 const SubjectsGrid = () => {
 
   const { s, vs } = useScale();
-
+  const navigation = useNavigation()
   
   const cardSize = 150;
   const { width } = useWindowDimensions();
@@ -79,14 +80,14 @@ const SubjectsGrid = () => {
   return (
     <View style={[styles.container, {columnGap: columnGap, rowGap: vs(15), justifyContent: leftoverSpace > (2.5 / 3 * cardSize)? 'center' : 'flex-start'}]}>
       {subjects.map((item) => (
-        <View key={item.id} style={[styles.card, { width: Platform.isPad? vs(cardSize) : s(cardSize), height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
-            <View style={{width: '100%', height: vs(100), backgroundColor: item.color, borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity onPress={() => navigation.navigate('SubjectList', {name: item?.name})} key={item.id} style={[styles.card, { width: Platform.isPad? vs(cardSize) : s(cardSize), height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
+            <View style={{width: '100%', height: Platform.isPad? vs(100) : s(100), backgroundColor: item.color, borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: 'center', alignItems: 'center'}}>
               {item.icon}
             </View>
             <View style={{backgroundColor: 'white', width: '100%', position: 'relative', minHeight: vs(40), borderBottomLeftRadius: 20, borderBottomRightRadius: 20, padding: vs(8)}}>
               <Text style={{fontSize: vs(12), fontWeight: '600', width: '100%', flexShrink: 1}}>{item?.name}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
       ))}
     </View>
   );
