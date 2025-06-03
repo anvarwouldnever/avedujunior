@@ -134,7 +134,7 @@ const SubjectList = ({ route }) => {
                                             <View style={{height: '100%', width: '60%', justifyContent: 'center', gap: vs(10)}}>
                                                 <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
-                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame')} style={{ backgroundColor: topic.color, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(8), paddingVertical: vs(6), width: '60%'}}>
+                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name})} style={{ backgroundColor: topic.color, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(8), paddingVertical: vs(6), width: '60%'}}>
                                                     <Text style={{ color: 'white', fontWeight: '700'}}>Пройти  →</Text>
                                                 </TouchableOpacity>
                                             </View>

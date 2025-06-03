@@ -19,6 +19,7 @@ import ProfileScreen from '../../screens/ProfileScreen';
 import { pfpAssets } from '../../components/PfpAssets';
 import { observer } from 'mobx-react-lite';
 import LoginScreen from '../../screens/LoginScreen';
+import GameScreen from '../../screens/GameScreen';
 
 const Stack = createStackNavigator();
 
@@ -65,6 +66,7 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
             <Stack.Screen name="SubjectList" component={SubjectListScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="PreGame" component={PreGameScreen} />
+            <Stack.Screen options={{ headerShown: false }} name="Game" component={GameScreen} />
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="OurGroup" component={OurGroupScreen} />
             <Stack.Screen name="Catalog" component={CatalogScreen} />

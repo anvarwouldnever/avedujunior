@@ -11,5 +11,5 @@ export const useScale = () => {
 
   const vs = (size) => (windowHeight / guidelineBaseHeight) * size;
 
-  return { s, vs };
+  return { s, vs, windowHeight, windowWidth };
 };
