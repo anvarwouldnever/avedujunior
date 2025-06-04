@@ -1,34 +1,77 @@
-import { View, Text, Animated } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
-import { useAnimatedProps } from 'react-native-reanimated';
-import Svg, { Line, Path } from 'react-native-svg';
+import Svg, { Line } from 'react-native-svg';
 
-const AnimatedLine = Animated.createAnimatedComponent(Line);
-
-const Lines = ({ lines, lineStartX, lineStartY, lineEndX, lineEndY, animatedProps }) => {
-
-    return (
-        <Svg
-            style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-            }}
-        >
-            {lines.map((line, index) => {
-                const controlX1 = line.x1;
-                const controlY1 = line.y1;
-                const controlX2 = line.x2;
-                const controlY2 = line.y2;
-
-                const pathData = `M ${line.x1},${line.y1} C ${controlX1},${controlY1} ${controlX2},${controlY2} ${line.x2},${line.y2}`;
-
-                return <Path key={index} d={pathData} stroke={line.color} strokeWidth="2" fill="none" />;
-            })}
-
-            <AnimatedLine onResponderMove={(_) => {}} animatedProps={animatedProps} stroke={"#504297"} strokeWidth="2" />
-        </Svg>
-    );
-};
+const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY }) => {
+        const arrowLength = 10; // длина стрелки
+    
+        const getArrowLines = (x1, y1, x2, y2) => {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const angle = Math.atan2(dy, dx);
+    
+            const angle1 = angle - Math.PI / 6;
+            const angle2 = angle + Math.PI / 6;
+    
+            const arrow1 = {
+                x1: x2,
+                y1: y2,
+                x2: x2 - arrowLength * Math.cos(angle1),
+                y2: y2 - arrowLength * Math.sin(angle1),
+            };
+    
+            const arrow2 = {
+                x1: x2,
+                y1: y2,
+                x2: x2 - arrowLength * Math.cos(angle2),
+                y2: y2 - arrowLength * Math.sin(angle2),
+            };
+    
+            return [arrow1, arrow2];
+        };
+    
+        return (
+            <Svg
+                style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                }}
+            >
+                {lines.map((line, index) => {
+                    const [arrow1, arrow2] = getArrowLines(line.x1, line.y1, line.x2, line.y2);
+    
+                    return (
+                        <React.Fragment key={index}>
+                            <Line
+                                x1={line.x1}
+                                y1={line.y1}
+                                x2={line.x2}
+                                y2={line.y2}
+                                stroke={line.color || "#504297"}
+                                strokeWidth={2}
+                            />
+                            <Line
+                                x1={arrow1.x1}
+                                y1={arrow1.y1}
+                                x2={arrow1.x2}
+                                y2={arrow1.y2}
+                                stroke={line.color || "#504297"}
+                                strokeWidth={2}
+                            />
+                            <Line
+                                x1={arrow2.x1}
+                                y1={arrow2.y1}
+                                x2={arrow2.x2}
+                                y2={arrow2.y2}
+                                stroke={line.color || "#504297"}
+                                strokeWidth={2}
+                            />
+                        </React.Fragment>
+                    );
+                })}
+            </Svg>
+        );
+    });
 
 export default Lines
