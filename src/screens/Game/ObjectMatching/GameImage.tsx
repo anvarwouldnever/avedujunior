@@ -3,15 +3,14 @@ import React from 'react'
 import { useScale } from '../../../hooks/useScale';
 import { Image } from 'expo-image';
 
-const GameImage = React.memo(({ source }) => {
+const GameImage = React.memo(({ source, cellWidth, cellSize }) => {
     const { s, vs } = useScale();
   
     return (
       <Image
         source={source}
         style={{
-          width: s(50),
-          height: vs(200),
+          width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white'
         }}
         contentFit="contain"
         transition={0}

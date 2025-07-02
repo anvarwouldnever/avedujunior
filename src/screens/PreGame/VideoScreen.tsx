@@ -3,10 +3,9 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { StyleSheet, View, Pressable, Text, Platform } from 'react-native';
 import { useScale } from '../../hooks/useScale';
 
-const videoSource =
-  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+export default function VideoScreen({ url }) {
 
-export default function VideoScreen() {
+  const videoSource = `${url}`
 
   const { s, vs } = useScale()
 

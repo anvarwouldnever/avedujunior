@@ -25,7 +25,7 @@ const PreGameScreen = ({ route }) => {
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
             <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
-                <GamePreview name={route?.params?.name} topic={route?.params?.topic}/>
+                <GamePreview id={route?.params?.id} name={route?.params?.name} topic={route?.params?.topic} />
 
                 <MonthTopics />
             </ScrollView>

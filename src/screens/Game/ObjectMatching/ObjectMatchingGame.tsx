@@ -1,27 +1,56 @@
-import { View, Text, Image, InteractionManager } from 'react-native'
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { View, InteractionManager, Platform } from 'react-native'
+import React, { useState, useRef, useCallback, useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale';
-import Svg, { Line, Path } from 'react-native-svg';
-import Animated, { runOnJS, useAnimatedProps, useSharedValue } from 'react-native-reanimated';
+import { runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import GameImage from './GameImage';
-import { images1, images2 } from './Images';
-import DraggableImage from './DraggableImage';
+import { images1, images2 } from '../staticAssets/Images';
+import { Image } from 'expo-image';
+import { Ionicons } from '@expo/vector-icons';
 
-const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines }) => {
+const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage }) => {
 
-    const { s, vs } = useScale()
+    const { s, vs, windowWidth } = useScale()
 
     const [centers, setCenters] = useState([]);
     const [bottomCenters, setBottomCenters] = useState([]); 
 
+    const paddingVertical = Platform.isPad? vs(25) : vs(30)
+    const paddingHorizontal = Platform.isPad? (s(10)) : vs(100)
+
     const bottomRefs = useRef([]);
-    const refs = useRef([]);
+
+    const columnGap = s(13);
+    const rowGap = vs(35);
+
+    const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50)
+    const contHeight = vs(420);
+
+    const effectiveBorder = vs(1)
+    const numColumns = 4;
+    const totalGaps = columnGap * (numColumns - 1);
+    const totalBorders = effectiveBorder * 2 * numColumns;
+
+    const cellWidth = (contSize - totalGaps - totalBorders) / numColumns;
+
+    const numRows = 2;
+    const totalRowGaps = rowGap * (numRows - 1);
+    const totalRowBorders = effectiveBorder * 2 * numRows;
+
+    const cellHeight = (contHeight - totalRowGaps - totalRowBorders) / numRows;
+
+    const cellSize = Math.min(cellWidth, cellHeight);
 
     const addCurvedLine = (data) => {
-        setLines((prev) => [...prev, data]);
-        removeLine()
-    };
+      setLines((prev) => {
+          const filtered = prev.filter(
+              (line) => line.x1 !== data.x1 || line.y1 !== data.y1
+          );
+  
+          return [...filtered, data];
+      });
+  
+      removeLine();
+    };  
 
     const checkIfMatched = (absX, absY, lineStartX, lineStartY, bottomCenters, addCurvedLine) => {
         for (let i = 0; i < bottomCenters.length; i++) {
@@ -47,14 +76,11 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
         lineStartY.value = 0;
         lineEndX.value = 0;
         lineEndY.value = 0;
-    }
+    };
 
     const isWithin = (x, y, cx, cy, size = 50) => {
         return Math.abs(x - cx) < size && Math.abs(y - cy) < size;
     };
-
-    const paddingVertical = vs(30)
-    const paddingHorizontal = vs(100)
 
     const measureCenter = (ref: any, callback: (centerX: number, centerY: number) => void) => {
         InteractionManager.runAfterInteractions(() => {
@@ -109,18 +135,37 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
     }, [centers, bottomCenters]);
 
     return (
-        <View style={{width: '100%', height: 'auto', flexDirection: 'row', rowGap: vs(40), flexWrap: 'wrap', justifyContent: 'space-between'}}>
-
+        <View style={{width: contSize, height: 'auto', flexDirection: 'row', rowGap: rowGap, columnGap: columnGap, flexWrap: 'wrap'}}>
             {images1.map((img, index) => (
-                <DraggableImage
-                    key={index}
-                    img={img}
-                    index={index}
-                    gesture={gestures[index]}
-                    measure={measure}
-                    s={s}
-                    vs={vs}
-                />
+                <GestureDetector key={index} gesture={gestures[index]}>
+                  <View
+                      ref={(el) => measure(el, index)}
+                      style={{
+                          width: cellWidth,
+                          height: cellHeight,
+                          borderWidth: 2,
+                          borderColor: '#EFEEFC',
+                          borderRadius: 12,
+                          overflow: 'hidden',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                      }}
+                  >
+                      <Image
+                          source={img}
+                          style={{
+                              width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white'
+                          }}
+                          contentFit="contain"
+                          transition={0}
+                          cachePolicy='disk'
+                      />
+                      <Ionicons onPress={() => {
+                          setSelectedImage(img);
+                          setFullImage(true);
+                      }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
+                  </View>
+                </GestureDetector>
             ))}
 
             {images2.map((img, index) => (
@@ -140,8 +185,8 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                         })
                     }
                         style={{
-                        width: s(50),
-                        height: vs(210),
+                        width: cellWidth,
+                        height: cellHeight,
                         borderWidth: 2,
                         borderColor: '#EFEEFC',
                         borderRadius: 20,

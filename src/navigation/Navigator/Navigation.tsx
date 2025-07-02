@@ -12,7 +12,7 @@ import CatalogScreen from '../../screens/CatalogScreen';
 import FreeActivityScreen from '../../screens/FreeActivityScreen';
 import { useScale } from '../../hooks/useScale';
 import Logo from '../../components/Logo';
-import SubjectListScreen from '../../screens/SubjectListScreen';
+import TasksScreen from '../../screens/TasksScreen';
 import PreGameScreen from '../../screens/PreGameScreen';
 import { store } from '../../store/store';
 import ProfileScreen from '../../screens/ProfileScreen';
@@ -20,6 +20,7 @@ import { pfpAssets } from '../../components/PfpAssets';
 import { observer } from 'mobx-react-lite';
 import LoginScreen from '../../screens/LoginScreen';
 import GameScreen from '../../screens/GameScreen';
+import TestScreen from '../../screens/TestScreen';
 
 const Stack = createStackNavigator();
 
@@ -63,9 +64,10 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
         }} initialRouteName={"LoginScreen"}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Subjects" component={SubjectsScreen} />
-            <Stack.Screen name="SubjectList" component={SubjectListScreen} />
+            <Stack.Screen name="TasksList" component={TasksScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="PreGame" component={PreGameScreen} />
+            <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Game" component={GameScreen} />
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="OurGroup" component={OurGroupScreen} />
