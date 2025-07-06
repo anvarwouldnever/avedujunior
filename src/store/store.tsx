@@ -1,13 +1,16 @@
 import { makeAutoObservable } from 'mobx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Store {
   token: string = null;
   profileModal: boolean = false;
-  pfp: number = 1;
-  backgroundImage: number = 1;
+  pfp: object = null;
+  backgroundImage: object = null;
 
   constructor() {
     makeAutoObservable(this);
+    this.loadPfpFromStorage()
+    this.loadBackgroundImageFromStorage()
   }
 
   setToken(token: string) {
@@ -18,12 +21,48 @@ class Store {
     this.profileModal = modal;
   }
 
-  setPfp(pfp: number) {
+  setPfp(pfp: object) {
     this.pfp = pfp;
+  
+    try {
+      const json = JSON.stringify(pfp);
+      AsyncStorage.setItem('pfp', json);
+    } catch (error) {
+      console.error('Ошибка при сохранении pfp в AsyncStorage:', error);
+    }
   }
 
-  setBackgroundImage(image: number) {
+  async loadPfpFromStorage() {
+    try {
+      const json = await AsyncStorage.getItem('pfp');
+      if (json) {
+        this.pfp = JSON.parse(json);
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке pfp из AsyncStorage:', error);
+    }
+  }
+
+  setBackgroundImage(image: object) {
     this.backgroundImage = image;
+    
+    try {
+      const json = JSON.stringify(image);
+      AsyncStorage.setItem('backgroundImage', json);
+    } catch (error) {
+      console.error('Ошибка при сохранении backgroundImage в AsyncStorage:', error);
+    }
+  }
+
+  async loadBackgroundImageFromStorage() {
+    try {
+      const json = await AsyncStorage.getItem('backgroundImage');
+      if (json) {
+        this.backgroundImage = JSON.parse(json);
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке backgroundImage из AsyncStorage:', error);
+    }
   }
 }
 

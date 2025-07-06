@@ -4,7 +4,7 @@ import { useScale } from '../hooks/useScale'
 import { bgAssets } from '../components/BgAssets'
 import { store } from '../store/store'
 import { observer } from 'mobx-react-lite'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import GameNumberList from './Game/GameNumberList'
 import GameView from './Game/GameView'
@@ -21,7 +21,6 @@ const GameScreen = ({ route }) => {
     const [chosenGame, setChosenGame] = useState(1);
     const [fullImage, setFullImage] = useState<boolean>(false)
     const [selectedImage, setSelectedImage] = useState<string>(null);
-    const gameType = games[chosenGame]?.type
 
     useFocusEffect(
         useCallback(() => {
@@ -33,9 +32,9 @@ const GameScreen = ({ route }) => {
     );
 
     return (
-        <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
+        <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <View style={{flex: 1, justifyContent: 'space-between', paddingVertical: Platform.isPad ? vs(20) : s(7), paddingLeft: Platform.isPad ? s(10) : s(20), paddingRight: s(10), flexDirection: 'row'}}>
-                <GameView game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
+                <GameView chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
                 <GameNumberList games={games} setChosenGame={setChosenGame} chosenGame={chosenGame}/>
                 
                 <Modal animationOutTiming={10} animationOut={'fadeOut'} isVisible={fullImage} style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: s(80), top: vs(45)}}>

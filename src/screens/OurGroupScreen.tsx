@@ -12,7 +12,7 @@ const OurGroupScreen = () => {
     const { s, vs } = useScale()
 
     return (
-        <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
+        <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView style={{flex: 1, padding: vs(20)}}>
                 <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginVertical: vs(20)}}>Группа "Демо (3)"</Text>
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>

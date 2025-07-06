@@ -13,7 +13,7 @@ const GamePreview = ({ name, topic, id }) => {
 
     const { preGame, error, loading } = getPreGame(id)
 
-    console.log(id)
+    // console.log(id)
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(30), borderRadius: 20, alignItems: 'center', paddingHorizontal: vs(10), paddingVertical: vs(15), backgroundColor: 'white', justifyContent: 'space-between'}}>
@@ -35,4 +35,4 @@ const GamePreview = ({ name, topic, id }) => {
     )
 }
 
-export default GamePreview
+export default GamePreview;

@@ -1,6 +1,5 @@
-import { Platform, View } from 'react-native'
+import { Platform, View, Text } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { images1 } from '../staticAssets/Images'
 import { useScale } from '../../../hooks/useScale'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
@@ -11,34 +10,37 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 type Cell = { index: number, img: any | null }
 
-const DragAndDropGame = ({ setSelectedImage, setFullImage }) => {
-    const { s, vs, windowWidth } = useScale()
+const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex }) => {
+
+    // console.log(content)
+
+    const { s, vs, windowWidth } = useScale();
     const dropZones = useRef<View[]>([])
 
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
 
     const columnGap = s(13);
-    const rowGap = vs(35);
+    const rowGap = vs(45);
 
     const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50);
     const contHeight = vs(420);
 
-    const effectiveBorder = vs(1)
-    const numColumns = 4
-    const totalGaps = columnGap * (numColumns - 1)
-    const totalBorders = effectiveBorder * 2 * numColumns
+    const effectiveBorder = vs(1);
+    const numColumns = 4;
+    const totalGaps = columnGap * (numColumns - 1);
+    const totalBorders = effectiveBorder * 2 * numColumns;
 
-    const cellWidth = (contSize - totalGaps - totalBorders) / numColumns
+    const cellWidth = (contSize - totalGaps - totalBorders) / numColumns;
 
-    const numRows = 2
-    const totalRowGaps = rowGap * (numRows - 1)
-    const totalRowBorders = effectiveBorder * 2 * numRows
+    const numRows = 2;
+    const totalRowGaps = rowGap * (numRows - 1);
+    const totalRowBorders = effectiveBorder * 2 * numRows;
 
     const cellHeight = (contHeight - totalRowGaps - totalRowBorders) / numRows;
 
     const cellSize = Math.min(cellWidth, cellHeight);
 
-    const [topRow, setTopRow] = useState<Cell[]>(images1.map((img, i) => ({ index: i, img })));
+    const [topRow, setTopRow] = useState<Cell[]>(Object.values(content || {}).map((opt, i) => ({ index: i, img: opt.img, key: opt.key, audio: opt.audio, text: opt.text})));
     const [bottomRow, setBottomRow] = useState<Cell[]>(Array(4).fill(null).map((_, i) => ({ index: i, img: null })));
 
     const draggingKey = useSharedValue<string | null>(null);
@@ -89,30 +91,42 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage }) => {
         })
 
         if (isInside) {
-            const fromTop = draggedFromTop
-            const toTop = i < 4
-
-            const fromIndex = draggedIndex
-            const toIndex = i % 4
-
-            const newTop = [...topRow]
-            const newBottom = [...bottomRow]
-
-            const fromRow = fromTop ? newTop : newBottom
-            const toRow = toTop ? newTop : newBottom
-
-            // Меняем местами
-            const draggedItem = fromRow[fromIndex]
-            const targetItem = toRow[toIndex]
-
-            fromRow[fromIndex] = { ...fromRow[fromIndex], img: targetItem.img }
-            toRow[toIndex] = { ...toRow[toIndex], img: draggedItem.img }
-
-            setTopRow(newTop)
-            setBottomRow(newBottom)
-
-            break
-        }
+          const fromTop = draggedFromTop;
+          const toTop = i < 4;
+        
+          const fromIndex = draggedIndex;
+          const toIndex = i % 4;
+        
+          const newTop = [...topRow];
+          const newBottom = [...bottomRow];
+        
+          const fromRow = fromTop ? newTop : newBottom;
+          const toRow = toTop ? newTop : newBottom;
+        
+          const draggedItem = fromRow[fromIndex];
+          const targetItem = toRow[toIndex];
+        
+          fromRow[fromIndex] = {
+            ...fromRow[fromIndex],
+            img: targetItem.img,
+            audio: targetItem.audio,
+            key: targetItem.key,
+            text: targetItem.text,
+          };
+        
+          toRow[toIndex] = {
+            ...toRow[toIndex],
+            img: draggedItem.img,
+            audio: draggedItem.audio,
+            key: draggedItem.key,
+            text: draggedItem.text,
+          };
+        
+          setTopRow(newTop);
+          setBottomRow(newBottom);
+        
+          break;
+        }        
         }
 
         runOnJS(setHighlightedIndex)(null)
@@ -177,7 +191,20 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage }) => {
               contentFit={'contain'}
               transition={0}
               cachePolicy={'disk'}
-            />
+            />      
+
+            {obj.audio && <Ionicons onPress={() => { 
+                if (playingIndex === obj.key && isPlaying) { 
+                    stop(); 
+                    setPlayingIndex(null);
+                } else if (playingIndex === obj.key && !isPlaying) {
+                    play(obj.audio);
+                } else {
+                    play(obj.audio);
+                    setPlayingIndex(obj.key);
+                }
+            }}  size={vs(45)} name={playingIndex === obj.key && isPlaying ? 'pause-circle-outline' : 'play-circle-outline'} color={'green'} style={{position: 'absolute', right: 3, top: 3, zIndex: 100 }} />}
+
             <Ionicons
               onPress={() => {
                 setSelectedImage(obj.img);
@@ -190,6 +217,7 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage }) => {
             />
           </>
         )}
+        <Text style={{position: 'absolute', bottom: -s(7), fontSize: s(4), fontWeight: '600'}}>{obj?.text}</Text>
         </View>
       </GestureDetector>
     )
@@ -210,4 +238,4 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage }) => {
     )
 }
 
-export default DragAndDropGame
+export default DragAndDropGame;

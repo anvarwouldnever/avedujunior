@@ -1,8 +1,6 @@
-import { View, Text, ImageBackground, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import { View, Text, ImageBackground, ScrollView } from 'react-native'
 import React, { useState } from 'react'
-import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useScale } from '../hooks/useScale'
-import { Ionicons } from '@expo/vector-icons'
 import { store } from '../store/store'
 import { observer } from 'mobx-react-lite'
 import { bgAssets } from '../components/BgAssets'
@@ -18,7 +16,7 @@ const ProfileScreen = () => {
     const [currentSection, setCurrentSection] = useState<string>('Мой профиль')
 
     return (
-        <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
+        <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
                 <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(35), borderRadius: 20, padding: vs(20), backgroundColor: 'white', marginBottom: 100 }}>
                     

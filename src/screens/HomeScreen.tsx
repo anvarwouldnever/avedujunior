@@ -13,7 +13,7 @@ const HomeScreen = () => {
     const { s, vs } = useScale();
 
     return (
-        <ImageBackground resizeMode='cover' source={bgAssets[store.backgroundImage] ?? bgAssets[1]} style={{ flex: 1 }}>
+        <ImageBackground resizeMode='cover' style={{ flex: 1 }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView bounces={true} style={{ flex: 1, padding: Platform.isPad? vs(20) : s(20)}}>
                 <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: Platform.isPad? vs(20) : s(20), marginBottom: Platform.isPad? vs(20) : s(20)}}>Главная</Text>
                 <MenuGirlContainer />

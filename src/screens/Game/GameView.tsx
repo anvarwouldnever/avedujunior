@@ -1,5 +1,5 @@
 import { View, Text, Platform, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import ObjectMatchingGame from './ObjectMatching/ObjectMatchingGame'
 import LinesAndDrawingParent from './ObjectMatching/LinesAndDrawingParent'
@@ -11,7 +11,7 @@ import SimpleGame from './SimpleGame/SimpleGame'
 import WithImageGame from './WithImageGame/WithImageGame'
 import { useAudio } from '../../hooks/useAudio'
 
-const GameView = ({ setFullImage, setSelectedImage, game }) => {
+const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame }) => {
 
     const { s, vs } = useScale()
     const { play, stop, isPlaying } = useAudio()
@@ -19,6 +19,7 @@ const GameView = ({ setFullImage, setSelectedImage, game }) => {
     const navigation = useNavigation()
 
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+    const [chosenOptions, setChosenOptions] = useState<Array<string>>([])
 
     const lineStartX = useSharedValue(0);
     const lineStartY = useSharedValue(0);
@@ -29,12 +30,21 @@ const GameView = ({ setFullImage, setSelectedImage, game }) => {
     const question = game?.question?.question;
     const content = game?.question?.options;
     const audio = game?.question?.question_audio;
+    const questionImage = game?.question?.question_image
+
+    useEffect(() => {
+        setChosenOptions([]);
+        setLines([]);
+        setPlayingIndex(null);
+        stop();
+    }, [chosenGame])
+
+    // console.log(game?.question?.question_image)
 
     return (
         <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, justifyContent: 'space-between'}}>   
-            
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: s(20)}}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', width: '65%', justifyContent: 'space-between', gap: s(5) }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', width: '75%', justifyContent: 'space-between', gap: s(5), height: s(23) }}>
                     <View style={{ backgroundColor: '#B390EF', width: s(15), height: s(15), borderRadius: 100, justifyContent: 'center', alignItems: 'center' }}>  
                         <Ionicons onPress={() => { 
                             if (playingIndex === 21) { 
@@ -56,30 +66,32 @@ const GameView = ({ setFullImage, setSelectedImage, game }) => {
             </View>
             
             {
-                game?.type === 6 ? 
+                game?.type === 3 ? 
                     <>
                         <LinesAndDrawingParent lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} lines={lines} />
-                        <ObjectMatchingGame setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
+                        <ObjectMatchingGame content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
                     </>
                 : 
-                game?.type === 9 ? 
-                    <DragAndDropGame setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
+                game?.type === 6 ? 
+                    <DragAndDropGame key={chosenGame} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
                 :
-                game?.type === 1 || 2 ?
-                    <SimpleGame gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} /> 
+                (game?.type === 1 && !questionImage) || (game?.type === 2 && !questionImage) ?
+                    <SimpleGame content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} /> 
                 :
-                game?.type === 4 &&
-                    <WithImageGame setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
+                (game?.type === 1 && questionImage) || (game?.type === 2 && questionImage) ? (
+                    <WithImageGame questionImage={questionImage} content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />)   
+                : 
+                    null
             }
 
             <View style={{ height: s(20), width: '60%', alignSelf: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <TouchableOpacity style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FF40572B', borderRadius: 10 }}>
+                <TouchableOpacity onPress={() => setChosenGame(chosenGame - 1)} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FF40572B', borderRadius: 10 }}>
                     <Ionicons name='chevron-back' color={'red'} size={20}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setLines([])} style={{width: '60%', backgroundColor: '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{color: '#2097EF', fontWeight: '600', fontSize: Platform.isPad? vs(20) : s(6)}}>Проверить ответ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0EAF0021', borderRadius: 10 }}>
+                <TouchableOpacity onPress={() => setChosenGame(chosenGame + 1)} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0EAF0021', borderRadius: 10 }}>
                     <Ionicons name='chevron-forward' color={'green'} size={20}/>
                 </TouchableOpacity>
             </View>

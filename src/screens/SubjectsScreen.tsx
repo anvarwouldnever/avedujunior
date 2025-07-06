@@ -13,7 +13,7 @@ const SubjectsScreen = () => {
     const { s, vs } = useScale();
 
     return (
-        <ImageBackground style={{flex: 1}} source={bgAssets[store.backgroundImage] ?? bgAssets[1]}>
+        <ImageBackground style={{flex: 1}} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView style={{ flex: 1, padding: Platform.isPad ? vs(20) : s(20) }}>
                 <View style={{ width: '100%', height: 'auto', backgroundColor: 'white', borderRadius: 20, padding: Platform.isPad ? vs(10) : s(10),}}>
                     <Header />

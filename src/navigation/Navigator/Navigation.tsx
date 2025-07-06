@@ -1,11 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/HomeScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { View, TouchableOpacity, Image, Platform } from 'react-native';
-import logo from '../../../assets/aveduLogo.jpg';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Subjects from '../../screens/SubjectsScreen';
 import SubjectsScreen from '../../screens/SubjectsScreen';
 import OurGroupScreen from '../../screens/OurGroupScreen';
 import CatalogScreen from '../../screens/CatalogScreen';
@@ -21,6 +18,7 @@ import { observer } from 'mobx-react-lite';
 import LoginScreen from '../../screens/LoginScreen';
 import GameScreen from '../../screens/GameScreen';
 import TestScreen from '../../screens/TestScreen';
+import * as SecureStore from 'expo-secure-store';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +26,7 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
 
     const { s, vs } = useScale();
     const [key, setKey] = useState<boolean>(false)
+    const token = SecureStore.getItem('access_token');
 
     useEffect(() => {
         setKey(prev => !prev)
@@ -48,7 +47,11 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
                     >
                         <Image
                             key={key}
-                            source={pfpAssets[store.pfp] ?? pfpAssets[1]} // запасной вариант, если store.pfp пустой
+                            source={
+                                store.pfp?.image?.url
+                                  ? { uri: store.pfp.image.url }
+                                  : pfpAssets[4]
+                            }
                             resizeMode='contain'
                             style={{ width: 50, height: 50 }}
                         />
@@ -61,7 +64,7 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
             headerLeft: () => (
                 <Logo />
             )
-        }} initialRouteName={"LoginScreen"}>
+        }} initialRouteName={token? "Home" : "LoginScreen"}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Subjects" component={SubjectsScreen} />
             <Stack.Screen name="TasksList" component={TasksScreen} />
