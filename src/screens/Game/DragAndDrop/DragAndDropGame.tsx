@@ -10,14 +10,14 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 type Cell = { index: number, img: any | null }
 
-const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex }) => {
+const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex, setChosenOptions }) => {
 
     // console.log(content)
 
     const { s, vs, windowWidth } = useScale();
-    const dropZones = useRef<View[]>([])
+    const dropZones = useRef<View[]>([]);
 
-    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
+    const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
     const columnGap = s(13);
     const rowGap = vs(45);
@@ -40,8 +40,19 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
 
     const cellSize = Math.min(cellWidth, cellHeight);
 
-    const [topRow, setTopRow] = useState<Cell[]>(Object.values(content || {}).map((opt, i) => ({ index: i, img: opt.img, key: opt.key, audio: opt.audio, text: opt.text})));
-    const [bottomRow, setBottomRow] = useState<Cell[]>(Array(4).fill(null).map((_, i) => ({ index: i, img: null })));
+    const [topRow, setTopRow] = useState(() => {
+      const initial = Object.values(content || {})
+        .map((opt, i) => ({
+          index: i,
+          img: opt?.img,
+          key: opt?.key,
+          audio: opt?.audio,
+          text: opt?.text,
+        }));
+      return initial.sort(() => Math.random() - 0.5);
+    });
+    
+    const [bottomRow, setBottomRow] = useState<Cell[]>(Array(4).fill(null).map((_, i) => ({ index: i + 1, img: null })));
 
     const draggingKey = useSharedValue<string | null>(null);
     const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -70,7 +81,7 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
             runOnJS(setHighlightedIndex)(null)
           }
         })
-    }
+    };
 
     const getDropTargetIndex = async (
         xPos: number,
@@ -124,13 +135,14 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
         
           setTopRow(newTop);
           setBottomRow(newBottom);
+          setChosenOptions(newBottom)
         
           break;
         }        
         }
 
         runOnJS(setHighlightedIndex)(null)
-    }
+    };
 
     const renderCell = (row: 'top' | 'bottom', obj: Cell, index: number) => {
         const isTop = row === 'top'
@@ -163,7 +175,7 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
               { translateY: translateY.value }
             ],
             zIndex: draggingKey.value === `${row}-${index}` ? 100 : 0,
-    }))   
+    }));   
 
     const isHighlighted = highlightedIndex === zoneIndex;
 

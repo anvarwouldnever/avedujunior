@@ -19,6 +19,7 @@ import LoginScreen from '../../screens/LoginScreen';
 import GameScreen from '../../screens/GameScreen';
 import TestScreen from '../../screens/TestScreen';
 import * as SecureStore from 'expo-secure-store';
+import RegisterScreen from '../../screens/RegisterScreen';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,7 @@ const Navigation = ({ openSlider }: { openSlider: () => void }) => {
             <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Game" component={GameScreen} />
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen options={{ headerShown: false }} name="RegisterScreen" component={RegisterScreen} />
             <Stack.Screen name="OurGroup" component={OurGroupScreen} />
             <Stack.Screen name="Catalog" component={CatalogScreen} />
             <Stack.Screen name="FreeActivity" component={FreeActivityScreen} />

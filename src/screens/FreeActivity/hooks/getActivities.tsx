@@ -20,7 +20,6 @@ export const getActivities = (id) => {
             }
 
             try {
-                console.log('запрос')
                 const response = await GetActivities(id);
                 const data = response?.data?.data;
 

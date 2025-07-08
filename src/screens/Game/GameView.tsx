@@ -14,12 +14,12 @@ import { useAudio } from '../../hooks/useAudio'
 const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame }) => {
 
     const { s, vs } = useScale()
-    const { play, stop, isPlaying } = useAudio()
+    const { play, stop, isPlaying } = useAudio();
 
-    const navigation = useNavigation()
+    const navigation = useNavigation();
 
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
-    const [chosenOptions, setChosenOptions] = useState<Array<string>>([])
+    const [chosenOptions, setChosenOptions] = useState<Array<string>>([]);
 
     const lineStartX = useSharedValue(0);
     const lineStartY = useSharedValue(0);
@@ -30,16 +30,42 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     const question = game?.question?.question;
     const content = game?.question?.options;
     const audio = game?.question?.question_audio;
-    const questionImage = game?.question?.question_image
+    const questionImage = game?.question?.question_image;
 
     useEffect(() => {
         setChosenOptions([]);
         setLines([]);
         setPlayingIndex(null);
         stop();
-    }, [chosenGame])
+    }, [chosenGame]);
 
-    // console.log(game?.question?.question_image)
+    const checkAnswer = (a: any[], b: any[], gameType: number) => {
+        if (gameType === 6) {
+            const correct = a?.every((el) => {
+                const keyNumber = parseInt(el.key?.match(/\d+$/)?.[0], 10);
+                return el.index === keyNumber;
+            });
+    
+            console.log(correct);
+            return correct;
+        }
+
+        if (gameType === 3) {
+            const correct = chosenOptions.length === 4 &&
+            chosenOptions.every(({ fromKey, toKey }) => fromKey === toKey);
+            
+            console.log(correct);
+            return correct;
+        }
+
+        if (a?.length !== b?.length) return false;
+      
+        const sortedA = [...a].sort();
+        const sortedB = [...b].sort();
+      
+        const correct = sortedA.every((val, index) => val === sortedB[index]);
+        console.log(correct);
+    };
 
     return (
         <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, justifyContent: 'space-between'}}>   
@@ -69,11 +95,11 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                 game?.type === 3 ? 
                     <>
                         <LinesAndDrawingParent lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} lines={lines} />
-                        <ObjectMatchingGame content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
+                        <ObjectMatchingGame setChosenOptions={setChosenOptions} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
                     </>
                 : 
                 game?.type === 6 ? 
-                    <DragAndDropGame key={chosenGame} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
+                    <DragAndDropGame setChosenOptions={setChosenOptions} key={chosenGame} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
                 :
                 (game?.type === 1 && !questionImage) || (game?.type === 2 && !questionImage) ?
                     <SimpleGame content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} /> 
@@ -88,7 +114,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                 <TouchableOpacity onPress={() => setChosenGame(chosenGame - 1)} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FF40572B', borderRadius: 10 }}>
                     <Ionicons name='chevron-back' color={'red'} size={20}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setLines([])} style={{width: '60%', backgroundColor: '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity onPress={() => checkAnswer(chosenOptions, game?.answer, game?.type)} style={{width: '60%', backgroundColor: '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{color: '#2097EF', fontWeight: '600', fontSize: Platform.isPad? vs(20) : s(6)}}>Проверить ответ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setChosenGame(chosenGame + 1)} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0EAF0021', borderRadius: 10 }}>

@@ -10,16 +10,16 @@ import GameNumberList from './Game/GameNumberList'
 import GameView from './Game/GameView'
 import Modal from 'react-native-modal'
 import { Image } from 'expo-image'
-import { Ionicons } from '@expo/vector-icons'
-import { getGames } from './Game/hooks/getGames'
+import { Ionicons } from '@expo/vector-icons';
+import { getGames } from './Game/hooks/getGames';
 
 const GameScreen = ({ route }) => {    
 
-    const { games, error, loading } = getGames(route?.params?.id)
+    const { games, error, loading } = getGames(route?.params?.id);
 
-    const { s, vs, windowWidth, windowHeight } = useScale()
+    const { s, vs } = useScale();
     const [chosenGame, setChosenGame] = useState(1);
-    const [fullImage, setFullImage] = useState<boolean>(false)
+    const [fullImage, setFullImage] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string>(null);
 
     useFocusEffect(

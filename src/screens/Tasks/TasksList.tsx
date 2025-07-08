@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import ProgressBorder from '../../components/ProgressBorder'
 import { getTasks } from './hooks/getTasks'
 import { observer } from 'mobx-react-lite'
+import { colors } from '../../components/Colors'
 
 const TasksList = ({ route }) => {
 
@@ -116,9 +117,7 @@ const TasksList = ({ route }) => {
     const columns = width - padding >= 738 ? 2 : 1;
     const subjectWidth = columns === 2 ? (width - padding) / 2 : width - vs(40);
 
-    const { tasks, error, loading } = getTasks(route?.params?.id)
-
-    // console.log(tasks)
+    const { tasks, error, loading } = getTasks(route?.params?.id);
 
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15), marginBottom: 100}}>
@@ -128,19 +127,20 @@ const TasksList = ({ route }) => {
                         <Text style={{ color: 'black', fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '700'}}>{month?.name}</Text>
                         <View style={{width: '100%', gap: vs(10), flexWrap: 'wrap', flexDirection: 'row'}}>
                             {month?.tests?.map((topic, index) => {
+                                const color = colors[index % colors?.length];
                                 return (
-                                    <View style={{width: subjectWidth, height: Platform.isPad? vs(225) : s(225), borderWidth: 2, borderColor: topic.baseColor, backgroundColor: 'white', borderRadius: 20, paddingVertical: vs(15), paddingHorizontal: Platform.isPad? vs(20) : s(20), justifyContent: 'space-between'}} key={index}>
-                                        <View style={{ backgroundColor: topic.baseColor, width: '50%', alignItems: 'center', borderRadius: 15 }}>
-                                            <Text adjustsFontSizeToFit numberOfLines={1} ellipsizeMode='tail' style={{ marginVertical: vs(8), color: topic.color, fontWeight: '600', margin: vs(5)}}>{route?.params?.name}</Text>
+                                    <View style={{width: subjectWidth, height: Platform.isPad? vs(225) : s(225), borderWidth: 2, borderColor: color.primary, backgroundColor: 'white', borderRadius: 20, paddingVertical: vs(15), paddingHorizontal: Platform.isPad? vs(20) : s(20), justifyContent: 'space-between'}} key={index}>
+                                        <View style={{ backgroundColor: color.primary, width: '50%', alignItems: 'center', borderRadius: 15 }}>
+                                            <Text adjustsFontSizeToFit numberOfLines={1} ellipsizeMode='tail' style={{ marginVertical: vs(8), color: color.secondary, fontWeight: '600', margin: vs(5)}}>{route?.params?.name}</Text>
                                         </View>
 
                                         <View style={{width: '100%', height: Platform.isPad? vs(80) : s(80), flexDirection: 'row', alignItems: 'center', gap: s(15)}}>
-                                            <ProgressBorder size={columns === 2? (Platform.isPad? vs(70) : s(70)) : (Platform.isPad? vs(80) : s(80))} percent={Math.round(topic?.finished_percent)} baseColor={topic?.baseColor} color={topic?.color}/>
+                                            <ProgressBorder size={columns === 2? (Platform.isPad? vs(70) : s(70)) : (Platform.isPad? vs(80) : s(80))} percent={Math.round(topic?.finished_percent)} baseColor={color.primary} color={color.secondary}/>
 
                                             <View style={{height: '100%', width: '60%', justifyContent: 'center', gap: vs(10)}}>
                                                 <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
-                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id })} style={{ backgroundColor: topic.color, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(8), paddingVertical: vs(6), width: '60%'}}>
+                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(8), paddingVertical: vs(6), width: '60%'}}>
                                                     <Text style={{ color: 'white', fontWeight: '700'}}>Пройти  →</Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -156,7 +156,7 @@ const TasksList = ({ route }) => {
                                             <View style={{height: '100%', backgroundColor: '#EFEEFC', width: 1, borderRadius: 20}}/>
 
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
-                                                <Text style={{ fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12) }}>{Math.round((topic?.passed_tests_count / topic?.test_count) * 100)}%</Text>
+                                                <Text style={{ fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12) }}>{Math.round(topic?.finished_percent)}%</Text>
 
                                                 <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>пройдено</Text>
                                             </View>

@@ -7,7 +7,7 @@ import { images1, images2 } from '../staticAssets/Images';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 
-const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content }) => {
+const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content, setChosenOptions }) => {
 
     const { s, vs, windowWidth } = useScale()
 
@@ -15,14 +15,14 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     const images1 = useMemo(() => {
       return options
-        .map((opt) => opt.img?.[0])
+        .map((opt) => opt.img?.[0] ? { key: opt.key, uri: opt.img[0] } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
     }, [content]);
     
     const images2 = useMemo(() => {
       return options
-        .map((opt) => opt.img?.[1])
+        .map((opt) => opt.img?.[1] ? { key: opt.key, uri: opt.img[1] } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
     }, [content]);
@@ -56,15 +56,22 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     const cellSize = Math.min(cellWidth, cellHeight);
 
-    const addCurvedLine = (data) => {
-      setLines((prev) => {
+    const addCurvedLine = (data: { x1: any; y1: any; x2: any; y2: any; fromKey: any; toKey: any; }) => {
+      setLines((prev: any[]) => {
         const filtered = prev.filter(
-          (line) =>
+          (line: { x1: any; y1: any; x2: any; y2: any; }) =>
             !(
               (line.x1 === data.x1 && line.y1 === data.y1) ||
               (line.x2 === data.x2 && line.y2 === data.y2)
             )
         );
+
+        setChosenOptions((prev: Array<{ fromKey: string; toKey: string }>) => {
+          const filtered = prev.filter(
+            (item) => item.fromKey !== data.fromKey && item.toKey !== data.toKey
+          );
+          return [...filtered, { fromKey: data.fromKey, toKey: data.toKey }];
+        });
     
         return [...filtered, data];
       });
@@ -72,23 +79,29 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
       removeLine();
     };
      
-    const checkIfMatched = (absX, absY, lineStartX, lineStartY, bottomCenters, addCurvedLine) => {
-        for (let i = 0; i < bottomCenters.length; i++) {
-          const center = bottomCenters[i];
-          if (center && isWithin(absX, absY, center.centerX, center.centerY)) {
-            console.log(`✅ Попал в элемент с индексом ${i}`);
-            addCurvedLine({
-              x1: lineStartX.value,
-              y1: lineStartY.value,
-              x2: center.centerX,
-              y2: center.centerY,
-              color: "#504297"
-            });
-            return;
-          }
+    const checkIfMatched = (absX: any, absY: any, lineStartX: { value: any; }, lineStartY: { value: any; }, bottomCenters: string | any[], addCurvedLine: (arg0: { x1: any; y1: any; x2: any; y2: any; color: string; }) => void, fromKey: any) => {
+      for (let i = 0; i < bottomCenters.length; i++) {
+        const center = bottomCenters[i];
+        if (center && isWithin(absX, absY, center.centerX, center.centerY)) {
+    
+          const toKey = center?.key ?? 'unknown';
+          // console.log(`"${fromKey}" → TO "${toKey}"`);
+    
+          addCurvedLine({
+            x1: lineStartX.value,
+            y1: lineStartY.value,
+            x2: center.centerX,
+            y2: center.centerY,
+            color: "#504297",
+            fromKey: fromKey,
+            toKey: toKey
+          });
+    
+          return;
         }
-                    
-        removeLine()
+      }
+    
+      removeLine();
     };
 
     const removeLine = () => {
@@ -98,7 +111,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
         lineEndY.value = 0;
     };
 
-    const isWithin = (x, y, cx, cy, size = 50) => {
+    const isWithin = (x: number, y: number, cx: number, cy: number, size = 50) => {
         return Math.abs(x - cx) < size && Math.abs(y - cy) < size;
     };
 
@@ -115,6 +128,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
     };
 
     const createPanGesture = (index: number) => {
+        const fromKey = centers[index]?.key ?? 'unknown'
         return Gesture.Pan()
           .onBegin(() => {
             const center = centers[index];
@@ -136,12 +150,14 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
               lineStartX,
               lineStartY,
               bottomCenters,
-              addCurvedLine
+              addCurvedLine,
+              fromKey
             );
           });
     };
 
-    const measure = useCallback((el, index) => {
+    const measure = useCallback((el: any, index: string | number) => {
+      const img = images1[index];
       measureCenter(el, (centerX, centerY) => {
         setCenters((prev) => {
           const prevItem = prev[index];
@@ -150,15 +166,19 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
             Math.abs(prevItem.centerX - centerX) < 0.5 &&
             Math.abs(prevItem.centerY - centerY) < 0.5;
     
-          if (same) return prev; // ничего не меняем
+          if (same) return prev;
     
           return {
             ...prev,
-            [index]: { centerX, centerY },
+            [index]: {
+              centerX,
+              centerY,
+              key: img?.key, // добавляем key
+            },
           };
         });
       });
-    }, []);
+    }, [images1]);
     
     const gestures = useMemo(() => {
         return images1.map((_, index) => createPanGesture(index));
@@ -166,7 +186,8 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     return (
         <View style={{width: contSize, height: 'auto', flexDirection: 'row', rowGap: rowGap, columnGap: columnGap, flexWrap: 'wrap'}}>
-            {images1.map((img, index) => (
+            {images1?.map((img, index) => {
+              return (
                 <GestureDetector key={index} gesture={gestures[index]}>
                   <View
                       ref={(el) => measure(el, index)}
@@ -182,7 +203,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                       }}
                   >
                       <Image
-                          source={img}
+                          source={img?.uri}
                           style={{
                               width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white'
                           }}
@@ -196,9 +217,10 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                       }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
                   </View>
                 </GestureDetector>
-            ))}
+            )})}
 
-            {images2.map((img, index) => (
+            {images2?.map((img, index) => {
+              return (
                 <View
                     key={index}
                     ref={(el) => (bottomRefs.current[index] = el)}
@@ -210,18 +232,19 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                             prevItem &&
                             Math.abs(prevItem.centerX - (centerX - paddingHorizontal)) < 0.5 &&
                             Math.abs(prevItem.centerY - (centerY - paddingVertical)) < 0.5;
-                    
+              
                           if (same) return prev;
-                    
+              
                           const updated = [...prev];
                           updated[index] = {
                             centerX: centerX - paddingHorizontal,
                             centerY: centerY - paddingVertical,
+                            key: img?.key, // ← здесь img доступен, всё ок
                           };
                           return updated;
                         });
                       })
-                    }                    
+                    }              
                         style={{
                         width: cellWidth,
                         height: cellHeight,
@@ -234,7 +257,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                     }}
                 >
                   <Image
-                      source={img}
+                      source={img?.uri}
                       style={{
                         width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white'
                       }}
@@ -243,7 +266,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                       cachePolicy='disk'
                   />
                 </View>
-            ))}
+            )})}
         </View>
     )
 }

@@ -49,4 +49,4 @@ const PasswordChangeSection = () => {
     )
 }
 
-export default PasswordChangeSection
+export default PasswordChangeSection;

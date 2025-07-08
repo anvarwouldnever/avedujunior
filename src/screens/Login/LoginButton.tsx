@@ -57,7 +57,7 @@ const LoginButton = ({ id, password, setErrorMessage, setThinking, thinking, sel
             {thinking ? (
                 <ActivityIndicator size="small" color="#fff" />
             ) : (
-            <Text style={{ color: 'white', fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>Войти</Text>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>Войти</Text>
             )}
         </TouchableOpacity>
     )

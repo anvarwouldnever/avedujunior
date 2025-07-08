@@ -1,13 +1,11 @@
-import { Platform, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import Logo from '../components/Logo';
 import { useScale } from '../hooks/useScale';
-import { store } from '../store/store';
-import { useNavigation } from '@react-navigation/native';
 import ChooseLanguage from './Login/ChooseLanguage';
 import ChooseRole from './Login/ChooseRole';
 import Inputs from './Login/Inputs';
 import LoginButton from './Login/LoginButton';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
 
@@ -17,6 +15,17 @@ const LoginScreen = () => {
     const [errorMessage, setErrorMessage] = useState<string>(null)
     const [thinking, setThinking] = useState<boolean>(false)
     const [selectedRole, setSelectedRole] = useState('Организация');
+
+    const navigation = useNavigation();
+
+    const RegisterText = () => {
+        return (
+            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: s(4) }}>
+                <Text style={{ fontSize: s(15), textAlign: 'center'}}>Нет аккаунта?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')} style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}><Text style={{ fontSize: s(15), textAlign: 'center', color: '#6A5AE0', fontWeight: '600' }}>Зарегистрироваться</Text></TouchableOpacity>
+            </View>
+        )
+    };
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#EFEEFC' }}>
@@ -30,6 +39,8 @@ const LoginScreen = () => {
                 {errorMessage && <Text style={{color: '#EB265D', textAlign: 'center'}}>{errorMessage}</Text>}
 
                 <LoginButton id={id} password={password} setErrorMessage={setErrorMessage} setThinking={setThinking} thinking={thinking} selectedRole={selectedRole}/>
+
+                <RegisterText />
             </View>
         </SafeAreaView>
     )
