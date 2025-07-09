@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Svg, { Line } from 'react-native-svg';
 
-const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY }) => {
+const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY, passed }) => {
         const arrowLength = 10; // длина стрелки
     
         const getArrowLines = (x1, y1, x2, y2) => {
@@ -48,7 +48,7 @@ const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY })
                                 y1={line.y1}
                                 x2={line.x2}
                                 y2={line.y2}
-                                stroke={line.color || "#504297"}
+                                stroke={passed === 1 ? "#30AB02" : "#504297"}
                                 strokeWidth={2}
                             />
                             <Line
@@ -56,7 +56,7 @@ const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY })
                                 y1={arrow1.y1}
                                 x2={arrow1.x2}
                                 y2={arrow1.y2}
-                                stroke={line.color || "#504297"}
+                                stroke={passed === 1 ? "#30AB02" : "#504297"}
                                 strokeWidth={2}
                             />
                             <Line
@@ -64,7 +64,7 @@ const Lines = React.memo(({ lines, lineStartX, lineStartY, lineEndX, lineEndY })
                                 y1={arrow2.y1}
                                 x2={arrow2.x2}
                                 y2={arrow2.y2}
-                                stroke={line.color || "#504297"}
+                                stroke={passed === 1 ? "#30AB02" : "#504297"}
                                 strokeWidth={2}
                             />
                         </React.Fragment>

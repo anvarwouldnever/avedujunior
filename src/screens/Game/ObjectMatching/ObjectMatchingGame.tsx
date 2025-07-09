@@ -1,5 +1,5 @@
 import { View, InteractionManager, Platform } from 'react-native'
-import React, { useState, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react'
 import { useScale } from '../../../hooks/useScale';
 import { runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -7,7 +7,7 @@ import { images1, images2 } from '../staticAssets/Images';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 
-const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content, setChosenOptions }) => {
+const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content, setChosenOptions, passed }) => {
 
     const { s, vs, windowWidth } = useScale()
 
@@ -15,17 +15,17 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     const images1 = useMemo(() => {
       return options
-        .map((opt) => opt.img?.[0] ? { key: opt.key, uri: opt.img[0] } : null)
+        .map((opt) => opt?.img?.[0] ? { key: opt?.key, uri: opt?.img[0] } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
     }, [content]);
     
     const images2 = useMemo(() => {
       return options
-        .map((opt) => opt.img?.[1] ? { key: opt.key, uri: opt.img[1] } : null)
+        .map((opt) => opt?.img?.[1] ? { key: opt?.key, uri: opt?.img[1] } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
-    }, [content]);
+    },  [content]);
 
     const [centers, setCenters] = useState([]);
     const [bottomCenters, setBottomCenters] = useState([]); 
@@ -131,6 +131,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
         const fromKey = centers[index]?.key ?? 'unknown'
         return Gesture.Pan()
           .onBegin(() => {
+            if (passed === 1) return
             const center = centers[index];
             if (center) {
               lineStartX.value = center.centerX - paddingHorizontal;
@@ -140,10 +141,12 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
             }
           })
           .onUpdate((event) => {
+            if (passed === 1) return
             lineEndX.value = event.absoluteX - paddingHorizontal;
             lineEndY.value = event.absoluteY - paddingVertical;
           })
           .onEnd((event) => {
+            if (passed === 1) return
             runOnJS(checkIfMatched)(
               event.absoluteX - paddingHorizontal,
               event.absoluteY - paddingVertical,
@@ -183,6 +186,34 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
     const gestures = useMemo(() => {
         return images1.map((_, index) => createPanGesture(index));
     }, [centers, bottomCenters]);
+
+    useEffect(() => {
+      if (passed === 1) {
+        const correctLines = [];
+    
+        images1.forEach((img1, index1) => {
+          const matchingImg2 = images2.find((img2) => img2.key === img1.key);
+          const index2 = images2.indexOf(matchingImg2);
+          const center1 = centers[index1];
+          const center2 = bottomCenters[index2];
+    
+          if (center1 && center2) {
+            correctLines.push({
+              x1: center1.centerX - paddingHorizontal,
+              y1: center1.centerY - paddingVertical,
+              x2: center2.centerX,
+              y2: center2.centerY,
+              fromKey: img1.key,
+              toKey: img1.key,
+            });
+          }
+        });
+    
+        setLines(correctLines);
+    
+        setChosenOptions(correctLines.map(({ fromKey, toKey }) => ({ fromKey, toKey })));
+      }
+    }, [passed, centers, bottomCenters]);
 
     return (
         <View style={{width: contSize, height: 'auto', flexDirection: 'row', rowGap: rowGap, columnGap: columnGap, flexWrap: 'wrap'}}>

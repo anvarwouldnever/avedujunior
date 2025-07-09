@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { GetGames } from '../../../api/methods/game/games';
 
-
-export const getGames = (id) => {
+export const useGames = (id) => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -25,5 +24,11 @@ export const getGames = (id) => {
         fetchPreGame();
     }, []);
 
-    return { games, loading, error };
+    const markGameAsPassed = useCallback((gameId: number) => {
+        setGames(prev =>
+            prev.map(game => game?.id === gameId ? { ...game, passed: 1 } : game)
+        );
+    }, []);
+
+    return { games, loading, error, markGameAsPassed };
 }

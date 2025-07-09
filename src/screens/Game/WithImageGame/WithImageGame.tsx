@@ -3,37 +3,38 @@ import React, { useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
-const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content, gameType, chosenOptions, setChosenOptions, play, stop, isPlaying, playingIndex, setPlayingIndex }) => {
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
-    const { s, vs, windowWidth } = useScale()
+const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content, gameType, chosenOptions, setChosenOptions, play, stop, isPlaying, playingIndex, setPlayingIndex, passed, answers }) => {
+
+    const { s, vs, windowWidth } = useScale();
 
     const images = useMemo(() => {
         return content ? Object.values(content).slice().sort(() => Math.random() - 0.5) : [];
     }, [content]);
 
-    // console.log(images)
-
-    const columnGap = s(13)
-    const rowGap = vs(35)
+    const columnGap = s(13);
+    const rowGap = vs(35);
 
     const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50)
-    const contHeight = vs(420)
+    const contHeight = vs(420);
 
-    const effectiveBorder = vs(1)
-    const numColumns = 4
-    const totalGaps = columnGap * (numColumns - 1)
-    const totalBorders = effectiveBorder * 2 * numColumns
+    const effectiveBorder = vs(1);
+    const numColumns = 4;
+    const totalGaps = columnGap * (numColumns - 1);
+    const totalBorders = effectiveBorder * 2 * numColumns;
 
-    const cellWidth = (contSize - totalGaps - totalBorders) / numColumns
+    const cellWidth = (contSize - totalGaps - totalBorders) / numColumns;
 
-    const numRows = 2
-    const totalRowGaps = rowGap * (numRows - 1)
-    const totalRowBorders = effectiveBorder * 2 * numRows
+    const numRows = 2;
+    const totalRowGaps = rowGap * (numRows - 1);
+    const totalRowBorders = effectiveBorder * 2 * numRows;
 
-    const cellHeight = (contHeight - totalRowGaps - totalRowBorders) / numRows
+    const cellHeight = (contHeight - totalRowGaps - totalRowBorders) / numRows;
 
-    const cellSize = Math.min(cellWidth, cellHeight)
+    const cellSize = Math.min(cellWidth, cellHeight);
     
     const handlePress = (key) => {
         setChosenOptions((prev) => {
@@ -73,7 +74,7 @@ const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content,
 
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
                 {images?.map((img, index) => (
-                    <TouchableOpacity key={index} onPress={() => handlePress(img?.key)} style={{ width: cellWidth, height: cellHeight, borderWidth: 2, borderColor: isSelected(img.key) ? '#FFD600' : '#EFEEFC', borderRadius: 12, overflow: 'visible', justifyContent: 'center', alignItems: 'center' }}>
+                    <AnimatedTouchableOpacity entering={FadeIn.duration(300)} key={img?.img} onPress={passed === 1? () => {return} : () => handlePress(img?.key)} style={{ width: cellWidth, height: cellHeight, borderWidth: 2, borderColor: passed === 1 && answers.includes(img?.key) ? '#30AB02' : isSelected(img.key) ? '#FFD600' : '#EFEEFC', borderRadius: 12, overflow: 'visible', justifyContent: 'center', alignItems: 'center' }}>
                         <Image
                             source={img?.img}
                             style={{
@@ -101,7 +102,8 @@ const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content,
                             setFullImage(true); 
                         }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
                         <Text adjustsFontSizeToFit numberOfLines={1} style={{position: 'absolute', bottom: -s(10), fontSize: s(5), fontWeight: '600', width: cellWidth, textAlign: 'center'}}>{img?.text}</Text>
-                    </TouchableOpacity>
+                        {passed === 1 && answers.includes(img?.key) && <Text adjustsFontSizeToFit numberOfLines={1} style={{position: 'absolute', top: -s(10), fontSize: s(5), fontWeight: '600', width: cellWidth, textAlign: 'center', color: '#30AB02'}}>Твой ответ!</Text>}
+                    </AnimatedTouchableOpacity>
                 ))}
             </View>
         </View>

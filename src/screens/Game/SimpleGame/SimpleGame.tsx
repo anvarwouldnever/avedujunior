@@ -3,8 +3,11 @@ import React, { useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
-const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPlaying, playingIndex, setPlayingIndex, gameType, chosenOptions, setChosenOptions }) => {
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+
+const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPlaying, playingIndex, setPlayingIndex, gameType, chosenOptions, setChosenOptions, passed, answers }) => {
 
     const { s, vs, windowWidth } = useScale();
 
@@ -52,7 +55,7 @@ const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPla
             {images?.map((option, index) => {
 
                 return (
-                    <TouchableOpacity key={option?.key} onPress={() => handlePress(option?.key)} style={{ width: cellWidth, height: cellHeight, borderWidth: 2, borderColor: isSelected(option.key) ? '#FFD600' : '#EFEEFC', borderRadius: 12, overflow: 'visible', justifyContent: 'center', alignItems: 'center' }}>
+                    <AnimatedTouchableOpacity entering={FadeIn.duration(300)} key={option?.img} onPress={passed === 1 ? () => {return} : () => handlePress(option?.key)} style={{ width: cellWidth, height: cellHeight, borderWidth: 2, borderColor: passed === 1 && answers.includes(option?.key) ? '#30AB02' : isSelected(option?.key) ? '#FFD600' : '#EFEEFC', borderRadius: 12, overflow: 'visible', justifyContent: 'center', alignItems: 'center' }}>
                         <Image
                             source={option?.img}
                             style={{
@@ -62,14 +65,14 @@ const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPla
                             transition={0}
                             cachePolicy="disk"
                         />
-                        {option.audio && <Ionicons onPress={() => { 
+                        {option?.audio && <Ionicons onPress={() => { 
                             if (playingIndex === index && isPlaying) { 
                                 stop(); 
                                 setPlayingIndex(null);
                             } else if (playingIndex === index && !isPlaying) {
-                                play(option.audio);
+                                play(option?.audio);
                             } else {
-                                play(option.audio);
+                                play(option?.audio);
                                 setPlayingIndex(index);
                             }
                         }}  size={vs(45)} name={playingIndex === index && isPlaying ? 'pause-circle-outline' : 'play-circle-outline'} color={'green'} style={{position: 'absolute', right: 3, top: 3 }} />}
@@ -78,7 +81,8 @@ const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPla
                             setFullImage(true);
                         }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 3, top: 3 }} />
                         <Text adjustsFontSizeToFit numberOfLines={1} style={{position: 'absolute', bottom: -s(10), fontSize: s(5), fontWeight: '600', width: cellWidth, textAlign: 'center'}}>{option?.text}</Text>
-                    </TouchableOpacity>
+                        {passed === 1 && answers.includes(option?.key) && <Text adjustsFontSizeToFit numberOfLines={1} style={{position: 'absolute', top: -s(10), fontSize: s(5), fontWeight: '600', width: cellWidth, textAlign: 'center', color: '#30AB02'}}>Твой ответ!</Text>}
+                    </AnimatedTouchableOpacity>
                 )}
             )}
         </View>

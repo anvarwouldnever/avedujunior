@@ -1,8 +1,8 @@
 import { Platform, View, Text } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
+import Animated, { FadeIn, runOnJS, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -10,7 +10,7 @@ const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 type Cell = { index: number, img: any | null }
 
-const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex, setChosenOptions }) => {
+const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex, setChosenOptions, passed, answers }) => {
 
     // console.log(content)
 
@@ -41,16 +41,28 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
     const cellSize = Math.min(cellWidth, cellHeight);
 
     const [topRow, setTopRow] = useState(() => {
-      const initial = Object.values(content || {})
-        .map((opt, i) => ({
-          index: i,
-          img: opt?.img,
-          key: opt?.key,
-          audio: opt?.audio,
-          text: opt?.text,
-        }));
-      return initial.sort(() => Math.random() - 0.5);
+      const initial = Object.values(content || {}).map((opt, i) => ({
+        index: i,
+        img: opt?.img,
+        key: opt?.key,
+        audio: opt?.audio,
+        text: opt?.text,
+      }));
+    
+      return passed !== 1 ? initial.sort(() => Math.random() - 0.5) : initial;
     });
+
+    useEffect(() => {
+      const initial = Object.values(content || {}).map((opt, i) => ({
+        index: i,
+        img: opt?.img,
+        key: opt?.key,
+        audio: opt?.audio,
+        text: opt?.text,
+      }));
+    
+      setTopRow(passed !== 1 ? initial.sort(() => Math.random() - 0.5) : initial);
+    }, [content, passed]);
     
     const [bottomRow, setBottomRow] = useState<Cell[]>(Array(4).fill(null).map((_, i) => ({ index: i + 1, img: null })));
 
@@ -145,95 +157,102 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
     };
 
     const renderCell = (row: 'top' | 'bottom', obj: Cell, index: number) => {
-        const isTop = row === 'top'
-        const zoneIndex = isTop ? index : index + 4
+      const isTop = row === 'top'
+      const zoneIndex = isTop ? index : index + 4
+  
+      const translateX = useSharedValue(0);
+      const translateY = useSharedValue(0);    
+  
+      const gesture = Gesture.Pan()
+      .onBegin(() => {
+          draggingKey.value = `${row}-${index}`;
+          runOnJS(setDraggingId)(`${row}-${index}`);
+      })
+      .onUpdate((event) => {
+          translateX.value = event.translationX;
+          translateY.value = event.translationY;
+          runOnJS(checkIntersection)(event.absoluteX, event.absoluteY);
+      })
+      .onEnd((event) => {
+          draggingKey.value = null;
+          runOnJS(setDraggingId)(null);
+          runOnJS(getDropTargetIndex)(event.absoluteX, event.absoluteY, index, isTop);
+          translateX.value = withDelay(15, withTiming(0));
+          translateY.value = withDelay(15, withTiming(0));
+      })
+  
+      const animatedStyle = useAnimatedStyle(() => ({
+          transform: [
+            { translateX: translateX.value },
+            { translateY: translateY.value }
+          ],
+          zIndex: draggingKey.value === `${row}-${index}` ? 100 : 0,
+      }));   
+  
+      const isHighlighted = highlightedIndex === zoneIndex;
 
-        const translateX = useSharedValue(0);
-        const translateY = useSharedValue(0);    
-
-        const gesture = Gesture.Pan()
-        .onBegin(() => {
-            draggingKey.value = `${row}-${index}`;
-            runOnJS(setDraggingId)(`${row}-${index}`);
-        })
-        .onUpdate((event) => {
-            translateX.value = event.translationX;
-            translateY.value = event.translationY;
-            runOnJS(checkIntersection)(event.absoluteX, event.absoluteY);
-        })
-        .onEnd((event) => {
-            draggingKey.value = null;
-            runOnJS(setDraggingId)(null);
-            runOnJS(getDropTargetIndex)(event.absoluteX, event.absoluteY, index, isTop);
-            translateX.value = withDelay(15, withTiming(0));
-            translateY.value = withDelay(15, withTiming(0));
-        })
-
-        const animatedStyle = useAnimatedStyle(() => ({
-            transform: [
-              { translateX: translateX.value },
-              { translateY: translateY.value }
-            ],
-            zIndex: draggingKey.value === `${row}-${index}` ? 100 : 0,
-    }));   
-
-    const isHighlighted = highlightedIndex === zoneIndex;
-
-    return (
-      <GestureDetector key={`${row}-${index}`} gesture={gesture}>
-        <View
-          ref={(ref) => (dropZones.current[zoneIndex] = ref!)}
-          style={{
-            width: cellWidth,
-            height: cellHeight,
-            backgroundColor: isHighlighted ? '#EEFCF4' : 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderWidth: 2,
-            borderColor: '#EFEEFC',
-            borderRadius: 12,
-            zIndex: draggingId === `${row}-${index}` ? 1000 : 0,
-          }}
-        >
-          {obj?.img && (
-          <>
-            <AnimatedImage
-              source={obj.img}
-              style={[{ width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white' }, animatedStyle]}
-              contentFit={'contain'}
-              transition={0}
-              cachePolicy={'disk'}
-            />      
-
-            {obj.audio && <Ionicons onPress={() => { 
-                if (playingIndex === obj.key && isPlaying) { 
-                    stop(); 
-                    setPlayingIndex(null);
-                } else if (playingIndex === obj.key && !isPlaying) {
-                    play(obj.audio);
-                } else {
-                    play(obj.audio);
-                    setPlayingIndex(obj.key);
-                }
-            }}  size={vs(45)} name={playingIndex === obj.key && isPlaying ? 'pause-circle-outline' : 'play-circle-outline'} color={'green'} style={{position: 'absolute', right: 3, top: 3, zIndex: 100 }} />}
-
-            <Ionicons
-              onPress={() => {
-                setSelectedImage(obj.img);
-                setFullImage(true);
-              }}
-              size={vs(45)}
-              name='search-circle-outline'
-              color={'#FFD600'}
-              style={{ position: 'absolute', left: 2, top: 2, zIndex: 100 }}
-            />
-          </>
-        )}
-        <Text style={{position: 'absolute', bottom: -s(7), fontSize: s(4), fontWeight: '600'}}>{obj?.text}</Text>
-        </View>
-      </GestureDetector>
-    )
-    }
+      if (!isTop && passed === 1) {
+        return null;
+      }
+  
+      return (
+        <GestureDetector key={`${row}-${index}`} gesture={gesture}>
+          <Animated.View
+            entering={FadeIn.duration(300)}
+            key={obj?.img}
+            ref={(ref) => (dropZones.current[zoneIndex] = ref!)}
+            style={{
+              width: cellWidth,
+              height: cellHeight,
+              backgroundColor: isHighlighted ? '#EEFCF4' : 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderWidth: 2,
+              borderColor: passed === 1 ? "#30AB02" : '#EFEEFC',
+              borderRadius: 12,
+              zIndex: draggingId === `${row}-${index}` ? 1000 : 0,
+            }}
+          >
+            { obj?.img && (
+            <>
+              <AnimatedImage
+                source={obj?.img}
+                style={[{ width: cellWidth * 0.8, height: cellSize - 20, backgroundColor: 'white' }, animatedStyle]}
+                contentFit={'contain'}
+                transition={0}
+                cachePolicy={'disk'}
+              />      
+  
+              {obj?.audio && <Ionicons onPress={() => { 
+                  if (playingIndex === obj?.key && isPlaying) { 
+                      stop(); 
+                      setPlayingIndex(null);
+                  } else if (playingIndex === obj?.key && !isPlaying) {
+                      play(obj?.audio);
+                  } else {
+                      play(obj?.audio);
+                      setPlayingIndex(obj?.key);
+                  }
+              }}  size={vs(45)} name={playingIndex === obj?.key && isPlaying ? 'pause-circle-outline' : 'play-circle-outline'} color={'green'} style={{position: 'absolute', right: 3, top: 3, zIndex: 100 }} />}
+  
+              <Ionicons
+                onPress={() => {
+                  setSelectedImage(obj?.img);
+                  setFullImage(true);
+                }}
+                size={vs(45)}
+                name='search-circle-outline'
+                color={'#FFD600'}
+                style={{ position: 'absolute', left: 2, top: 2, zIndex: 100 }}
+              />
+            </>
+            )}
+            {<Text style={{position: 'absolute', bottom: -s(7), fontSize: s(4), fontWeight: '600'}}>{obj?.text}</Text>}
+          </Animated.View>
+        </GestureDetector>
+      )
+  }
+  
 
     return (
         <View style={{
@@ -241,8 +260,9 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
             height: contHeight,
             flexDirection: 'row',
             rowGap: rowGap,
-            flexWrap: 'wrap',
+            flexWrap: passed === 1 ? "nowrap" : "wrap",
             columnGap: columnGap,
+            alignItems: 'center',
         }}>
             {topRow.map((obj, index) => renderCell('top', obj, index))}
             {bottomRow.map((obj, index) => renderCell('bottom', obj, index))}

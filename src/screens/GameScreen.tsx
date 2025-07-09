@@ -11,11 +11,11 @@ import GameView from './Game/GameView'
 import Modal from 'react-native-modal'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons';
-import { getGames } from './Game/hooks/getGames';
+import { useGames } from './Game/hooks/getGames';
 
 const GameScreen = ({ route }) => {    
 
-    const { games, error, loading } = getGames(route?.params?.id);
+    const { games, error, loading, markGameAsPassed } = useGames(route?.params?.id);
 
     const { s, vs } = useScale();
     const [chosenGame, setChosenGame] = useState(1);
@@ -34,7 +34,7 @@ const GameScreen = ({ route }) => {
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <View style={{flex: 1, justifyContent: 'space-between', paddingVertical: Platform.isPad ? vs(20) : s(7), paddingLeft: Platform.isPad ? s(10) : s(20), paddingRight: s(10), flexDirection: 'row'}}>
-                <GameView chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
+                <GameView markGameAsPassed={markGameAsPassed} chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
                 <GameNumberList games={games} setChosenGame={setChosenGame} chosenGame={chosenGame}/>
                 
                 <Modal animationOutTiming={10} animationOut={'fadeOut'} isVisible={fullImage} style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: s(80), top: vs(45)}}>
