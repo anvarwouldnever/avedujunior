@@ -11,6 +11,7 @@ import SimpleGame from './SimpleGame/SimpleGame'
 import WithImageGame from './WithImageGame/WithImageGame'
 import { useAudio } from '../../hooks/useAudio'
 import { AnswerCorrect } from '../../api/methods/answer/correct'
+import { AnswerWrong } from '../../api/methods/answer/wrong'
 
 const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame, markGameAsPassed }) => {
 
@@ -43,46 +44,66 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     }, [chosenGame]);
 
     const checkAnswer = async (a: any[], b: any[], gameType: number) => {
+        const gameId = game?.id;
+        if (!gameId) return;
+    
+        const handleCorrect = async () => {
+            const answer = await AnswerCorrect(gameId);
+            console.log(answer.status);
+            markGameAsPassed(gameId);
+        };
+    
+        const handleWrong = async () => {
+            const answer = await AnswerWrong(gameId);
+            console.log(answer.status);
+        };
+    
         if (gameType === 6) {
-            const correct = a?.every((el) => {
-                const keyNumber = parseInt(el.key?.match(/\d+$/)?.[0], 10);
+            if (a.length !== 4) return console.log('not an answer');
+    
+            const hasAllKeys = a.every(el => {
+                const match = el.key?.match(/\d+$/);
+                return match && !isNaN(parseInt(match[0], 10));
+            });
+            if (!hasAllKeys) return console.log('not an answer');
+    
+            const correct = a.every(el => {
+                const match = el.key?.match(/\d+$/);
+                const keyNumber = match ? parseInt(match[0], 10) : NaN;
                 return el.index === keyNumber;
             });
     
-            if (correct) {
-                // const answer = await AnswerCorrect(game?.id)
-                // console.log(answer.data)
-                markGameAsPassed(game?.id);
-            }
-        }
-
-        if (gameType === 3) {
-            const correct = chosenOptions.length === 4 &&
-            chosenOptions.every(({ fromKey, toKey }) => fromKey === toKey);
-            
             console.log(correct);
-            
-            if (correct) {
-                const answer = await AnswerCorrect(game?.id)
-                console.log(answer.data)
-                markGameAsPassed(game?.id);
-            }
+            return correct ? await handleCorrect() : await handleWrong();
         }
-
-        if (a?.length !== b?.length) return false;
-      
-        const sortedA = [...a].sort();
-        const sortedB = [...b].sort();
-      
-        const correct = sortedA.every((val, index) => val === sortedB[index]);
-        if (correct) {
-            const answer = await AnswerCorrect(game?.id)
-            console.log(answer.data)
-            markGameAsPassed(game?.id);
+    
+        if (gameType === 3) {
+            const isAnswer = chosenOptions.length === 4;
+            if (!isAnswer) return console.log('not an answer');
+    
+            const correct = chosenOptions.every(({ fromKey, toKey }) => fromKey === toKey);
+            console.log(correct);
+            return correct ? await handleCorrect() : await handleWrong();
+        }
+    
+        if (gameType === 1 || gameType === 2) {
+            if (a?.length !== b?.length) return console.log('not an answer');
+    
+            const sortedA = [...a].sort();
+            const sortedB = [...b].sort();
+            const correct = sortedA.every((val, index) => val === sortedB[index]);
+    
+            if (correct) {
+                await handleCorrect();
+            } else {
+                await handleWrong();
+            }
+    
             setChosenOptions([]);
+            return;
         }
     };
-
+     
     return (
         <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, justifyContent: 'space-between'}}>   
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: s(20)}}>
