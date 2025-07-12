@@ -7,7 +7,7 @@ import { images1, images2 } from '../staticAssets/Images';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 
-const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content, setChosenOptions, passed }) => {
+const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLines, setSelectedImage, setFullImage, content, setChosenOptions, passed, play, stop, isPlaying, playingIndex, setPlayingIndex, }) => {
 
     const { s, vs, windowWidth } = useScale()
 
@@ -15,14 +15,14 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     const images1 = useMemo(() => {
       return options
-        .map((opt) => opt?.img?.[0] ? { key: opt?.key, uri: opt?.img[0] } : null)
+        .map((opt) => opt?.img?.[0] ? { key: opt?.key, uri: opt?.img[0], audio: Array.isArray(opt?.audio) ? opt.audio[0] || null : null } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
     }, [content]);
     
     const images2 = useMemo(() => {
       return options
-        .map((opt) => opt?.img?.[1] ? { key: opt?.key, uri: opt?.img[1] } : null)
+        .map((opt) => opt?.img?.[1] ? { key: opt?.key, uri: opt?.img[1], audio: Array.isArray(opt?.audio) ? opt.audio[0] || null : null } : null)
         .filter(Boolean)
         .sort(() => Math.random() - 0.5);
     },  [content]);
@@ -242,6 +242,19 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                           transition={0}
                           cachePolicy='disk'
                       />
+
+                        {img?.audio && <Ionicons onPress={() => { 
+                            if (playingIndex === index && isPlaying) { 
+                                stop(); 
+                                setPlayingIndex(null);
+                            } else if (playingIndex === index && !isPlaying) {
+                                play(img?.audio);
+                            } else {
+                                play(img?.audio);
+                                setPlayingIndex(index);
+                            }
+                        }}  size={vs(45)} name={playingIndex === index && isPlaying ? 'pause-circle-outline' : 'play-circle-outline'} color={'green'} style={{position: 'absolute', right: 3, top: 3 }} />}
+
                       <Ionicons onPress={() => {
                           setSelectedImage(img);
                           setFullImage(true);
@@ -296,6 +309,11 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                       transition={0}
                       cachePolicy='disk'
                   />
+
+                      <Ionicons onPress={() => {
+                          setSelectedImage(img);
+                          setFullImage(true);
+                      }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
                 </View>
             )})}
         </View>

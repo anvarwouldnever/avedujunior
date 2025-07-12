@@ -1,5 +1,5 @@
 import { View, ImageBackground, Platform, TouchableOpacity} from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useScale } from '../hooks/useScale'
 import { bgAssets } from '../components/BgAssets'
 import { store } from '../store/store'
@@ -18,7 +18,7 @@ const GameScreen = ({ route }) => {
     const { games, error, loading, markGameAsPassed } = useGames(route?.params?.id);
 
     const { s, vs } = useScale();
-    const [chosenGame, setChosenGame] = useState(1);
+    const [chosenGame, setChosenGame] = useState<number>(1);
     const [fullImage, setFullImage] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string>(null);
 
@@ -31,10 +31,17 @@ const GameScreen = ({ route }) => {
         }, [])
     );
 
+    useEffect(() => {
+        if (games.length > 0) {
+            const firstUnpassedIndex = games.findIndex(game => game.passed !== 1);
+            setChosenGame(firstUnpassedIndex !== -1 ? firstUnpassedIndex + 1 : -1);
+        }
+    }, [games]);
+
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <View style={{flex: 1, justifyContent: 'space-between', paddingVertical: Platform.isPad ? vs(20) : s(7), paddingLeft: Platform.isPad ? s(10) : s(20), paddingRight: s(10), flexDirection: 'row'}}>
-                <GameView markGameAsPassed={markGameAsPassed} chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
+                <GameView games={games} markGameAsPassed={markGameAsPassed} chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
                 <GameNumberList games={games} setChosenGame={setChosenGame} chosenGame={chosenGame}/>
                 
                 <Modal animationOutTiming={10} animationOut={'fadeOut'} isVisible={fullImage} style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: s(80), top: vs(45)}}>

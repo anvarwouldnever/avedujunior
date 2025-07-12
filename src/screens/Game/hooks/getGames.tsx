@@ -25,9 +25,21 @@ export const useGames = (id) => {
     }, []);
 
     const markGameAsPassed = useCallback((gameId: number) => {
-        setGames(prev =>
-            prev.map(game => game?.id === gameId ? { ...game, passed: 1 } : game)
-        );
+        let nextUnpassedIndex = -1;
+    
+        setGames(prev => {
+            const updated = prev.map((game, i) => {
+                if (game?.id === gameId) {
+                    return { ...game, passed: 1 };
+                }
+                return game;
+            });
+    
+            nextUnpassedIndex = updated.findIndex(g => g?.passed !== 1);
+            return updated;
+        });
+    
+        return nextUnpassedIndex;
     }, []);
 
     return { games, loading, error, markGameAsPassed };

@@ -1,0 +1,24 @@
+import { View, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { Ionicons } from '@expo/vector-icons'
+import { useScale } from '../../../hooks/useScale'
+import { useNavigation } from '@react-navigation/native'
+
+const AllPassedView = () => {
+
+    const { s } = useScale();
+
+    const navigation = useNavigation()
+
+    return (
+        <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center', gap: s(10) }}>
+            <Ionicons name="checkmark-circle" size={s(30)} color="green" />
+            <Text style={{ fontSize: s(10), fontWeight: '600', color: '#000000' }}>Задание выполнено</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ backgroundColor: '#6A5AE0', borderRadius: 20, width: '40%', height: s(20), justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: s(7), fontWeight: '600' }}>Еще больше игр</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+export default AllPassedView
