@@ -1,10 +1,11 @@
 import { View, SafeAreaView, Text, Platform, TouchableOpacity, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useScale } from '../hooks/useScale'
 import Inputs from './Register/Inputs'
 import { useNavigation } from '@react-navigation/native'
 import ProgressBar from './Register/ProgressBar'
 import Inputs2 from './Register/Inputs2'
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
 const RegisterScreen = () => {
 
@@ -24,6 +25,8 @@ const RegisterScreen = () => {
     const navigation = useNavigation();
 
     const [progress, setProgress] = useState<number>(1);
+
+    const translateY = useSharedValue(0)
 
     const RegisterButton = () => {
 
@@ -82,14 +85,24 @@ const RegisterScreen = () => {
         )
     }
 
+    const animationUp = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateY: translateY.value }],
+        }
+    })
+
+    useEffect(() => {
+        translateY.value = 0
+    }, [progress])
+
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#EFEEFC' }}>
-            <View style={{ flex: 1, paddingHorizontal: vs(20), paddingVertical: vs(60), gap: vs(25), backgroundColor: '#EFEEFC', height: 'auto' }}>
+            <Animated.View style={[animationUp, { flex: 1, paddingHorizontal: vs(20), paddingVertical: vs(30), gap: vs(25), backgroundColor: '#EFEEFC', height: 'auto' }]}>
                 
                 <ProgressBar progress={progress} />
                 
                 { progress === 1 ? 
-                    <Inputs setBirthdate={setBirthdate} setName={setName} setSurname={setSurname} setErrorMessage={setErrorMessage} errorMessage={errorMessage} setFathersName={setFathersName} setHomeAddress={setHomeAddress} />
+                    <Inputs translateY={translateY} setBirthdate={setBirthdate} setName={setName} setSurname={setSurname} setErrorMessage={setErrorMessage} errorMessage={errorMessage} setFathersName={setFathersName} setHomeAddress={setHomeAddress} />
                 : progress === 2 ?
                     <Inputs2 setErrorMessage={setErrorMessage} setPassword={setPassword} setPassword2={setPassword2} errorMessage={errorMessage} />
                 : progress === 3 ?
@@ -101,7 +114,7 @@ const RegisterScreen = () => {
 
                 <LoginText />
 
-            </View>
+            </Animated.View>
         </SafeAreaView>
     )
 }

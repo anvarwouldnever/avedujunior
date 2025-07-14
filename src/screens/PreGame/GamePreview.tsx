@@ -6,14 +6,12 @@ import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { getPreGame } from './hooks/getPreGame'
 
-const GamePreview = ({ name, topic, id }) => {
+const GamePreview = ({ name, topic, id, tasksId }) => {
 
     const { s, vs } = useScale()
     const navigation = useNavigation()
 
     const { preGame, error, loading } = getPreGame(id)
-
-    // console.log(id)
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(30), borderRadius: 20, alignItems: 'center', paddingHorizontal: vs(10), paddingVertical: vs(15), backgroundColor: 'white', justifyContent: 'space-between'}}>
@@ -28,7 +26,7 @@ const GamePreview = ({ name, topic, id }) => {
                 </View>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Game', {name, topic, id})} style={{ width: '100%', height: vs(60), backgroundColor: '#30AB02', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Game', {name, topic, id, tasksId})} style={{ width: '100%', height: vs(60), backgroundColor: '#30AB02', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: 'white', fontSize: vs(20), fontWeight: '800' }}>Начать играть</Text>
             </TouchableOpacity>
         </View>

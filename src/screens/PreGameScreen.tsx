@@ -6,26 +6,23 @@ import { bgAssets } from '../components/BgAssets'
 import { store } from '../store/store'
 import MonthTopics from './PreGame/MonthTopics'
 import GamePreview from './PreGame/GamePreview'
-import { useFocusEffect } from '@react-navigation/native'
-import * as ScreenOrientation from 'expo-screen-orientation'
+import useLock from '../hooks/useLock'
 
 const PreGameScreen = ({ route }) => {
 
-    const { s, vs } = useScale()
+    const { vs } = useScale();
 
-    useFocusEffect(
-        useCallback(() => {
-            async function changeScreenOrientation() {
-                await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-            }
-            changeScreenOrientation();
-        }, [])
-    );
+    const id = route?.params?.id
+    const name = route?.params?.name
+    const topic = route?.params?.topic
+    const tasksId = route?.params?.tasksId
+
+    useLock();
 
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
-                <GamePreview id={route?.params?.id} name={route?.params?.name} topic={route?.params?.topic} />
+                <GamePreview tasksId={tasksId} id={id} name={name} topic={topic} />
 
                 <MonthTopics />
             </ScrollView>

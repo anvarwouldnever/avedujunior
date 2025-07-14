@@ -40,7 +40,7 @@ const LoginScreen = () => {
 
                 <LoginButton id={id} password={password} setErrorMessage={setErrorMessage} setThinking={setThinking} thinking={thinking} selectedRole={selectedRole}/>
 
-                <RegisterText />
+                {selectedRole != 'Организация' && <RegisterText />}
             </View>
         </SafeAreaView>
     )

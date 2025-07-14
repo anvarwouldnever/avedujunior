@@ -40,11 +40,10 @@ const MiniCalendar = () => {
       ? addMonths(currentMonth, 1)
       : subMonths(currentMonth, 1);
     setCurrentMonth(newMonth);
-    setSelectedDate(newMonth); // Показываем первое число нового месяца
+    setSelectedDate(newMonth);
   };
 
   const getWeekDays = () => {
-    // Сдвигаем дату к понедельнику
     const startOfWeekDate = subDays(selectedDate, getDay(selectedDate) - 1);
     return Array.from({ length: 5 }, (_, i) => addDays(startOfWeekDate, i));
   };
@@ -52,9 +51,8 @@ const MiniCalendar = () => {
   const weekDays = getWeekDays();
   const monthName = capitalize(format(currentMonth, 'LLLL', { locale: ru }));
 
-
   return (
-    <View style={[styles.card, {height: Platform.isPad? vs(220) : s(220), gap: Platform.isPad? vs(20) : s(20), marginBottom: Platform.isPad? vs(30) : s(30), padding: Platform.isPad? vs(16) : s(16),}]}>
+    <View style={[styles.card, {height: Platform.isPad? '100%' : s(220), width: Platform.isPad? '49%' : '100%', gap: Platform.isPad? vs(45) : s(20), marginBottom: Platform.isPad? vs(30) : s(30), padding: Platform.isPad? vs(16) : s(16)}]}>
 
       <View style={styles.headerRow}>
         <Text style={[styles.title, {fontSize: Platform.isPad? vs(16) : s(16),}]}>Календарь</Text>
@@ -63,7 +61,6 @@ const MiniCalendar = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Стрелки и месяц */}
       <View style={styles.monthRow}>
         <TouchableOpacity onPress={() => handleMonthChange('prev')}>
           <Feather name="chevron-left" size={vs(20)} />
@@ -76,18 +73,16 @@ const MiniCalendar = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Дни недели */}
       <View style={styles.weekRow}>
-        <View style={{width: s(20), height: vs(20)}}/>
+        <View style={{width: vs(20), height: vs(20)}}/>
         <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Пн</Text>
         <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Вт</Text>
         <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Ср</Text>
         <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Чт</Text>
         <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Пт</Text>
-        <View style={{width: s(20), height: vs(20)}}/>
+        <View style={{width: vs(20), height: vs(20)}}/>
       </View>
 
-      {/* Даты */}
       <View style={[styles.dateRow, {marginTop: Platform.isPad? vs(8) : s(8)}]}>
         <TouchableOpacity onPress={() => handleDayChange('prev')}>
           <Feather name="chevron-left" size={vs(20)} />
@@ -126,7 +121,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     elevation: 3,
-    width: '100%',
     borderWidth: 2,
     borderColor: '#e2cef2'
   },
@@ -153,6 +147,7 @@ const styles = StyleSheet.create({
   weekRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    
   },
   dayName: {
     flex: 1,

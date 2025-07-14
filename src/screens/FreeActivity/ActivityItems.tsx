@@ -8,9 +8,13 @@ const ActivityItems = ({ activities, activity }) => {
     const { s, vs } = useScale()
 
     const { width } = useWindowDimensions()
-    const amount = Math.floor(width / 371.65)
-    const moreThanOne = width >= 744
-    const itemWidth = moreThanOne? (width - vs(92)) / amount : width - vs(80)
+    const gap = vs(12);
+    const padding = Platform.isPad ? vs(40) : s(40);
+    const containerWidth = width - padding * 2;
+
+    const amount = Platform.isPad ? 3 : Math.floor((containerWidth + gap) / (371.65 + gap));
+    const totalGap = gap * (amount - 1);
+    const itemWidth = (containerWidth - totalGap) / amount;
 
     const openPdf = (url) => {
         if (url) {

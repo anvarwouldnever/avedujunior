@@ -17,10 +17,10 @@ const TodayMaterialsCard = () => {
           title: 'Dishes (2)',
           subject: 'Английский язык',
         },
-      ];
+    ];
       
     return (
-        <View style={[styles.card, {gap: Platform.isPad? vs(20) : s(20), padding: Platform.isPad? vs(20) : s(20),}]}>
+        <View style={[styles.card, {gap: Platform.isPad? vs(20) : s(20), width: Platform.isPad? '49%' : '100%', padding: Platform.isPad? vs(20) : s(20),}]}>
           <View style={{ marginBottom: Platform.isPad? vs(8) : s(8), }}>
             <Text style={[styles.title, {fontSize: Platform.isPad? vs(18) : s(18), lineHeight: Platform.isPad ? vs(30) : s(30), marginBottom: Platform.isPad? vs(12) : s(12),}]}>Материалы для образовательной деятельности на сегодня</Text>
             <TouchableOpacity>
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         elevation: 3,
         height: 'auto',
-        width: '100%',
         borderWidth: 2,
         borderColor: '#e2cef2'
     },

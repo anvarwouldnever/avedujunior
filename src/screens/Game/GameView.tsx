@@ -15,14 +15,14 @@ import { AnswerWrong } from '../../api/methods/answer/wrong'
 import AnimatedPopUp from './animations/AnimatedPopUp'
 import AllPassedView from './GameView/AllPassedView'
 
-const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame, markGameAsPassed, games }) => {
+const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame, markGameAsPassed, games, tasksId, name}) => {
 
     const { s, vs } = useScale()
     const { play, stop, isPlaying } = useAudio();
 
     const navigation = useNavigation();
 
-    const [popUp, setPopUp] = useState<boolean>(false)
+    const [popUp, setPopUp] = useState<boolean>(false);
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
     const [chosenOptions, setChosenOptions] = useState<Array<string>>([]);
 
@@ -121,7 +121,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     };
     
     return (
-        <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, gap: s(5), justifyContent: 'center'}}>   
+        <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, gap: s(5), justifyContent: 'space-between'}}>   
             {chosenGame !== -1 && 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', height: s(20)}}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', width: '75%', justifyContent: 'space-between', gap: s(5), height: s(23) }}>
@@ -148,7 +148,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
             
             {
                 chosenGame === -1 ? 
-                    <AllPassedView />
+                    <AllPassedView tasksId={tasksId} name={name} />
                 : 
                     game?.type === 3 ? 
                         <>

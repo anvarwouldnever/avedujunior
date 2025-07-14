@@ -3,145 +3,55 @@ import React from 'react'
 import { useScale } from '../../hooks/useScale'
 import { useNavigation } from '@react-navigation/native'
 import ProgressBorder from '../../components/ProgressBorder'
-import { getTasks } from './hooks/getTasks'
-import { observer } from 'mobx-react-lite'
+import { useTasks } from './hooks/getTasks'
 import { colors } from '../../components/Colors'
 
+
 const TasksList = ({ route }) => {
+    
+    const id = route?.params?.id
+
+    const { tasks, error, loading } = useTasks(id);
 
     const { s, vs } = useScale()
-
-    // const months = [
-    //     {
-    //       name: 'Сентябрь',
-    //       topics: [
-    //         { color: '#6A5AE0', baseColor: '#EFEEFC', percent: 60, name: 'Наша дружная семья' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 40, name: 'Моя улица' },
-    //         { color: '#59E956', baseColor: '#F0FCEE', percent: 20, name: 'Печатное рисование красками из природного материала' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Октябрь',
-    //       topics: [
-    //         { color: '#B55AE0', baseColor: '#F8EEFC', percent: 40, name: 'Красивая скатерть' },
-    //         { color: '#E05A5A', baseColor: '#FCEEEE', percent: 85, name: 'Как мы играем в саду с друзьями' },
-    //         { color: '#E0C35A', baseColor: '#FCFBEE', percent: 0, name: 'Архитектурные памятники Узбекистана' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Ноябрь',
-    //       topics: [
-    //         { color: '#6A5AE0', baseColor: '#EFEEFC', percent: 60, name: 'Архитектурные памятники Узбекистана' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 25, name: 'Красивая скатерть' },
-    //         { color: '#E05A9A', baseColor: '#FCEEF5', percent: 0, name: 'Моя улица' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Декабрь',
-    //       topics: [
-    //         { color: '#B55AE0', baseColor: '#F8EEFC', percent: 40, name: 'Печатное рисование красками из природного материала' },
-    //         { color: '#59E956', baseColor: '#F0FCEE', percent: 20, name: 'Как мы играем в саду с друзьями' },
-    //         { color: '#E05A5A', baseColor: '#FCEEEE', percent: 85, name: 'Наша дружная семья' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Январь',
-    //       topics: [
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 10, name: 'Моя улица' },
-    //         { color: '#E0C35A', baseColor: '#FCFBEE', percent: 0, name: 'Как мы играем в саду с друзьями' },
-    //         { color: '#6A5AE0', baseColor: '#EFEEFC', percent: 60, name: 'Наша дружная семья' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Февраль',
-    //       topics: [
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 60, name: 'Красивая скатерть' },
-    //         { color: '#E05A9A', baseColor: '#FCEEF5', percent: 0, name: 'Печатное рисование красками из природного материала' },
-    //         { color: '#B55AE0', baseColor: '#F8EEFC', percent: 40, name: 'Архитектурные памятники Узбекистана' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Март',
-    //       topics: [
-    //         { color: '#E05A5A', baseColor: '#FCEEEE', percent: 85, name: 'Наша дружная семья' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 45, name: 'Печатное рисование красками из природного материала' },
-    //         { color: '#59E956', baseColor: '#F0FCEE', percent: 20, name: 'Моя улица' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Апрель',
-    //       topics: [
-    //         { color: '#6A5AE0', baseColor: '#EFEEFC', percent: 60, name: 'Красивая скатерть' },
-    //         { color: '#E0C35A', baseColor: '#FCFBEE', percent: 0, name: 'Архитектурные памятники Узбекистана' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 25, name: 'Как мы играем в саду с друзьями' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Май',
-    //       topics: [
-    //         { color: '#B55AE0', baseColor: '#F8EEFC', percent: 40, name: 'Моя улица' },
-    //         { color: '#59E956', baseColor: '#F0FCEE', percent: 20, name: 'Печатное рисование красками из природного материала' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 60, name: 'Наша дружная семья' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Июнь',
-    //       topics: [
-    //         { color: '#E05A5A', baseColor: '#FCEEEE', percent: 85, name: 'Красивая скатерть' },
-    //         { color: '#E05A9A', baseColor: '#FCEEF5', percent: 0, name: 'Наша дружная семья' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 45, name: 'Как мы играем в саду с друзьями' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Июль',
-    //       topics: [
-    //         { color: '#6A5AE0', baseColor: '#EFEEFC', percent: 60, name: 'Архитектурные памятники Узбекистана' },
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 10, name: 'Печатное рисование красками из природного материала' },
-    //         { color: '#E0C35A', baseColor: '#FCFBEE', percent: 0, name: 'Моя улица' }
-    //       ]
-    //     },
-    //     {
-    //       name: 'Август',
-    //       topics: [
-    //         { color: '#5AE0C0', baseColor: '#EEFBFC', percent: 25, name: 'Наша дружная семья' },
-    //         { color: '#B55AE0', baseColor: '#F8EEFC', percent: 40, name: 'Моя улица' },
-    //         { color: '#59E956', baseColor: '#F0FCEE', percent: 20, name: 'Как мы играем в саду с друзьями' }
-    //       ]
-    //     }
-    // ];
 
     const navigation = useNavigation();
 
     const { width } = useWindowDimensions();
-    const padding = vs(50);
-    const columns = width - padding >= 738 ? 2 : 1;
-    const subjectWidth = columns === 2 ? (width - padding) / 2 : width - vs(40);
+    const padding = vs(40);
 
-    const { tasks, error, loading } = getTasks(route?.params?.id);
+    const columns = Platform.OS === 'ios' && Platform.isPad ? 3 : width - padding >= 738 ? 2 : 1;
+
+    const subjectWidth =
+    Platform.OS === 'ios' && Platform.isPad
+        ? (width - padding - vs(20) * 2) / 3 
+        : columns === 2
+        ? (width - padding) / 2
+        : width - vs(40);
 
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15), marginBottom: 100}}>
             {tasks?.monthes?.map((month, index) => {
                 return (
-                    <View style={{width: '100%', gap: vs(20)}} key={index}>
+                    <View style={{width: '100%', gap: vs(10)}} key={index}>
                         <Text style={{ color: 'black', fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '700'}}>{month?.name}</Text>
-                        <View style={{width: '100%', gap: vs(10), flexWrap: 'wrap', flexDirection: 'row'}}>
-                            {month?.tests?.map((topic, index) => {
+                        <View style={{width: '100%', gap: vs(20), flexWrap: 'wrap', flexDirection: 'row'}}>
+                            {month?.tests?.map((topic: any, index: number) => {
                                 const color = colors[index % colors?.length];
                                 return (
-                                    <View style={{width: subjectWidth, height: Platform.isPad? vs(225) : s(225), borderWidth: 2, borderColor: color.primary, backgroundColor: 'white', borderRadius: 20, paddingVertical: vs(15), paddingHorizontal: Platform.isPad? vs(20) : s(20), justifyContent: 'space-between'}} key={index}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id, tasksId: id })} style={{width: subjectWidth, height: vs(240), borderWidth: 2, borderColor: color.primary, backgroundColor: 'white', borderRadius: 20, paddingVertical: vs(15), paddingHorizontal: vs(20), justifyContent: 'space-between'}} key={index}>
                                         <View style={{ backgroundColor: color.primary, width: '50%', alignItems: 'center', borderRadius: 15 }}>
                                             <Text adjustsFontSizeToFit numberOfLines={1} ellipsizeMode='tail' style={{ marginVertical: vs(8), color: color.secondary, fontWeight: '600', margin: vs(5)}}>{route?.params?.name}</Text>
                                         </View>
 
-                                        <View style={{width: '100%', height: Platform.isPad? vs(80) : s(80), flexDirection: 'row', alignItems: 'center', gap: s(15)}}>
+                                        <View style={{width: '100%', height: Platform.isPad? vs(80) : s(80), flexDirection: 'row', alignItems: 'center', gap: vs(15)}}>
                                             <ProgressBorder size={columns === 2? (Platform.isPad? vs(70) : s(70)) : (Platform.isPad? vs(80) : s(80))} percent={Math.round(topic?.finished_percent)} baseColor={color.primary} color={color.secondary}/>
 
                                             <View style={{height: '100%', width: '60%', justifyContent: 'center', gap: vs(10)}}>
                                                 <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
-                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(8), paddingVertical: vs(6), width: '60%'}}>
-                                                    <Text style={{ color: 'white', fontWeight: '700'}}>Пройти  →</Text>
+                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id, tasksId: id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(6), paddingVertical: vs(8), width: '60%'}}>
+                                                    <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>Пройти →</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
@@ -161,7 +71,7 @@ const TasksList = ({ route }) => {
                                                 <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>пройдено</Text>
                                             </View>
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             })}
                         </View>
@@ -172,4 +82,4 @@ const TasksList = ({ route }) => {
     )
 }
 
-export default observer(TasksList);
+export default TasksList;

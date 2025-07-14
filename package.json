@@ -20,6 +20,7 @@
     "expo-av": "~15.1.7",
     "expo-dev-client": "~5.2.0",
     "expo-image": "~2.1.7",
+    "expo-linking": "~7.1.7",
     "expo-screen-orientation": "~8.1.6",
     "expo-secure-store": "~14.2.3",
     "expo-status-bar": "~2.2.3",
@@ -28,6 +29,7 @@
     "mobx-react-lite": "^4.1.0",
     "react": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-calendars": "^1.1313.0",
     "react-native-expo-image-cache": "^4.1.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-modal": "^14.0.0-rc.1",
@@ -38,7 +40,7 @@
     "react-native-size-matters": "^0.4.2",
     "react-native-svg": "15.11.2",
     "react-native-vector-icons": "^10.2.0",
-    "expo-linking": "~7.1.7"
+    "@react-native-community/datetimepicker": "8.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
