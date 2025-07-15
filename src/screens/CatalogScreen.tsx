@@ -78,7 +78,7 @@ const CatalogScreen = () => {
 
     return (
         <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
-            <ScrollView style={{flex: 1,  padding: Platform.isPad ? vs(20) : vs(20),}}>
+            <ScrollView style={{flex: 1,  padding: Platform.isPad ? vs(20) : vs(20)}}>
                 <Text style={{color: 'black', fontSize: Platform.isPad ? vs(22) : s(22), fontWeight: '700', marginVertical: vs(20)}}>{getMonthYear()}</Text>
                 <Subjects selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} materials={materials}/>
 

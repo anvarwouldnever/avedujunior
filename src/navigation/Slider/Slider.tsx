@@ -5,21 +5,16 @@ import {
   View,
   Text,
   Pressable,
+  Platform,
 } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
-  runOnJS,
+  withSpring
 } from 'react-native-reanimated';
-import {
-  GestureDetector,
-  GestureHandlerRootView,
-  Gesture,
-} from 'react-native-gesture-handler';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
+const SLIDER_WIDTH = Platform.isPad? SCREEN_WIDTH * 0.3 : SCREEN_WIDTH * 0.75;
 
 const Slider = ({
   children,
@@ -39,21 +34,6 @@ const Slider = ({
       });
   }, [isOpen]);
 
-  const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
-      if (event.translationX > 0) {
-        translateX.value = -SLIDER_WIDTH + event.translationX;
-      }
-    })
-    .onEnd((event) => {
-      if (event.translationX > SLIDER_WIDTH / 3) {
-        translateX.value = withSpring(-SLIDER_WIDTH);
-        runOnJS(onClose?.bind(null))();
-      } else {
-        translateX.value = withSpring(0);
-      }
-    });
-
   const sliderStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
@@ -61,7 +41,7 @@ const Slider = ({
   return (
     <View style={StyleSheet.absoluteFill}>
       {isOpen && (
-        <Pressable style={styles.backdrop} onPress={onClose} />
+        <Pressable style={styles.backdrop} onPress={() => onClose()} />
       )}
 
         <Animated.View style={[styles.slider, sliderStyle]}>

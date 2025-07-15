@@ -1,5 +1,5 @@
 import api from "../../api";
 
-export const GetTimetable = () => {
-    return api.get(`/timetable`);
+export const GetTimetable = (date: string) => {
+    return api.get(`/days/date2`, { params: { date } });
 };

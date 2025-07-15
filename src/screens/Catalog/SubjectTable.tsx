@@ -10,19 +10,19 @@ const SubjectTable = ({ selectedIndex, materials, expandedTopicId, setExpandedTo
         setExpandedTopicId(prev => (prev === id ? null : id))
     }
 
-    const { s, vs } = useScale()
+    const { s, vs } = useScale();
 
     return (
-        <View style={{ width: '100%', backgroundColor: 'white', height: 'auto', marginTop: vs(20), borderRadius: vs(20), paddingVertical: vs(40), paddingHorizontal: s(20), marginBottom: vs(70) }}>
+        <View style={{ width: '100%', backgroundColor: 'white', height: 'auto', marginTop: vs(20), borderRadius: vs(20), paddingVertical: vs(40), paddingHorizontal: vs(20), marginBottom: vs(70) }}>
             <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: Platform.isPad? vs(16) : s(16), fontWeight: '600'}}>{materials[selectedIndex]?.title}</Text>
             <View style={{width: '100%', backgroundColor: '#EFEEFC', height: vs(2), borderRadius: 20, marginVertical: vs(20)}}/>
             <Text style={{color: '#65628B', marginBottom: vs(20), fontSize: Platform.isPad? vs(14) : s(14)}}>№ Тема</Text>
             
-            <View style={{ height: 'auto', width: '100%', gap: Platform.isPad? vs(12) : s(12) }}>
+            <View style={{ height: 'auto', width: '100%', gap: vs(12) }}>
                 {materials[selectedIndex]?.topics.map((topic, index) => {
-                    const isExpanded = expandedTopicId === topic.id
+                    const isExpanded = expandedTopicId === topic?.id
                     return (
-                        <Animated.View layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: Platform.isPad? vs(80) : s(80), height: 'auto', borderRadius: s(20), borderWidth: 2, borderColor: '#EFEEFC', paddingHorizontal: s(15), paddingVertical: Platform.isPad? vs(10) : s(10), flexDirection: 'column' }}>
+                        <Animated.View layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: Platform.isPad? vs(80) : s(80), height: 'auto', borderRadius: vs(20), borderWidth: 2, borderColor: '#EFEEFC', padding: vs(15), flexDirection: 'column' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: Platform.isPad? vs(15) : s(15)}}>
                                 <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{topic?.id}</Text>
                                 <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{topic?.name}</Text>
@@ -31,8 +31,8 @@ const SubjectTable = ({ selectedIndex, materials, expandedTopicId, setExpandedTo
                                 <View style={{gap: Platform.isPad? vs(8) : s(8), flexDirection: 'row'}}>
                                     {topic?.tags.slice(0, 2).map((tag, index) => {
                                         return (
-                                            <View style={{ width: 'auto', height: 'auto', paddingHorizontal: s(15), paddingVertical: s(5), borderRadius: 7, backgroundColor: tag.backgroundColor }} key={index}>
-                                                <Text style={{fontSize: Platform.isPad? vs(12) : s(12)}}>{tag?.name}</Text>
+                                            <View style={{ width: 'auto', height: 'auto', paddingHorizontal: vs(15), paddingVertical: vs(5), borderRadius: 7, backgroundColor: tag.backgroundColor }} key={index}>
+                                                <Text style={{fontSize: vs(12)}}>{tag?.name}</Text>
                                             </View>
                                         )
                                     })}

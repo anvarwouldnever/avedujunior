@@ -39,7 +39,7 @@ const ActivityItems = ({ activities, activity }) => {
             <View style={{flexWrap: 'wrap', height: 'auto', width: '100%', flexDirection: 'row', gap: vs(12)}}>
                 {activities?.map((item, index) => {
                     return (
-                        <View key={index} style={{borderWidth: 2, borderColor: '#EFEEFC', borderRadius: 30, width: itemWidth, height: Platform.isPad? vs(190) : s(190), padding: s(10), alignItems: 'center', justifyContent: 'space-between'}}>
+                        <View key={index} style={{borderWidth: 2, borderColor: '#EFEEFC', borderRadius: 30, width: itemWidth, height: Platform.isPad? vs(190) : s(190), padding: vs(15), alignItems: 'center', justifyContent: 'space-between'}}>
                             <Image style={{width: '70%', height: '70%', resizeMode: 'contain'}} source={{ uri: item?.image?.url }}/>
                             <View style={{width: '100%', height: Platform.isPad? vs(50) : s(50), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Text numberOfLines={5} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(12) : s(12), maxWidth: '60%'}}>{item.name}</Text>

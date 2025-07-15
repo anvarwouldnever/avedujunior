@@ -11,41 +11,57 @@ const Calendar = () => {
     const year = today.getFullYear();
     const month = today.getMonth();
 
-    const { timetable, error, loading } = getTimetable();
+    const { timetable, hasFifthWeek, error, loading } = getTimetable();
 
     const subjectsByDate = useMemo(() => {
         const map: Record<string, any[]> = {};
-
-        timetable.forEach(item => {
-            map[item?.date] = item?.subjects;
+    
+        timetable?.forEach(item => {
+            const dateKey = new Date(item.from).toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
+    
+            if (!map[dateKey]) {
+                map[dateKey] = [];
+            }
+    
+            map[dateKey].push({
+                name: item?.subject,
+                color: item?.color,
+                image: item?.subject_image,
+            });
         });
-
+    
         return map;
     }, [timetable]);
 
     const getWorkingDaysRange = () => {
         const firstDayOfMonth = new Date(year, month, 1);
         const lastDayOfMonth = new Date(year, month + 1, 0);
-    
+      
+        // Найти понедельник, с которого начинается первая неделя (включая дни прошлого месяца)
         const findStartMonday = (date: Date) => {
-            const day = date.getDay();
-            const diff = day === 0 ? 6 : day - 1;
-            const monday = new Date(date);
-            monday.setDate(date.getDate() - diff);
-            return monday;
+          const day = date.getDay();
+          const diff = day === 0 ? 6 : day - 1;
+          const monday = new Date(date);
+          monday.setDate(date.getDate() - diff);
+          return monday;
         };
-
+      
+        // Найти пятницу, которой заканчивается последняя неделя (даже если она в следующем месяце)
         const findEndFriday = (date: Date) => {
-            const day = date.getDay();
-            const diff = day <= 5 ? 5 - day : 5 + (7 - day);
-            const friday = new Date(date);
-            friday.setDate(date.getDate() + diff);
-            return friday;
+          const day = date.getDay();
+          const diff = day <= 5 ? 5 - day : 5 + (7 - day);
+          const friday = new Date(date);
+          friday.setDate(date.getDate() + diff);
+          return friday;
         };
-    
+      
         const startMonday = findStartMonday(firstDayOfMonth);
         const endFriday = findEndFriday(lastDayOfMonth);
-    
+      
         return { startMonday, endFriday };
     };
 
@@ -80,6 +96,45 @@ const Calendar = () => {
         });
     };
 
+    const filledSubjectsByDate = useMemo(() => {
+        const map = { ...subjectsByDate };
+    
+        if (!hasFifthWeek) return map;
+    
+        const lastRow = rows[rows.length - 1];
+    
+        const dayOfWeekSubjects: Record<number, Map<string, any>> = {};
+    
+        workingDays.forEach(date => {
+            const day = date.getDay();
+            const key = formatDate(date);
+            const subjects = subjectsByDate[key];
+    
+            if (subjects?.length) {
+                if (!dayOfWeekSubjects[day]) dayOfWeekSubjects[day] = new Map();
+    
+                subjects.forEach(subject => {
+                    if (!dayOfWeekSubjects[day].has(subject.name)) {
+                        dayOfWeekSubjects[day].set(subject.name, subject);
+                    }
+                });
+            }
+        });
+    
+        lastRow.forEach(date => {
+            const day = date.getDay();
+            const key = formatDate(date);
+    
+            const subjectMap = dayOfWeekSubjects[day];
+            if (subjectMap) {
+                const subjects = Array.from(subjectMap.values());
+                map[key] = subjects;
+            }
+        });
+    
+        return map;
+    }, [subjectsByDate, rows, workingDays, hasFifthWeek]);
+
     return (
         <ScrollView style={{ height: 'auto' }} horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ height: 'auto' }}>
@@ -88,7 +143,7 @@ const Calendar = () => {
                     {row.map((date, index) => {
 
                         const formattedDate = formatDate(date);
-                        const subjects = subjectsByDate[formattedDate] || [];
+                        const subjects = filledSubjectsByDate[formattedDate];
                         
                         return (
                             <View
@@ -107,13 +162,13 @@ const Calendar = () => {
                                 <Text
                                     style={{
                                         fontSize: Platform.isPad? vs(14) : s(14),
-                                        color: date.getMonth() === month ? 'black' : '#aaa' // Серый цвет, если не текущий месяц
+                                        color: date.getMonth() === month ? 'black' : '#aaa'
                                     }}
                                 >
                                     {date.getDate()}
                                 </Text>
                                 <View style={{width: '100%', height: '90%', padding: vs(10), gap: Platform.isPad? vs(10) : s(10)}}>
-                                    {subjects.map((subject, index) => {
+                                    {subjects?.map((subject, index) => {
                                         const color = colors[index % colors?.length];
                                         return (
                                             <View key={index} style={{backgroundColor: color.primary, width: '100%', height: Platform.isPad? vs(20) : s(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: Platform.isPad? vs(8) : s(8)}}>

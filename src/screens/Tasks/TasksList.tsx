@@ -22,9 +22,8 @@ const TasksList = ({ route }) => {
 
     const columns = Platform.OS === 'ios' && Platform.isPad ? 3 : width - padding >= 738 ? 2 : 1;
 
-    const subjectWidth =
-    Platform.OS === 'ios' && Platform.isPad
-        ? (width - padding - vs(20) * 2) / 3 
+    const subjectWidth = Platform.OS === 'ios' && Platform.isPad
+        ? (width - padding - vs(20) * 2) / 3
         : columns === 2
         ? (width - padding) / 2
         : width - vs(40);
