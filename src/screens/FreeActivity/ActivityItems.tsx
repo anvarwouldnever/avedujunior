@@ -2,6 +2,8 @@ import { View, Text, Platform, TouchableOpacity, Image, useWindowDimensions } fr
 import React from 'react'
 import { useScale } from '../../hooks/useScale'
 import * as Linking from 'expo-linking';
+import translations from '../../../translations';
+import { store } from '../../store/store';
 
 const ActivityItems = ({ activities, activity }) => {
 
@@ -26,9 +28,9 @@ const ActivityItems = ({ activities, activity }) => {
 
     const getActivityName = (id: number | null) => {
         switch (id) {
-            case 1: return 'Раскраски';
-            case 2: return '3D Модели';
-            case 3: return 'Режим дня';
+            case 1: return translations[store.language].раскраски;
+            case 2: return `3D ${translations[store.language].модели}`;
+            case 3: return translations[store.language].режимдня;
             default: return 'Не выбрано';
         }
     };
@@ -44,7 +46,7 @@ const ActivityItems = ({ activities, activity }) => {
                             <View style={{width: '100%', height: Platform.isPad? vs(50) : s(50), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <Text numberOfLines={5} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(12) : s(12), maxWidth: '60%'}}>{item.name}</Text>
                                 <TouchableOpacity onPress={() => openPdf(item?.file)} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFEEFC', borderRadius: 12}}>
-                                    <Text style={{color: '#6A5AE0', fontWeight: '700', margin: Platform.isPad? vs(10) : s(15), fontSize: Platform.isPad? vs(12) : s(12)}}>Скачать</Text>
+                                    <Text style={{color: '#6A5AE0', fontWeight: '700', margin: Platform.isPad? vs(10) : s(15), fontSize: Platform.isPad? vs(12) : s(12)}}>{translations[store.language].скачать}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

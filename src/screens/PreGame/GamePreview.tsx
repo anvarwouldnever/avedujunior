@@ -5,6 +5,8 @@ import { useScale } from '../../hooks/useScale'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { getPreGame } from './hooks/getPreGame'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 const GamePreview = ({ name, topic, id, tasksId }) => {
 
@@ -19,15 +21,15 @@ const GamePreview = ({ name, topic, id, tasksId }) => {
 
             <View style={{ height: 'auto', width: '100%', gap: Platform.isPad? vs(8) : s(8) }}>
                 <Text style={{ color: 'grey', fontWeight: 'bold' }}>{name}</Text>
-                <Text style={{ color: 'black', fontWeight: '600', fontSize: vs(18) }}>Тема: {topic}</Text>
+                <Text style={{ color: 'black', fontWeight: '600', fontSize: vs(18) }}>{translations[store.language].тема}: {topic}</Text>
                 <View style={{ height: vs(30), flexDirection: 'row', alignItems: 'center', gap: s(5) }}>
                     <Ionicons name='help-circle' color={'purple'} size={vs(30)} />
-                    <Text style={{ color: 'black', fontWeight: '600', fontSize: vs(14) }}>Количество заданий: {preGame?.tests_count}</Text>
+                    <Text style={{ color: 'black', fontWeight: '600', fontSize: vs(14) }}>{translations[store.language].количествозаданий}: {preGame?.tests_count}</Text>
                 </View>
             </View>
 
             <TouchableOpacity onPress={() => navigation.navigate('Game', {name, topic, id, tasksId})} style={{ width: '100%', height: vs(60), backgroundColor: '#30AB02', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ color: 'white', fontSize: vs(20), fontWeight: '800' }}>Начать играть</Text>
+                <Text style={{ color: 'white', fontSize: vs(20), fontWeight: '800' }}>{translations[store.language].начатьиграть}</Text>
             </TouchableOpacity>
         </View>
     )

@@ -2,9 +2,10 @@ import { View, Text, TextInput, Platform, Modal, TouchableOpacity } from 'react-
 import React, { useState } from 'react'
 import { useScale } from '../../hooks/useScale'
 import { Ionicons } from '@expo/vector-icons'
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { withTiming } from 'react-native-reanimated';
+import translations from '../../../translations';
+import { store } from '../../store/store';
 
 const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMessage, setHomeAddress, errorMessage, translateY }) => {
 
@@ -42,10 +43,10 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15), justifyContent: 'center'}}>
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>Фамилия</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.фамилия}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: Platform.isPad? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: Platform.isPad? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={`Фамилия`}
+                    placeholder={translations[store?.language]?.фамилия}
                     onChangeText={(text) => setSurname(text)}
                     autoCorrect={false}
                     onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -53,10 +54,10 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>Имя</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.имя}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: Platform.isPad? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: Platform.isPad? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={`Имя`}
+                    placeholder={translations[store?.language]?.имя}
                     onChangeText={(text) => setName(text)}
                     autoCorrect={false}
                     onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -64,10 +65,10 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>Отчество</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.отчество}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: Platform.isPad? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: Platform.isPad? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={`Отчество`}
+                    placeholder={translations[store?.language]?.отчество}
                     onChangeText={(text) => setFathersName(text)}
                     autoCorrect={false}
                     onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -75,7 +76,7 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>Дата рождения</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.датарождения}</Text>
                 <View style={{ backgroundColor: 'white', width: '100%', height: Platform.isPad? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20,  borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                     <TextInput
                         style={{ fontSize: Platform.isPad? vs(12) : s(12), width: '90%', height: '100%' }}
@@ -84,19 +85,19 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
                         editable={false}
                         pointerEvents="none"
                     />
-                    <Ionicons onPress={() => setCalendarVisible(prev => !prev)} name='calendar-clear-outline' size={s(17)} /> 
+                    <Ionicons onPress={() => setCalendarVisible(prev => !prev)} name='calendar-clear-outline' size={vs(17)} /> 
                 </View>
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>Домашний адрес</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.домашнийадрес}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: Platform.isPad? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: Platform.isPad? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={`Домашний адрес`}
+                    placeholder={translations[store?.language]?.домашнийадрес}
                     onChangeText={(text) => setHomeAddress(text)}
                     autoCorrect={false}
                     onFocus={() => {
-                        translateY.value = withTiming(s(-150), { duration: 300 })
+                        translateY.value = withTiming(vs(-150), { duration: 300 })
                     }}
                     onBlur={() => {
                         translateY.value = withTiming(0, { duration: 300 })
@@ -118,10 +119,10 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
                         />
                         <View style={{ flexDirection: 'row', marginTop: 10, gap: s(120)}}>
                             <TouchableOpacity onPress={cancelDate} style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#ccc', borderRadius: 10 }}>
-                                <Text style={{ color: '#333' }}>Отмена</Text>
+                                <Text style={{ color: '#333' }}>{translations[store?.language]?.отмена}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={confirmDate} style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#2097EF', borderRadius: 10 }}>
-                                <Text style={{ color: 'white' }}>Готово</Text>
+                                <Text style={{ color: 'white' }}>{translations[store?.language]?.готово}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

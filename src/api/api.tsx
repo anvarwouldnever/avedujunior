@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
+import { store } from "../store/store";
 
 const BASE_URL = 'https://api.yangidunyo.uz/api';
 
@@ -15,6 +16,9 @@ api.interceptors.request.use(
                 config.headers.Authorization = `Bearer ${token}`;
             }
         }
+
+        config.headers['X-Localization'] = store?.language || 'ru';
+        
         return config;
     },
     (error) => Promise.reject(error)

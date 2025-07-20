@@ -5,13 +5,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import { navigationStore } from '../NavigationStore';
 import { useScale } from '../../hooks/useScale';
+import translations from '../../../translations';
+import { store } from '../../store/store';
 
 const menuItems = [
-  { screen: 'Home', icon: 'home', label: 'Главная' },
-  { screen: 'Subjects', icon: 'document', label: 'Предметы' },
-  { screen: 'OurGroup', icon: 'people', label: 'Наша группа' },
-  { screen: 'Catalog', icon: 'folder', label: 'Каталог материалов для образовательной деятельности' },
-  { screen: 'FreeActivity', icon: 'pencil-outline', label: 'Свободная деятельность' },
+  { screen: 'Home', icon: 'home', label: translations[store.language].главная },
+  { screen: 'Subjects', icon: 'document', label: translations[store.language].предметы },
+  { screen: 'OurGroup', icon: 'people', label: translations[store.language].нашагруппа },
+  { screen: 'Catalog', icon: 'folder', label: translations[store.language].каталогматериалов },
+  { screen: 'FreeActivity', icon: 'pencil-outline', label: translations[store.language].свободнаядеятельность },
 ];
 
 const SliderContent = observer(({ onClose }: { onClose: () => void }) => {

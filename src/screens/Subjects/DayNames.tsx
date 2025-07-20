@@ -2,15 +2,17 @@ import { View, Text, Platform, ScrollView } from 'react-native'
 import React from 'react'
 import { vs, s } from 'react-native-size-matters';
 import { useScale } from '../../hooks/useScale';
+import translations from '../../../translations';
+import { store } from '../../store/store';
 
 const DayNames = () => {
 
-    const dayNames = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
+    const dayNames = [translations[store.language].понедельник, translations[store.language].вторник, translations[store.language].среда, translations[store.language].четверг, translations[store.language].пятница];
     const { s, vs } = useScale();
 
     return (
         <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ flexDirection: 'row' }}>
-            {dayNames.map((item, index) => (
+            {dayNames?.map((item, index) => (
                 <Text
                     key={index}
                     style={{

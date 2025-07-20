@@ -14,6 +14,8 @@ import { AnswerCorrect } from '../../api/methods/answer/correct'
 import { AnswerWrong } from '../../api/methods/answer/wrong'
 import AnimatedPopUp from './animations/AnimatedPopUp'
 import AllPassedView from './GameView/AllPassedView'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame, markGameAsPassed, games, tasksId, name}) => {
 
@@ -141,7 +143,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
 
                     <TouchableOpacity onPress={() => navigation.goBack()} style={{width: '15%', borderWidth: 2, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderColor: '#EFEEFC', borderRadius: 10, gap: vs(5)}}>
                         <Ionicons name='chevron-back' color={'#6A5ADE'} size={s(10)} />
-                        <Text style={{ fontWeight: '600', color: '#6A5ADE', fontSize: Platform.isPad? vs(20) : s(7)}}>Назад</Text>
+                        <Text style={{ fontWeight: '600', color: '#6A5ADE', fontSize: Platform.isPad? vs(20) : s(7)}}>{translations[store.language].назад}</Text>
                     </TouchableOpacity>
                 </View>
             }
@@ -180,7 +182,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                         <Ionicons name='chevron-back' color={'red'} size={20}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={passed === 1 ? () => {return} : () => checkAnswer(chosenOptions, answers, game?.type)} style={{width: '60%', backgroundColor: passed === 1? "lightgrey" : '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{color: passed === 1? "#0C092A" : '#2097EF', fontWeight: '600', fontSize: Platform.isPad? vs(20) : s(6)}}>Ответить</Text>
+                        <Text style={{color: passed === 1? "#0C092A" : '#2097EF', fontWeight: '600', fontSize: Platform.isPad? vs(20) : s(6)}}>{translations[store.language].ответить}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { if (chosenGame < games.length) {setChosenGame(chosenGame + 1)} else {setChosenGame(1)}}} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0EAF0021', borderRadius: 10 }}>
                         <Ionicons name='chevron-forward' color={'green'} size={20}/>

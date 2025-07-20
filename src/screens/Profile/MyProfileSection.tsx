@@ -6,16 +6,17 @@ import { bgAssets } from '../../components/BgAssets'
 import { store } from '../../store/store'
 import { getAvatars } from './hooks/getAvatars'
 import { getBackgrounds } from './hooks/getBackgrounds'
+import translations from '../../../translations'
 
-const MyProfileSection = () => {
+const MyProfileSection = ({ birth_date, first_name, last_name, middle_name }) => {
 
     const { s, vs } = useScale()
 
-    const [changePfp, setChangePfp] = useState<boolean>(false)
-    const [chosenPfp, setChosenPfp] = useState<object>(store.pfp)
+    const [changePfp, setChangePfp] = useState<boolean>(false);
+    const [chosenPfp, setChosenPfp] = useState<object>(store?.pfp);
 
-    const [changeBg, setChangeBg] = useState<boolean>(false)
-    const [chosenBg, setChosenBg] = useState<object>(store.backgroundImage)
+    const [changeBg, setChangeBg] = useState<boolean>(false);
+    const [chosenBg, setChosenBg] = useState<object>(store?.backgroundImage);
 
     const pfps = [
         {image: require('../../screens/Profile/staticAssets/pfp1.png'), id: 1},
@@ -31,17 +32,17 @@ const MyProfileSection = () => {
         {image: require('../../../assets/aveduBackground3.png'), id: 3},
     ];
 
-    const { avatars, avatarsError, avatarsLoading} = getAvatars();
+    const { avatars, avatarsError, avatarsLoading } = getAvatars();
     const { backgrounds, backgroundsError, backgroundsLoading } = getBackgrounds();
 
     return (
         <View style={{ gap: vs(35), marginBottom: 100 }}>
             <View style={{ height: 'auto', gap: vs(15) }}>
-                <Text style={{ fontSize: Platform.isPad? vs(14) : s(14), color: '#333333', fontWeight: '400' }}>Аватар</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(18) : s(14), color: '#333333', fontWeight: '400' }}>{translations[store.language].аватар}</Text>
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: vs(15)}}>
                     <Image
                         resizeMode="contain"
-                        style={{ width: s(60), height: Platform.isPad? vs(60) : s(60) }}
+                        style={{ width: s(60), height: Platform.isPad? s(60) : s(60) }}
                         source={
                             store.pfp?.image?.url
                               ? { uri: store.pfp.image.url }
@@ -52,8 +53,8 @@ const MyProfileSection = () => {
                             setChosenPfp(store.pfp)
                             setChangePfp(prev => !prev)
                         }
-                    } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: s(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>Обновить аватар</Text>
+                    } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: vs(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>{translations[store.language].обновитьаватар}</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -61,13 +62,13 @@ const MyProfileSection = () => {
                     changePfp
                 && 
                     <View style={{width: '70%', height: 'auto', gap: vs(5), borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', borderRadius: 10, padding: vs(15), justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={{alignSelf: 'center', fontWeight: '600', fontSize: vs(18)}}>Выбрать аватарку</Text>
+                        <Text style={{alignSelf: 'center', fontWeight: '600', fontSize: vs(18)}}>{translations[store.language].выбратьаватарку}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: vs(20), alignItems: 'center', padding: vs(20) }}>
                             {avatars.map((avatar, index) => {
                                 return (
                                     <TouchableOpacity onPress={() => setChosenPfp(avatar)} style={{}} key={index}>
                                         <Image resizeMode='contain' style={{width: s(50), height: Platform.isPad? s(50) : s(50)}} source={{ uri: avatar?.image?.url}}/>
-                                        {chosenPfp?.id === avatar.id && <Ionicons name='checkmark-circle-sharp' style={{position: 'absolute', bottom: 0, right: 0}} size={vs(20)} color={'green'} />}
+                                        {chosenPfp?.id === avatar.id && <Ionicons name='checkmark-circle-sharp' style={{position: 'absolute', bottom: 0, right: 0}} size={s(20)} color={'green'} />}
                                     </TouchableOpacity>
                                 )
                             })}
@@ -76,31 +77,31 @@ const MyProfileSection = () => {
                                 setChangePfp(prev => !prev)
                                 store.setPfp(chosenPfp)
                             } 
-                        } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: s(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>Обновить</Text>
+                        } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: vs(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>{translations[store.language].обновить}</Text>
                         </TouchableOpacity>
                     </View>
                 }
             </View>
             
             <View style={{ height: 'auto', gap: vs(15) }}>
-                <Text style={{ fontSize: vs(14), color: '#333333', fontWeight: '400' }}>Темы</Text>
+                <Text style={{ fontSize: Platform.isPad? vs(18) : vs(14), color: '#333333', fontWeight: '400' }}>{translations[store.language].темы}</Text>
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: s(15)}}>
-                    <Image style={{ width: s(60), height: Platform.isPad? vs(60) : s(60) }} resizeMode='contain' source={store?.backgroundImage?.image?.url? { uri: store.backgroundImage.image.url } : bgAssets[1]} />
+                    <Image style={{ width: s(60), height: Platform.isPad? s(60) : s(60) }} resizeMode='contain' source={store?.backgroundImage?.image?.url? { uri: store.backgroundImage.image.url } : bgAssets[1]} />
                     <TouchableOpacity onPress={() => {
                             setChosenBg(store.backgroundImage)
                             setChangeBg(prev => !prev)
                         }
-                    } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: s(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>Обновить тему</Text>
+                    } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: vs(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>{translations[store.language].обновитьтему}</Text>
                     </TouchableOpacity>
                 </View>
 
                 {
                     changeBg
                 && 
-                    <View style={{width: '70%', height: 'auto', gap: vs(5), borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', borderRadius: 10, padding: vs(15), justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={{alignSelf: 'center', fontWeight: '600', fontSize: vs(18)}}>Выбрать тему</Text>
+                    <View style={{width: '70%', height: 'auto', gap: s(5), borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', borderRadius: 10, padding: vs(15), justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={{alignSelf: 'center', fontWeight: '600', fontSize: vs(18)}}>{translations[store.language].выбратьтему}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: vs(20), alignItems: 'center', padding: vs(10) }}>
                             {backgrounds?.map((bg, index) => {
                                 return (
@@ -114,31 +115,31 @@ const MyProfileSection = () => {
                                 setChangeBg(prev => !prev)
                                 store.setBackgroundImage(chosenBg)
                             }
-                        } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: s(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>Обновить</Text>
+                        } style={{ backgroundColor: '#553EFB', borderRadius: 20, width: vs(165), height: Platform.isPad? vs(40) : s(40), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: vs(16), color: 'white', fontWeight: '600' }}>{translations[store.language].обновить}</Text>
                         </TouchableOpacity>
                     </View>
                 }
             </View>
 
             <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '600'}}>Фамилия</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>Vospitatel</Text>
+                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].фамилия}</Text>
+                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{last_name}</Text>
             </View>
 
             <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '600'}}>Имя</Text>
-                <Text style={{ color: '#333333', fontSize:Platform.isPad? vs(18) : s(18), }}>Igor RRPO</Text>
+                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].имя}</Text>
+                <Text style={{ color: '#333333', fontSize:Platform.isPad? vs(18) : s(18), }}>{first_name}</Text>
             </View>
 
             <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '600'}}>Отчество</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>asadaadad</Text>
+                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].отчество}</Text>
+                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{middle_name}</Text>
             </View>
 
             <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(18) : s(18), fontWeight: '600'}}>Дата рождения</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>2023-07-03</Text>
+                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].датарождения}</Text>
+                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{birth_date}</Text>
             </View>
         </View>
     )

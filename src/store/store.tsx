@@ -6,6 +6,7 @@ class Store {
   profileModal: boolean = false;
   pfp: object = null;
   backgroundImage: object = null;
+  language: string = 'ru'
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +20,10 @@ class Store {
 
   setModal(modal: boolean) {
     this.profileModal = modal;
+  }
+
+  setLanguage(language: string) {
+    this.language = language
   }
 
   setPfp(pfp: object) {

@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native'
 import ProgressBorder from '../../components/ProgressBorder'
 import { useTasks } from './hooks/getTasks'
 import { colors } from '../../components/Colors'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 
 const TasksList = ({ route }) => {
@@ -50,7 +52,7 @@ const TasksList = ({ route }) => {
                                                 <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
                                                 <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: route?.params?.name, topic: topic.name, id: topic?.id, tasksId: id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(6), paddingVertical: vs(8), width: '60%'}}>
-                                                    <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>Пройти →</Text>
+                                                    <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>{translations[store.language].пройти} →</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
@@ -59,7 +61,7 @@ const TasksList = ({ route }) => {
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
                                                 <Text style={{fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12)}}>{topic?.passed_tests_count} / {topic?.test_count}</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>тестов решено</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>{translations[store.language].тестоврешено}</Text>
                                             </View>
 
                                             <View style={{height: '100%', backgroundColor: '#EFEEFC', width: 1, borderRadius: 20}}/>
@@ -67,7 +69,7 @@ const TasksList = ({ route }) => {
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
                                                 <Text style={{ fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12) }}>{Math.round(topic?.finished_percent)}%</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>пройдено</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>{translations[store.language].пройдено}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

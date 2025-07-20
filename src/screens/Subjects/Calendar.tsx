@@ -11,7 +11,12 @@ const Calendar = () => {
     const year = today.getFullYear();
     const month = today.getMonth();
 
+    // const year = 2025; // или today.getFullYear()
+    // const month = 7; 
+
     const { timetable, hasFifthWeek, error, loading } = getTimetable();
+
+    // console.log(hasFifthWeek)
 
     const subjectsByDate = useMemo(() => {
         const map: Record<string, any[]> = {};
@@ -41,22 +46,47 @@ const Calendar = () => {
         const firstDayOfMonth = new Date(year, month, 1);
         const lastDayOfMonth = new Date(year, month + 1, 0);
       
-        // Найти понедельник, с которого начинается первая неделя (включая дни прошлого месяца)
-        const findStartMonday = (date: Date) => {
-          const day = date.getDay();
-          const diff = day === 0 ? 6 : day - 1;
-          const monday = new Date(date);
-          monday.setDate(date.getDate() - diff);
-          return monday;
+        const findStartMonday = (firstDayOfMonth: Date) => {
+            const day = firstDayOfMonth.getDay(); // 0 - вс, 1 - пн, ..., 6 - сб
+            const diff = day === 0 ? 6 : day - 1;
+        
+            const monday = new Date(firstDayOfMonth);
+            monday.setDate(firstDayOfMonth.getDate() - diff);
+        
+            const temp = new Date(monday);
+            for (let i = 0; i < 5; i++) {
+                if (temp.getMonth() === firstDayOfMonth.getMonth()) {
+                    return monday;
+                }
+                temp.setDate(temp.getDate() + 1);
+            }
+        
+            // иначе — возвращаем следующий понедельник
+            monday.setDate(monday.getDate() + 7);
+            return monday;
         };
       
-        // Найти пятницу, которой заканчивается последняя неделя (даже если она в следующем месяце)
-        const findEndFriday = (date: Date) => {
-          const day = date.getDay();
-          const diff = day <= 5 ? 5 - day : 5 + (7 - day);
-          const friday = new Date(date);
-          friday.setDate(date.getDate() + diff);
-          return friday;
+        const findEndFriday = (lastDayOfMonth: Date) => {
+            const day = lastDayOfMonth.getDay(); // 0 - вс, 1 - пн, ..., 6 - сб
+            const diff = day <= 5 ? 5 - day : 5 + (7 - day);
+        
+            const friday = new Date(lastDayOfMonth);
+            friday.setDate(lastDayOfMonth.getDate() + diff);
+        
+            // Проверим, содержит ли эта неделя хоть один день из текущего месяца
+            const temp = new Date(friday);
+            temp.setDate(friday.getDate() - 4); // отмотать к понедельнику той недели
+        
+            for (let i = 0; i < 5; i++) {
+                if (temp.getMonth() === lastDayOfMonth.getMonth()) {
+                    return friday; // есть хотя бы один день из текущего месяца — оставить
+                }
+                temp.setDate(temp.getDate() + 1);
+            }
+        
+            // иначе — сдвинем назад на неделю
+            friday.setDate(friday.getDate() - 7);
+            return friday;
         };
       
         const startMonday = findStartMonday(firstDayOfMonth);

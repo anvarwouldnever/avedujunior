@@ -2,6 +2,8 @@ import { View, Text, ScrollView, TouchableOpacity, Image, Platform } from 'react
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { useScale } from '../../hooks/useScale'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 const MonthTopics = () => {
 
@@ -11,7 +13,7 @@ const MonthTopics = () => {
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: vs(360), borderRadius: 20, padding: vs(15), backgroundColor: 'white', justifyContent: 'space-between', marginBottom: 100}}>
-            <Text style={{ color: 'black', fontSize: vs(16), fontWeight: '600' }}>Все темы на май</Text>
+            <Text style={{ color: 'black', fontSize: vs(16), fontWeight: '600' }}>{translations[store.language].всетемына} май</Text>
 
             <View style={{ width: '100%', height: vs(280) }}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: vs(15) }} style={{flex: 1}}>

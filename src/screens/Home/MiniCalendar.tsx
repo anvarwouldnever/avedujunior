@@ -14,9 +14,11 @@ import {
   addWeeks,
   subWeeks
 } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { ru, uz } from 'date-fns/locale';
 import { useScale } from '../../hooks/useScale';
 import { useNavigation } from '@react-navigation/native';
+import translations from '../../../translations';
+import { store } from '../../store/store';
 
 const MiniCalendar = () => {
   const { s, vs } = useScale()
@@ -49,15 +51,15 @@ const MiniCalendar = () => {
   };
 
   const weekDays = getWeekDays();
-  const monthName = capitalize(format(currentMonth, 'LLLL', { locale: ru }));
+  const monthName = capitalize(format(currentMonth, 'LLLL', { locale: store.language === 'ru' ? ru : uz }));
 
   return (
     <View style={[styles.card, {height: Platform.isPad? '100%' : s(220), width: Platform.isPad? '49%' : '100%', gap: Platform.isPad? vs(45) : s(20), marginBottom: Platform.isPad? vs(30) : s(30), padding: Platform.isPad? vs(16) : s(16)}]}>
 
       <View style={styles.headerRow}>
-        <Text style={[styles.title, {fontSize: Platform.isPad? vs(16) : s(16),}]}>Календарь</Text>
+        <Text style={[styles.title, {fontSize: Platform.isPad? vs(16) : s(16),}]}>{translations[store?.language]?.календарь}</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Subjects')}>
-          <Text style={[styles.viewAll, {fontSize: Platform.isPad? vs(14) : s(14),}]}>Посмотреть все</Text>
+          <Text style={[styles.viewAll, {fontSize: Platform.isPad? vs(14) : s(14),}]}>{translations[store?.language]?.посмотретьвсе}</Text>
         </TouchableOpacity>
       </View>
 
@@ -75,11 +77,11 @@ const MiniCalendar = () => {
 
       <View style={styles.weekRow}>
         <View style={{width: vs(20), height: vs(20)}}/>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Пн</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Вт</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Ср</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Чт</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>Пт</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].пн}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].вт}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].ср}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].чт}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].пт}</Text>
         <View style={{width: vs(20), height: vs(20)}}/>
       </View>
 

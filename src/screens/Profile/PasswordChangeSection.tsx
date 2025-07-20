@@ -2,20 +2,22 @@ import { View, Text, TextInput, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { useScale } from '../../hooks/useScale'
 import { Ionicons } from '@expo/vector-icons'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 const PasswordChangeSection = () => {
 
     const { s, vs } = useScale()
 
-    const [secureEntry1, setSecureEntry1] = useState<boolean>(false)
-    const [secureEntry2, setSecureEntry2] = useState<boolean>(false)
-    const [secureEntry3, setSecureEntry3] = useState<boolean>(false)
+    const [secureEntry1, setSecureEntry1] = useState<boolean>(false);
+    const [secureEntry2, setSecureEntry2] = useState<boolean>(false);
+    const [secureEntry3, setSecureEntry3] = useState<boolean>(false);
 
     return (
         <View style={{ gap: vs(35), marginBottom: 100 }}>
             <View style={{gap: vs(10)}}>
-                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '500'}}>Старый пароль</Text>
-                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%', paddingHorizontal: s(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14 + 4) : s(14), fontWeight: '500'}}>{translations[store.language].старыйпароль}</Text>
+                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%',  maxWidth: 500, paddingHorizontal: vs(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <TextInput 
                         style={{ width: '85%', height: '100%', fontSize: Platform.isPad? vs(16) : s(16) }}
                         secureTextEntry={secureEntry1}
@@ -25,8 +27,8 @@ const PasswordChangeSection = () => {
             </View>
 
             <View style={{gap: vs(10)}}>
-                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '500'}}>Новый пароль</Text>
-                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%', paddingHorizontal: s(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14 + 4) : s(14), fontWeight: '500'}}>{translations[store.language].новыйпароль}</Text>
+                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%',  maxWidth: 500, paddingHorizontal: vs(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <TextInput 
                         style={{ width: '85%', height: '100%', fontSize: Platform.isPad? vs(14) : s(16) }}
                         secureTextEntry={secureEntry2}
@@ -36,8 +38,8 @@ const PasswordChangeSection = () => {
             </View>
 
             <View style={{gap: vs(10)}}>
-                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '500'}}>Повторите новый пароль</Text>
-                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%', paddingHorizontal: s(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Text style={{color: '#333333', fontSize: Platform.isPad? vs(14 + 4) : s(14), fontWeight: '500'}}>{translations[store.language].повторитеновыйпароль}</Text>
+                <View style={{height: Platform.isPad? vs(50) : s(50), borderWidth: 2, borderColor: '#F2F0FF', borderRadius: 20, width: '100%', maxWidth: 500, paddingHorizontal: vs(15), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <TextInput 
                         style={{ width: '85%', height: '100%', fontSize: Platform.isPad? vs(14) : s(16) }}
                         secureTextEntry={secureEntry3}

@@ -1,6 +1,8 @@
 import { View, Text, Platform, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { useScale } from '../../hooks/useScale'
+import translations from '../../../translations'
+import { store } from '../../store/store'
 
 
 const Activities = ({ activity, setActivity }) => {
@@ -10,17 +12,17 @@ const Activities = ({ activity, setActivity }) => {
     const activities = [
         {   
             id: 1, 
-            name: 'Раскраски', 
+            name: translations[store.language].раскраски, 
             pic: require('../../screens/FreeActivity/staticAssets/static1.png'), 
         },
         {
             id: 2,
-            name: '3D Модели', 
+            name: `3D ${translations[store.language].модели}`, 
             pic: require('../../screens/FreeActivity/staticAssets/static2.png'), 
         },
         {
             id: 3,
-            name: 'Режим дня', 
+            name: translations[store.language].режимдня, 
             pic: require('../../screens/FreeActivity/staticAssets/static3.png'), 
         }
     ]

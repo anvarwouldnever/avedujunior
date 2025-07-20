@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image, useWindowDimensions, Platform } fr
 import React from 'react'
 import { useScale } from '../../hooks/useScale'
 
-const Subjects = ({ selectedIndex, setSelectedIndex, materials }) => {
+const Subjects = ({ selectedId, setSelectedId, subjects }) => {
 
     const { s, vs } = useScale()
 
@@ -20,14 +20,14 @@ const Subjects = ({ selectedIndex, setSelectedIndex, materials }) => {
     
     return (
         <View style={{width: '100%', height: 'auto', columnGap: gap, rowGap: vs(15), flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}}>
-            {materials?.map((material, index) => {
-                const isSelected = selectedIndex === index
+            {subjects?.map((subject, index) => {
+                const isSelected = selectedId === subject.id;
                 return (
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedIndex(index)} key={index} style={{width: subjectWidth, height: Platform.isPad? vs(80) : s(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: vs(15)}}>
-                        <Image source={material.icon} style={{width: Platform.isPad? vs(35) : s(35), height: Platform.isPad? vs(35) : s(35), borderRadius: 10}}/>
-                        <View style={{height: Platform.isPad? vs(35) : s(35), width: '80%', justifyContent: 'space-between'}}>
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14), color: isSelected ? 'white' : '#6A5AE0', width: '90%'}}>{material.title}</Text>
-                            <Text style={{fontWeight: '400', fontSize: Platform.isPad? vs(12) : s(12), color: isSelected ? 'white' : '#6A5AE0'}}>{material.topicsAmount}</Text>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedId(subject?.id)} key={index} style={{width: subjectWidth, height: Platform.isPad? vs(80) : s(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: vs(15)}}>
+                        <Image source={{ uri: subject?.image?.url }} style={{width: Platform.isPad? vs(35) : s(35), height: Platform.isPad? vs(35) : s(35), borderRadius: 10, backgroundColor: 'white'}}/>
+                        <View style={{height: Platform.isPad? vs(35) : s(35), width: '80%', justifyContent: 'center'}}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14), color: isSelected ? 'white' : '#6A5AE0', width: '90%'}}>{subject?.name}</Text>
+                            {/* <Text style={{fontWeight: '400', fontSize: Platform.isPad? vs(12) : s(12), color: isSelected ? 'white' : '#6A5AE0'}}>{subject?.topicsAmount}</Text> */}
                         </View>
                     </TouchableOpacity>
                 )
