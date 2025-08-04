@@ -72,7 +72,7 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
                                         <Animated.View entering={FadeIn.duration(500)} style={{ flexDirection: 'row', alignItems: 'center', width: Platform.isPad? '20%' : '70%', justifyContent: 'space-between' }} key={key}>
                                             <Text style={{ fontSize: vs(14), fontWeight: '600', color: '#333' }}>{name}:</Text>
                                             <TouchableOpacity onPress={() => openPdf(topic[key])} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFEEFC', borderRadius: 12, }}>
-                                                <Text style={{color: '#6A5AE0', fontWeight: '700', margin: vs(10), fontSize: vs(12)}}>Скачать</Text>
+                                                <Text style={{color: '#6A5AE0', fontWeight: '700', margin: vs(10), fontSize: vs(12)}}>{translations[store?.language].скачать}</Text>
                                             </TouchableOpacity>
                                         </Animated.View>
                                     ))}

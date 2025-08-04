@@ -171,7 +171,7 @@ const translations = {
         выбратьтему: 'Mavzuni tanlash',
         город: 'Shahar',
         регион: 'Hudud',
-        названиеи: 'Nomi va', // по контексту можно заменить при необходимости
+        названиеи: 'Nomi va',
         старыйпароль: 'Eski parol',
         новыйпароль: 'Yangi parol',
         повторитеновыйпароль: 'Yangi parolni takrorlang'

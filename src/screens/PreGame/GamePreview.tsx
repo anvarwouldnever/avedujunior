@@ -8,12 +8,10 @@ import { getPreGame } from './hooks/getPreGame'
 import translations from '../../../translations'
 import { store } from '../../store/store'
 
-const GamePreview = ({ name, topic, id, tasksId }) => {
+const GamePreview = ({ name, topic, id, tasksId, preGame }) => {
 
     const { s, vs } = useScale()
     const navigation = useNavigation()
-
-    const { preGame, error, loading } = getPreGame(id)
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(30), borderRadius: 20, alignItems: 'center', paddingHorizontal: vs(10), paddingVertical: vs(15), backgroundColor: 'white', justifyContent: 'space-between'}}>

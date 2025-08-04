@@ -8,7 +8,9 @@ import { store } from '../../store/store';
 const Header = () => {
 
     const today = new Date();
-    const monthName = today.toLocaleString('ru-RU', { month: 'long' });
+    const language = store?.language || 'ru'; // 'ru' или 'uz'
+
+    const monthName = today.toLocaleString(`${language}-${language.toUpperCase()}`, { month: 'long' });
     const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
     const { s, vs } = useScale()

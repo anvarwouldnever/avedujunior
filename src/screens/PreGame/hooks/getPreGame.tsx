@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { GetTask } from '../../../api/methods/subjects&tasks/tasks';
 
-
 export const getPreGame = (id) => {
 
     const [loading, setLoading] = useState(true);
@@ -12,7 +11,7 @@ export const getPreGame = (id) => {
         const fetchPreGame = async () => {
             try {
                 const response = await GetTask(id);
-                setPreGame(response?.data?.data)
+                setPreGame(response?.data)
             } catch (e) {
                 console.log(e)
                 setError(e?.response?.data?.message || 'Ошибка загрузки предметов');
@@ -22,7 +21,7 @@ export const getPreGame = (id) => {
         };
     
         fetchPreGame();
-    }, []);
+    }, [id]);
 
     return { preGame, loading, error };
 }

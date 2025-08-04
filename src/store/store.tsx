@@ -6,13 +6,14 @@ class Store {
   profileModal: boolean = false;
   pfp: object = null;
   backgroundImage: object = null;
-  language: string = 'ru'
+  language: string = 'ru';
+  access: number = 0;
 
   constructor() {
     makeAutoObservable(this);
-    this.loadPfpFromStorage()
-    this.loadBackgroundImageFromStorage()
-  }
+    this.loadPfpFromStorage();
+    this.loadBackgroundImageFromStorage();
+  };
 
   setToken(token: string) {
     this.token = token;
@@ -24,6 +25,10 @@ class Store {
 
   setLanguage(language: string) {
     this.language = language
+  }
+
+  setAccess(access: number) {
+    this.access = access
   }
 
   setPfp(pfp: object) {
@@ -69,6 +74,7 @@ class Store {
       console.error('Ошибка при загрузке backgroundImage из AsyncStorage:', error);
     }
   }
+  
 }
 
 export const store = new Store();

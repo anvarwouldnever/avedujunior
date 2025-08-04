@@ -21,7 +21,6 @@ const HomeScreen = () => {
             <ScrollView bounces={true} style={{ flex: 1, padding: Platform.isPad? vs(20) : s(20)}}>
                 <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: Platform.isPad? vs(20) : s(20), marginBottom: Platform.isPad? vs(20) : s(20)}}>{translations[store.language].главная}</Text>
                 <MenuGirlContainer />
-
                 
                 <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: vs(35), marginBottom: vs(25)}}>{translations[store.language].доскапедагога}</Text>
                 

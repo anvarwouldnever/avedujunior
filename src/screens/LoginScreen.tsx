@@ -14,10 +14,10 @@ import { observer } from 'mobx-react-lite';
 const LoginScreen = () => {
 
     const { s, vs } = useScale()
-    const [id, setId] = useState<string>(null)
-    const [password, setPassword] = useState<string>(null)
-    const [errorMessage, setErrorMessage] = useState<string>(null)
-    const [thinking, setThinking] = useState<boolean>(false)
+    const [id, setId] = useState<string>(null);
+    const [password, setPassword] = useState<string>(null);
+    const [errorMessage, setErrorMessage] = useState<string>(null);
+    const [thinking, setThinking] = useState<boolean>(false);
     const [selectedRole, setSelectedRole] = useState<string>(translations[store?.language]?.организация);
 
     const navigation = useNavigation();
@@ -38,7 +38,7 @@ const LoginScreen = () => {
             };
             lock();
         }, [])
-    )
+    );
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#EFEEFC' }}>

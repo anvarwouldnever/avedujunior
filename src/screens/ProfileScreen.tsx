@@ -29,6 +29,10 @@ const ProfileScreen = () => {
     const name = account?.kindergarten?.name;
     const region = account?.kindergarten?.region?.name;
 
+    const access = account?.access_level
+
+    // console.log(account.access_level)
+
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
