@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Pressable, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
@@ -14,6 +14,7 @@ const menuItems = [
   { screen: 'OurGroup', icon: 'people', label: translations[store.language].нашагруппа },
   { screen: 'Catalog', icon: 'folder', label: translations[store.language].каталогматериалов },
   { screen: 'FreeActivity', icon: 'pencil-outline', label: translations[store.language].свободнаядеятельность },
+  { screen: 'Profile', icon: 'person', label: translations[store.language].мойпрофиль },
 ];
 
 const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
@@ -52,7 +53,7 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
                 color={isActive ? '#FFFFFF' : '#B390EF'}
             />
             <Text style={[styles.text, { color: isActive ? '#FFFFFF' : '#B390EF', fontSize: Platform.isPad? vs(16) : s(16), marginLeft: Platform.isPad? vs(15) : s(15)}]}>
-                {item.label}
+                {item?.label}
             </Text>
             </Pressable>
           );

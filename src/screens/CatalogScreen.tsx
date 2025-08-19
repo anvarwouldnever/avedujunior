@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ImageBackground, Platform, Image, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { Text, ScrollView, ImageBackground, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { useScale } from '../hooks/useScale'
 import Subjects from './Catalog/Subjects'

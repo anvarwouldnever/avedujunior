@@ -11,7 +11,7 @@ import translations from '../../translations'
 
 const ProfileModal = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, windowWidth, windowHeight } = useScale()
     const navigation = useNavigation()
 
     const options = [
@@ -32,21 +32,21 @@ const ProfileModal = () => {
     ];
 
     return (
-        <Modal backdropColor='transparent' animationOutTiming={1} animationIn={'fadeIn'} animationOut={'fadeOut'} onBackdropPress={() => store.setModal(false)} isVisible={store.profileModal}>
-            <View style={{ backgroundColor: 'white', width: Platform.isPad? vs(200) : s(200), height: Platform.isPad? vs(250) : s(250), position: 'absolute', top: Platform.isPad? '10%' : '15%', right: Platform.isPad? '5%' : '10%', padding: vs(15), borderRadius: 10, justifyContent: 'space-between' }}>
-                <View style={{flexDirection: 'row', gap: Platform.isPad? vs(15) : s(15), height: Platform.isPad? vs(60) : s(60), alignItems: 'center'}}>
-                    <Image resizeMode='contain' style={{width: Platform.isPad? vs(60) : s(60), height: Platform.isPad? vs(60) : s(60)}} source={store.pfp?.image?.url? { uri: store.pfp.image.url } : pfpAssets[4]}/>
-                    <View style={{ height: '100%', width: '55%', justifyContent: 'space-between', paddingVertical: s(5) }}>
-                        <Text style={{ color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600' }}>Демо (3)</Text>
-                        <Text style={{ color: 'grey', fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store.language].группа} "Демо (3)"</Text>
+        <Modal style={{ width: windowWidth }} backdropColor='transparent' animationOutTiming={1} animationIn={'fadeIn'} animationOut={'fadeOut'} onBackdropPress={() => store.setModal(false)} isVisible={store.profileModal}>
+            <View style={{ backgroundColor: 'white', gap: vs(25), width: vs(220), height: 'auto', position: 'absolute', top: Platform.isPad? '5%' : '15%', right: '15%', padding: vs(15), borderRadius: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.22, shadowRadius: 2, elevation: 3 }}>
+                <View style={{flexDirection: 'row', gap: vs(15), height: vs(60), alignItems: 'center'}}>
+                    <Image resizeMode='contain' style={{width: vs(60), height: vs(60)}} source={store.pfp?.image?.url? { uri: store.pfp.image.url } : pfpAssets[4]}/>
+                    <View style={{ height: '100%', width: '55%', justifyContent: 'space-between', paddingVertical: vs(5), rowGap: vs(5) }}>
+                        <Text style={{ color: 'black', fontSize: Platform.isPad? vs(16) : vs(14), fontWeight: '600' }}>Демо (3)</Text>
+                        <Text style={{ color: 'grey', fontSize: Platform.isPad? vs(14) : vs(12) }}>{translations[store.language].группа} "Демо (3)"</Text>
                     </View>
                 </View>
 
-                <View style={{ width: '100%', height: Platform.isPad? vs(150) : s(150), justifyContent: 'space-between' }}>
+                <View style={{ width: '100%', height: 'auto', justifyContent: 'space-between', gap: vs(25) }}>
                     {options?.map((option, index) => {
                         return (
-                            <TouchableOpacity onPress={option?.action} style={{  width: '100%', height: Platform.isPad? vs(30) : s(30), justifyContent: 'center' }} key={index}>
-                                <Text style={{color: option?.color, fontWeight: '600', fontSize: Platform.isPad? vs(12) : s(12)}}>{option?.text}</Text>
+                            <TouchableOpacity onPress={option?.action} style={{  width: '100%', height: 'auto', justifyContent: 'center' }} key={index}>
+                                <Text style={{color: option?.color, fontWeight: '600', fontSize: Platform.isPad? vs(16) : vs(14)}}>{option?.text}</Text>
                             </TouchableOpacity>
                         )
                     })}

@@ -2,7 +2,6 @@ import { makeAutoObservable } from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Store {
-  token: string = null;
   profileModal: boolean = false;
   pfp: object = null;
   backgroundImage: object = null;
@@ -15,9 +14,7 @@ class Store {
     this.loadBackgroundImageFromStorage();
   };
 
-  setToken(token: string) {
-    this.token = token;
-  }
+  
 
   setModal(modal: boolean) {
     this.profileModal = modal;
