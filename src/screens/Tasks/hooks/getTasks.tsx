@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { GetTasks } from '../../../api/methods/subjects&tasks/tasks';
-import { homeScreenStore } from '../../Home/HomeScreenStore';
 
 export const useTasks = (id) => {
     const [loading, setLoading] = useState(true);

@@ -8,6 +8,8 @@ import * as Linking from 'expo-linking';
 import translations from '../../../translations'
 import { store } from '../../store/store'
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+
 const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name }) => {
 
     const toggleTopic = (id: number) => {
@@ -47,7 +49,7 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
                     const tagsFromPdf = pdfTagMap .filter(({ key }) => topic?.[key]).map(({ name, color }) => ({ name, backgroundColor: color }));
 
                     return (
-                        <Animated.View layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: Platform.isPad? vs(80) : s(80), height: 'auto', borderRadius: vs(20), borderWidth: 2, borderColor: '#EFEEFC', padding: vs(15), flexDirection: 'column' }}>
+                        <AnimatedTouchableOpacity activeOpacity={1} onPress={() => toggleTopic(index)} layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: Platform.isPad? vs(80) : s(80), height: 'auto', borderRadius: vs(20), borderWidth: 2, borderColor: '#EFEEFC', padding: vs(15), flexDirection: 'column' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: Platform.isPad? vs(15) : s(15)}}>
                                 <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{index + 1}</Text>
                                 <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{topic?.theme}</Text>
@@ -78,7 +80,7 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
                                     ))}
                                 </View>
                             )}
-                        </Animated.View>
+                        </AnimatedTouchableOpacity>
                     )
                 })}
             </View>

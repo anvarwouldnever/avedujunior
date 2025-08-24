@@ -2,7 +2,9 @@
 import { makeAutoObservable } from 'mobx';
 
 class NavigationStore {
+
   currentRoute: string = 'Home';
+  openSlider: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -10,6 +12,10 @@ class NavigationStore {
 
   setRoute(name: string) {
     this.currentRoute = name;
+  }
+
+  setOpenSlider(state: boolean) {
+    this.openSlider = state;
   }
 }
 

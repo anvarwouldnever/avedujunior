@@ -7,19 +7,33 @@ import Calendar from './Subjects/Calendar';
 import { bgAssets } from '../components/BgAssets';
 import { store } from '../store/store';
 import { observer } from 'mobx-react-lite';
+import Slider from '../navigation/Slider/Slider';
+import SliderContent from '../navigation/Slider/SliderContent';
 
 const SubjectsScreen = () => {
     const { s, vs } = useScale();
 
     return (
         <ImageBackground style={{flex: 1, justifyContent: 'center', alignItems: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
-            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={{}} style={{ flex: 1, padding: Platform.isPad ? vs(20) : s(20) }}>
+            
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: vs(20) }} style={{ flex: 1 }}>
+                
                 <View style={{ width: '100%', height: 'auto', backgroundColor: 'white', borderRadius: 20, padding: Platform.isPad ? vs(10) : s(10), marginBottom: s(15)}}>
+                    
                     <Header />
+
                     <DayNames />
+
                     <Calendar />
+                    
                 </View>
+
             </ScrollView>
+
+            <Slider>
+                <SliderContent />
+            </Slider>
+
         </ImageBackground>
     );
 }

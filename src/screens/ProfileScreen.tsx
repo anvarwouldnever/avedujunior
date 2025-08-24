@@ -10,6 +10,8 @@ import PasswordChangeSection from './Profile/PasswordChangeSection'
 import Sections from './Profile/Sections'
 import { getAccount } from './Profile/hooks/getAccount'
 import translations from '../../translations'
+import Slider from '../navigation/Slider/Slider'
+import SliderContent from '../navigation/Slider/SliderContent'
 
 const ProfileScreen = () => {
 
@@ -57,6 +59,11 @@ const ProfileScreen = () => {
                     
                 </View>
             </ScrollView>
+
+            <Slider>
+                <SliderContent />
+            </Slider>
+            
         </ImageBackground>
     )
 }

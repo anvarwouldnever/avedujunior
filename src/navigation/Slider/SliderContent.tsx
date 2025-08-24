@@ -14,12 +14,13 @@ const menuItems = [
   { screen: 'OurGroup', icon: 'people', label: translations[store.language].нашагруппа },
   { screen: 'Catalog', icon: 'folder', label: translations[store.language].каталогматериалов },
   { screen: 'FreeActivity', icon: 'pencil-outline', label: translations[store.language].свободнаядеятельность },
+  { screen: 'CompletedTasks', icon: 'star', label: translations[store.language].пройденныетемы },
   { screen: 'Profile', icon: 'person', label: translations[store.language].мойпрофиль },
 ];
 
-const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
+const SliderContent = () => {
     const navigation = useNavigation();
-    const { s, vs } = useScale()
+    const { s, vs } = useScale();
 
     const handleNavigate = (screen: string) => {
         if (navigationStore.currentRoute !== screen) {
@@ -30,11 +31,11 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
             })
           );
         };
-        onClose();
+        navigationStore.setOpenSlider(false)
     };
   
     return (
-      <View style={{ padding: Platform.isPad? vs(14) : s(14), backgroundColor: '#FFFFFF'}}>
+      <View style={{ padding: vs(14), backgroundColor: '#FFFFFF', width: '100%', borderRadius: 30}}>
         {menuItems.map((item) => {
           const isActive = navigationStore.currentRoute === item.screen;
           return (
@@ -60,7 +61,7 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
         })}
       </View>
     );
-  });
+  };
 
   const styles = StyleSheet.create({
     item: {
@@ -78,4 +79,4 @@ const SliderContent = observer(({ onClose }: { onClose: () => void }) => {
   });
   
 
-export default SliderContent;
+export default observer(SliderContent);

@@ -16,7 +16,7 @@ const DayNames = () => {
                 <Text
                     key={index}
                     style={{
-                        width: Platform.isPad? vs(200) : s(200),
+                        width: Platform.isPad? vs(220) : vs(220),
                         fontSize: Platform.isPad? vs(14) : s(14),
                         fontWeight: '400',
                         borderColor: '#000',

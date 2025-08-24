@@ -21,18 +21,16 @@ const Subjects = ({ selectedId, setSelectedId, subjects }) => {
     return (
         <View style={{width: '100%', height: 'auto', columnGap: gap, rowGap: vs(15), flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}}>
             {subjects?.map((subject, index) => {
-                const isSelected = selectedId === subject.id;
+                
+                const isSelected = selectedId === index;
                 
                 return (
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedId(subject?.id)} key={index} style={{width: subjectWidth, height: Platform.isPad? vs(80) : s(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: vs(15)}}>
-                        
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => setSelectedId(index)} key={index} style={{width: subjectWidth, height: Platform.isPad? vs(80) : s(80), borderRadius: 20, backgroundColor: isSelected ? '#6A5AE0' : '#EFEEFC', padding: vs(25), alignItems: 'center', flexDirection: 'row', gap: vs(15)}}>
                         <Image source={{ uri: subject?.image?.url }} style={{width: Platform.isPad? vs(35) : s(35), height: Platform.isPad? vs(35) : s(35), borderRadius: 10, backgroundColor: 'white'}}/>
-                        
                         <View style={{height: '100%', width: '80%', justifyContent: 'center',rowGap: vs(5)}}>
                             <Text numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: Platform.isPad? vs(14) : vs(14), color: isSelected ? 'white' : '#6A5AE0', width: '90%'}}>{subject?.name}</Text>
                             <Text style={{fontWeight: '400', fontSize: Platform.isPad? vs(12) : vs(12), color: isSelected ? 'white' : '#6A5AE0'}}>{subject?.days_counts} темы</Text>
                         </View>
-
                     </TouchableOpacity>
                 )
             })}

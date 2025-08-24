@@ -16,6 +16,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: vs(360), borderRadius: 20, padding: vs(15), backgroundColor: 'white', justifyContent: 'space-between', marginBottom: 100}}>
+            
             <Text style={{ color: 'black', fontSize: vs(16), fontWeight: '600' }}>{translations[store.language].всетемына} {capitalizedMonth}</Text>
 
             <View style={{ width: '100%', height: vs(280) }}>
@@ -37,6 +38,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
                     })}
                 </ScrollView>
             </View>
+            
         </View>
     )
 }

@@ -14,7 +14,8 @@ const GamePreview = ({ name, topic, id, tasksId, preGame }) => {
     const navigation = useNavigation()
 
     return (
-        <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(30), borderRadius: 20, alignItems: 'center', paddingHorizontal: vs(10), paddingVertical: vs(15), backgroundColor: 'white', justifyContent: 'space-between'}}>
+        <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: 'auto', gap: vs(30), borderRadius: 20, alignItems: 'center', padding: vs(15), backgroundColor: 'white', justifyContent: 'space-between'}}>
+            
             <VideoScreen url={preGame?.video?.url} />
 
             <View style={{ height: 'auto', width: '100%', gap: Platform.isPad? vs(8) : s(8) }}>
@@ -29,6 +30,7 @@ const GamePreview = ({ name, topic, id, tasksId, preGame }) => {
             <TouchableOpacity onPress={() => navigation.navigate('Game', {name, topic, id, tasksId})} style={{ width: '100%', height: vs(60), backgroundColor: '#30AB02', borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: 'white', fontSize: vs(20), fontWeight: '800' }}>{translations[store.language].начатьиграть}</Text>
             </TouchableOpacity>
+
         </View>
     )
 }

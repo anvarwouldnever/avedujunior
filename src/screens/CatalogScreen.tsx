@@ -7,6 +7,8 @@ import { bgAssets } from '../components/BgAssets'
 import { store } from '../store/store'
 import { observer } from 'mobx-react-lite'
 import { getSubjects } from './Home/SubjectsGrid/hooks/getSubjects'
+import Slider from '../navigation/Slider/Slider'
+import SliderContent from '../navigation/Slider/SliderContent'
 
 const CatalogScreen = () => {
 
@@ -32,12 +34,21 @@ const CatalogScreen = () => {
 
     return (
         <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
+            
             <ScrollView style={{flex: 1,  padding: Platform.isPad ? vs(20) : vs(20)}}>
+                
                 <Text style={{color: 'black', fontSize: Platform.isPad ? vs(22) : s(22), fontWeight: '700', marginVertical: vs(20)}}>{getMonthYear()}</Text>
+                
                 <Subjects selectedId={selectedId} setSelectedId={setSelectedId} subjects={subjects}/>
 
                 <SubjectTable name={name} selectedId={selectedId} setExpandedTopicId={setExpandedTopicId} expandedTopicId={expandedTopicId}/>
+            
             </ScrollView>
+
+            <Slider>
+                <SliderContent />
+            </Slider>
+
         </ImageBackground>
     )
 }
