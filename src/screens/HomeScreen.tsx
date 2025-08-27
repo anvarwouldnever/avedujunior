@@ -12,34 +12,42 @@ import useLock from '../hooks/useLock'
 import translations from '../../translations'
 import Slider from '../navigation/Slider/Slider'
 import SliderContent from '../navigation/Slider/SliderContent'
+import { getAccount } from './Profile/hooks/getAccount'
+import { getLabels } from './Home/hooks/getLabels'
 
 const HomeScreen = () => {
 
     const { s, vs } = useScale();
 
-    useLock()
+    useLock();
+
+    getAccount();
+    getLabels()
 
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1 }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView showsVerticalScrollIndicator={false} bounces={true} style={{ flex: 1, padding: Platform.isPad? vs(20) : s(20)}}>
+            <ScrollView contentContainerStyle={{ rowGap: vs(20), padding: vs(20) }} showsVerticalScrollIndicator={false} bounces={true} style={{ flex: 1 }}>
                 
-                <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: Platform.isPad? vs(20) : s(20), marginBottom: Platform.isPad? vs(20) : s(20)}}>{translations[store.language].главная}</Text>
+                <Text style={{color: 'black', fontSize: Platform.isPad? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].главная}</Text>
                 
                 <MenuGirlContainer />
                 
-                <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: vs(35), marginBottom: vs(25)}}>{translations[store.language].доскапедагога}</Text>
+                { store.juridical && <Text style={{color: 'black', fontSize: Platform.isPad? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].доскапедагога}</Text>}
+
+                {   
+                    store.juridical 
+                && 
+                    <View style={{flexDirection: Platform.isPad? 'row' : 'column', justifyContent: 'space-between'}}>
+                        
+                        <MiniCalendar />
+
+                        <TodayMaterialsCard />
+
+                    </View>
+                }
                 
-                <View style={{flexDirection: Platform.isPad? 'row' : 'column', justifyContent: 'space-between'}}>
-                    
-                    <MiniCalendar />
-
-                    <TodayMaterialsCard />
-
-                </View>
-
-                
-                <Text style={{color: 'black', fontSize: Platform.isPad? vs(22) : s(22), fontWeight: '700', marginTop: vs(35), marginBottom: vs(25)}}>{translations[store.language].предметы}</Text>
+                <Text style={{color: 'black', fontSize: Platform.isPad? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].предметы}</Text>
                 
                 <SubjectsGrid />
 

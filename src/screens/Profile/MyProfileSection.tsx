@@ -122,25 +122,27 @@ const MyProfileSection = ({ birth_date, first_name, last_name, middle_name }) =>
                 }
             </View>
 
-            <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].фамилия}</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{last_name}</Text>
-            </View>
+            {store.juridical && <>
+                <View style={{ gap: vs(15) }}>
+                    <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].фамилия}</Text>
+                    <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{last_name}</Text>
+                </View>
 
-            <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].имя}</Text>
-                <Text style={{ color: '#333333', fontSize:Platform.isPad? vs(18) : s(18), }}>{first_name}</Text>
-            </View>
+                <View style={{ gap: vs(15) }}>
+                    <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].имя}</Text>
+                    <Text style={{ color: '#333333', fontSize:Platform.isPad? vs(18) : s(18), }}>{first_name}</Text>
+                </View>
 
-            <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].отчество}</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{middle_name}</Text>
-            </View>
+                <View style={{ gap: vs(15) }}>
+                    <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].отчество}</Text>
+                    <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{middle_name}</Text>
+                </View>
 
-            <View style={{ gap: vs(15) }}>
-                <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].датарождения}</Text>
-                <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{birth_date}</Text>
-            </View>
+                <View style={{ gap: vs(15) }}>
+                    <Text style={{fontSize: Platform.isPad? vs(22) : s(18), fontWeight: '600'}}>{translations[store.language].датарождения}</Text>
+                    <Text style={{ color: '#333333', fontSize: Platform.isPad? vs(18) : s(18), }}>{birth_date}</Text>
+                </View>
+            </>}
         </View>
     )
 }

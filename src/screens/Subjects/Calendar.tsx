@@ -3,21 +3,24 @@ import React, { useMemo } from 'react'
 import { useScale } from '../../hooks/useScale';
 import { getTimetable } from './hooks/getTimetable';
 import { useNavigation } from '@react-navigation/native';
+import { store } from '../../store/store';
 
 const Calendar = () => {
 
     const { s, vs } = useScale();
 
     const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
+    let year = today.getFullYear();
+    let month = today.getMonth();
 
-    // const year = 2025; // или today.getFullYear();
-    // const month = 7; 
+    if (store.access === 2 || store.access === 4) {
+        if (month < 8) {
+            year -= 1;
+        }
+        month = 8;
+    }
 
-    const { timetable, hasFifthWeek, error, loading } = getTimetable();
-
-    // console.log(timetable[0])
+    const { timetable, hasFifthWeek, error, loading } = getTimetable(month, year);
 
     const navigation = useNavigation()
 

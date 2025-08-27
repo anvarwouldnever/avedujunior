@@ -57,37 +57,37 @@ const MiniCalendar = () => {
     <View style={[styles.card, {height: Platform.isPad? '100%' : s(220), width: Platform.isPad? '49%' : '100%', gap: Platform.isPad? vs(45) : s(20), marginBottom: Platform.isPad? vs(30) : s(30), padding: Platform.isPad? vs(16) : s(16)}]}>
 
       <View style={styles.headerRow}>
-        <Text style={[styles.title, {fontSize: Platform.isPad? vs(16) : s(16),}]}>{translations[store?.language]?.календарь}</Text>
+        <Text style={[styles.title, {fontSize: Platform.isPad? vs(18) : vs(16),}]}>{translations[store?.language]?.календарь}</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Subjects')}>
-          <Text style={[styles.viewAll, {fontSize: Platform.isPad? vs(14) : s(14),}]}>{translations[store?.language]?.посмотретьвсе}</Text>
+          <Text style={[styles.viewAll, {fontSize: Platform.isPad? vs(16) : vs(14),}]}>{translations[store?.language]?.посмотретьвсе}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.monthRow}>
         <TouchableOpacity onPress={() => handleMonthChange('prev')}>
-          <Feather name="chevron-left" size={vs(20)} />
+          <Feather name="chevron-left" size={Platform.isPad ? vs(22) : vs(20)} />
         </TouchableOpacity>
 
-        <Text style={[styles.month, {fontSize: Platform.isPad? vs(16) : s(16), marginHorizontal: Platform.isPad? vs(8) : s(8),}]}>{monthName}</Text>
+        <Text style={[styles.month, {fontSize: Platform.isPad? vs(18) : vs(16), marginHorizontal: vs(8),}]}>{monthName}</Text>
 
         <TouchableOpacity onPress={() => handleMonthChange('next')}>
-          <Feather name="chevron-right" size={vs(20)} />
+          <Feather name="chevron-right" size={Platform.isPad ? vs(22) : vs(20)} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.weekRow}>
         <View style={{width: vs(20), height: vs(20)}}/>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].пн}</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].вт}</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].ср}</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].чт}</Text>
-        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(16) : s(16)}]}>{translations[store?.language].пт}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(18) : vs(16)}]}>{translations[store?.language].пн}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(18) : vs(16)}]}>{translations[store?.language].вт}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(18) : vs(16)}]}>{translations[store?.language].ср}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(18) : vs(16)}]}>{translations[store?.language].чт}</Text>
+        <Text style={[styles.dayName, {fontSize: Platform.isPad? vs(18) : vs(16)}]}>{translations[store?.language].пт}</Text>
         <View style={{width: vs(20), height: vs(20)}}/>
       </View>
 
-      <View style={[styles.dateRow, {marginTop: Platform.isPad? vs(8) : s(8)}]}>
+      <View style={[styles.dateRow, {marginTop: vs(8)}]}>
         <TouchableOpacity onPress={() => handleDayChange('prev')}>
-          <Feather name="chevron-left" size={vs(20)} />
+          <Feather name="chevron-left" size={Platform.isPad ? vs(22) : vs(20)} />
         </TouchableOpacity>
 
         {weekDays.map((date, i) => {
@@ -98,7 +98,7 @@ const MiniCalendar = () => {
               style={[
                 styles.dateNumber,
                 isToday && styles.selectedDate,
-                {fontSize: Platform.isPad? vs(16) : s(16)}
+                {fontSize: Platform.isPad? vs(18) : vs(16)}
               ]}
             >
               {format(date, 'd')}
@@ -107,7 +107,7 @@ const MiniCalendar = () => {
         })}
 
         <TouchableOpacity onPress={() => handleDayChange('next')}>
-          <Feather name="chevron-right" size={vs(20)} />
+          <Feather name="chevron-right" size={Platform.isPad ? vs(22) : vs(20)} />
         </TouchableOpacity>
       </View>
     </View>

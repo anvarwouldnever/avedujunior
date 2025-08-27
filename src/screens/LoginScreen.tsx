@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useScale } from '../hooks/useScale';
 import ChooseLanguage from './Login/ChooseLanguage';
 import ChooseRole from './Login/ChooseRole';
@@ -10,6 +10,7 @@ import * as ScreenOrientation from 'expo-screen-orientation'
 import translations from '../../translations';
 import { store } from '../store/store';
 import { observer } from 'mobx-react-lite';
+import { clearAccountCache } from './Profile/hooks/getAccount';
 
 const LoginScreen = () => {
 
@@ -21,6 +22,10 @@ const LoginScreen = () => {
     const [selectedRole, setSelectedRole] = useState<string>(translations[store?.language]?.организация);
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+        clearAccountCache()
+    }, [])
 
     const RegisterText = () => {
         return (

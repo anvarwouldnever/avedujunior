@@ -5,12 +5,25 @@ import { useScale } from '../../hooks/useScale'
 import translations from '../../../translations'
 import { store } from '../../store/store'
 import { format } from 'date-fns';
-import { ru, enUS, uz } from 'date-fns/locale';
+import { ru, uz } from 'date-fns/locale';
 
 const MonthTopics = ({ days, name, changeTopic, id }) => {
       
-    const currentMonth = format(new Date(), 'LLLL', { locale: store.language === 'ru' ? ru : uz });
-    const capitalizedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+    const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+
+    if (store.access === 2 || store.access === 4) {
+        if (month < 8) {
+            year -= 1;
+        }
+        month = 8;
+    }
+
+    const locale = store.language === 'ru' ? ru : uz;
+
+    const monthName = format(new Date(year, month), 'LLLL', { locale });
+    const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
     const { s, vs } = useScale();
 
@@ -20,6 +33,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
             <Text style={{ color: 'black', fontSize: vs(16), fontWeight: '600' }}>{translations[store.language].всетемына} {capitalizedMonth}</Text>
 
             <View style={{ width: '100%', height: vs(280) }}>
+                
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: vs(15) }} style={{flex: 1}}>
                     {days?.map((topic, index) => {
                         return (
@@ -37,6 +51,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
                         )
                     })}
                 </ScrollView>
+
             </View>
             
         </View>

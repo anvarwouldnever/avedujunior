@@ -13,9 +13,9 @@ const Sections = ({currentSection, setCurrentSection}) => {
     const navigation = useNavigation();
 
     const sections = [
-        {name: translations[store.language].мойпрофиль},
-        {name: translations[store.language].образовательноеучереждение}, 
-        {name: translations[store.language].сменапароля}
+        { name: translations[store.language].мойпрофиль },
+        { name: translations[store.language].образовательноеучереждение },
+        ...(store.juridical ? [{ name: translations[store.language].сменапароля }] : [])
     ];
 
     const logout = () => {

@@ -21,7 +21,7 @@ const MenuGirlContainer = () => {
             <View style={{flexDirection: isInline ? 'row' : 'column', alignItems: isInline ? 'center' : 'flex-start', gap: s(15)}}>
                 <Image style={{ borderRadius: vs(30), width: imageWidth, height: Platform.isPad? vs(150) : s(150), resizeMode: 'contain', margin: -vs(10)}} source={store.pfp?.second_image?.url? { uri: store?.pfp?.second_image.url } : require('../../../assets/aveduGirl.webp')} contentFit='contain' />
                 <View style={{flexShrink: 1, gap: Platform.isPad? vs(10) : s(10)}}>
-                    <Text style={{fontSize: Platform.isPad? vs(20) : s(18), color: 'white', fontWeight: '600', lineHeight: Platform.isPad? vs(22) : s(22), marginBottom: vs(5)}}>Добро пожаловать, Группа: Демо (3)!</Text>
+                    <Text style={{fontSize: Platform.isPad? vs(20) : s(18), color: 'white', fontWeight: '600', lineHeight: Platform.isPad? vs(22) : s(22), marginBottom: vs(5)}}>Добро пожаловать, {store.juridical ? store?.group : store?.name}!</Text>
                     <Text style={{fontSize: Platform.isPad? vs(18) : s(16), color: 'white', fontWeight: '400', lineHeight: Platform.isPad? vs(22) : s(22)}}>Не забудьте проверить своё расписание занятий на завтра! Все ли задания вы сделали?</Text>
                 </View>
             </View>

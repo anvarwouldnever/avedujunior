@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/HomeScreen';
 import { Platform, View } from 'react-native';
@@ -24,12 +24,13 @@ import { Text } from 'react-native';
 import CompletedTasksScreen from '../../screens/CompletedTasksScreen';
 import CompletedTasks from '../../components/CompletedTasks';
 import Time from '../../components/Time';
+import StudentScreen from '../../screens/StudentScreen';
 
 const Stack = createStackNavigator();
 
 const Navigation = () => {
 
-    const { s, vs } = useScale();
+    const { vs } = useScale();
     
     const token = SecureStore.getItem('access_token');
 
@@ -46,11 +47,11 @@ const Navigation = () => {
     return (
         <Stack.Navigator
             screenOptions={({ route }) => {
-                const menuItem = menuItems.find(item => item.screen === route.name);
+                const menuItem = menuItems.find(item => item?.screen === route?.name);
 
                 return {
                     animation: 'default',
-                    title: menuItem ? menuItem.label : route.name,
+                    title: menuItem ? menuItem?.label : route?.name,
                     headerTitleStyle: {
                         fontSize: vs(12),
                         alignSelf: 'center',
@@ -69,7 +70,7 @@ const Navigation = () => {
                             numberOfLines={2}
                             ellipsizeMode="tail"
                         >
-                          {menuItem ? menuItem.label : route.name}
+                          {menuItem ? menuItem.label : ''}
                         </Text>
                     ),
 
@@ -108,6 +109,7 @@ const Navigation = () => {
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen} />
             <Stack.Screen options={{ headerShown: false }} name="RegisterScreen" component={RegisterScreen} />
             <Stack.Screen name="OurGroup" component={OurGroupScreen} />
+            <Stack.Screen name="Student" component={StudentScreen} />
             <Stack.Screen name="Catalog" component={CatalogScreen} />
             <Stack.Screen name="FreeActivity" component={FreeActivityScreen} />
             <Stack.Screen name="CompletedTasks" component={CompletedTasksScreen} />

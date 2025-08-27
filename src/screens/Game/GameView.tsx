@@ -5,7 +5,7 @@ import ObjectMatchingGame from './ObjectMatching/ObjectMatchingGame'
 import LinesAndDrawingParent from './ObjectMatching/LinesAndDrawingParent'
 import { useScale } from '../../hooks/useScale'
 import { useNavigation } from '@react-navigation/native'
-import Animated, { useSharedValue } from 'react-native-reanimated'
+import { useSharedValue } from 'react-native-reanimated'
 import DragAndDropGame from './DragAndDrop/DragAndDropGame'
 import SimpleGame from './SimpleGame/SimpleGame'
 import WithImageGame from './WithImageGame/WithImageGame'
@@ -42,20 +42,20 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     const answers = game?.answer;
 
     useEffect(() => {
-        setPopUp(false);
         setChosenOptions([]);
+        setPopUp(false);
         setLines([]);
         setPlayingIndex(null);
         stop();
     }, [chosenGame]);
 
     const checkAnswer = async (a: any[], b: any[], gameType: number) => {
+        setPopUp(false)
         const gameId = game?.id;
         if (!gameId) return;
     
         const handleCorrect = async () => {
-            const answer = await AnswerCorrect(gameId);
-            console.log(answer?.status);
+            await AnswerCorrect(gameId);
             const nextUnpassedIndex = await markGameAsPassed(gameId);
             setPopUp(true)
 
@@ -71,8 +71,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
         };
     
         const handleWrong = async () => {
-            const answer = await AnswerWrong(gameId);
-            console.log(answer?.status);
+            await AnswerWrong(gameId);
             setPopUp(true)
         };
     
@@ -83,6 +82,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                 const match = el.key?.match(/\d+$/);
                 return match && !isNaN(parseInt(match[0], 10));
             });
+
             if (!hasAllKeys) return setPopUp(true);
     
             const correct = a.every(el => {
@@ -91,7 +91,6 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                 return el.index === keyNumber;
             });
     
-            console.log(correct);
             return correct ? await handleCorrect() : await handleWrong();
         }
     
@@ -124,9 +123,10 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     
     return (
         <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, gap: s(5), justifyContent: 'space-between'}}>   
+            
             {chosenGame !== -1 && 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', height: s(20)}}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '75%', justifyContent: 'space-between', gap: s(5), height: s(23) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '80%', justifyContent: 'space-between', gap: s(5), height: s(23) }}>
                         <View style={{ backgroundColor: '#B390EF', width: s(15), height: s(15), borderRadius: 100, justifyContent: 'center', alignItems: 'center' }}>  
                             <Ionicons onPress={() => { 
                                 if (playingIndex === 21) { 
@@ -138,7 +138,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                                 } 
                             }} name={isPlaying && playingIndex === 21? 'pause' : 'volume-high'} color={'white'} size={s(10)}/>
                         </View>
-                        <Text adjustsFontSizeToFit style={{ fontSize: Platform.isPad? vs(20) : s(6), fontWeight: '600', width: '90%'}}>{question}</Text>
+                        <Text ellipsizeMode='tail' adjustsFontSizeToFit style={{ fontSize: Platform.isPad? vs(20) : vs(26), fontWeight: '600', width: '90%'}}>{question}</Text>
                     </View>
 
                     <TouchableOpacity onPress={() => navigation.goBack()} style={{width: '15%', borderWidth: 2, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderColor: '#EFEEFC', borderRadius: 10, gap: vs(5)}}>
@@ -173,12 +173,12 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
             {   
                 popUp 
             &&   
-                <AnimatedPopUp setPopUp={setPopUp} popUp={popUp} passed={passed}/>
+                <AnimatedPopUp setPopUp={setPopUp} popUp={popUp} passed={passed} gameType={game?.type} answers={answers} chosenOptions={chosenOptions} />
             }
 
             {chosenGame !== -1 && 
                 <View style={{ height: s(20), width: '60%', alignSelf: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => { if (chosenGame > 1) {setChosenGame(chosenGame - 1)} else { setChosenGame(games.length) }}} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FF40572B', borderRadius: 10 }}>
+                    <TouchableOpacity onPress={() => { if (chosenGame > 1) {setChosenGame(chosenGame - 1)} else { setChosenGame(games?.length) }}} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FF40572B', borderRadius: 10 }}>
                         <Ionicons name='chevron-back' color={'red'} size={20}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={passed === 1 ? () => {return} : () => checkAnswer(chosenOptions, answers, game?.type)} style={{width: '60%', backgroundColor: passed === 1? "lightgrey" : '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
@@ -189,6 +189,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                     </TouchableOpacity>
                 </View>
             }
+
         </View>
     )
 }

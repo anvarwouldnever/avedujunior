@@ -5,21 +5,21 @@ export const useAudio = () => {
     const soundRef = useRef<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const play = async (uri: string) => {
+    const play = async (source: string | number) => { // string = URL, number = require(...)
         try {
             if (soundRef.current) {
                 await soundRef.current.unloadAsync();
                 soundRef.current = null;
             }
-
+    
             const { sound } = await Audio.Sound.createAsync(
-                { uri },
+                typeof source === 'string' ? { uri: source } : source,
                 { shouldPlay: true }
             );
-
+    
             soundRef.current = sound;
             setIsPlaying(true);
-
+    
             sound.setOnPlaybackStatusUpdate((status) => {
                 if (!status.isPlaying && status.didJustFinish) {
                     setIsPlaying(false);
@@ -28,7 +28,7 @@ export const useAudio = () => {
         } catch (error) {
             console.warn('Ошибка воспроизведения аудио:', error);
         }
-    };
+    };    
 
     const stop = async () => {
         if (soundRef.current) {

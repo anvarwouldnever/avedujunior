@@ -1,20 +1,31 @@
-import { View, Text, Platform, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Platform, Image } from 'react-native'
 import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
 import { useScale } from '../../hooks/useScale';
-import translations from '../../../translations';
 import { store } from '../../store/store';
 import CompletedTasks from '../../components/CompletedTasks';
 
 const Header = () => {
 
+    const { s, vs  } = useScale()
+
     const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+
+    if (store.access === 2 || store.access === 4) {
+        if (month < 8) { // если ещё не сентябрь
+            year -= 1;
+        }
+        month = 8; // сентябрь
+    }
+
     const language = store?.language || 'ru'; // 'ru' или 'uz'
 
-    const monthName = today.toLocaleString(`${language}-${language.toUpperCase()}`, { month: 'long' });
+    const monthName = new Date(year, month).toLocaleString(
+        `${language}-${language.toUpperCase()}`, 
+        { month: 'long' }
+    );
     const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-
-    const { s, vs } = useScale()
 
     return (
         <View style={{ width: '100%', height: Platform.isPad? vs(250) : s(250), justifyContent: 'center', alignItems: 'center',  gap: vs(5) }}>
@@ -23,7 +34,7 @@ const Header = () => {
                 <Text style={{ fontWeight: 'bold' }}>
                     {capitalizedMonth}
                 </Text>{' '}
-                {today.getFullYear()}
+                {year}
             </Text>
             
             <Image style={{width: Platform.isPad? vs(150) : s(140), height: Platform.isPad? vs(140) : s(140), resizeMode: 'contain'}} source={require('../../../assets/subjectsCar.png')}/>

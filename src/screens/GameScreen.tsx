@@ -49,7 +49,9 @@ const GameScreen = ({ route }) => {
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
             <View style={{flex: 1, justifyContent: 'space-between', paddingVertical: Platform.isPad ? vs(20) : s(7), paddingLeft: Platform.isPad ? s(10) : s(20), paddingRight: s(10), flexDirection: 'row'}}>
+                
                 <GameView name={name} tasksId={tasksId} games={games} markGameAsPassed={markGameAsPassed} chosenGame={chosenGame} setChosenGame={setChosenGame} game={games[chosenGame - 1]} setFullImage={setFullImage} setSelectedImage={setSelectedImage}/>
+                
                 <GameNumberList games={games} setChosenGame={setChosenGame} chosenGame={chosenGame}/>
                 
                 <Modal animationOutTiming={10} animationOut={'fadeOut'} isVisible={fullImage} style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: s(80), top: vs(45)}}>
@@ -66,6 +68,7 @@ const GameScreen = ({ route }) => {
                         )}
                     </View>
                 </Modal>
+
             </View>
 
         </ImageBackground>

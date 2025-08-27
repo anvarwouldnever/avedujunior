@@ -38,21 +38,24 @@ const SubjectsGrid = () => {
   if (error) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: vs(60) }}>
-        <Text style={{ color: 'red', fontSize: s(15) }}>{error}</Text>
+        <Text style={{ color: 'red', fontSize: vs(15) }}>{error}</Text>
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, {columnGap: columnGap, rowGap: vs(15), justifyContent: 'flex-start'}]}>
+    <View style={[styles.container, {columnGap: columnGap, rowGap: vs(15), justifyContent: 'flex-start', marginBottom: vs(25)}]}>
       {subjects?.map((item, index) => (
         <TouchableOpacity onPress={() => navigation.navigate('TasksList', {name: item?.name, id: item?.id, key: Date.now()})} key={index} style={[styles.card, { width: cardWidth, height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
+            
             <View style={{width: '100%', height: Platform.isPad? vs(130) : s(100), backgroundColor: item.color, borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: 'center', alignItems: 'center'}}>
               <Image source={{ uri: item?.image?.url }} contentFit='contain' style={{ width: s(60), height: vs(60) }} />
             </View>
-            <View style={{backgroundColor: 'white', width: '100%', position: 'relative', minHeight: vs(40), borderBottomLeftRadius: 20, borderBottomRightRadius: 20, padding: vs(8)}}>
-              <Text style={{fontSize: vs(12), fontWeight: '600', width: '100%', flexShrink: 1}}>{item?.name}</Text>
+            
+            <View style={{backgroundColor: 'white', width: '100%', position: 'relative', minHeight: vs(40), borderBottomLeftRadius: 20, borderBottomRightRadius: 20, padding: vs(12)}}>
+              <Text style={{fontSize: Platform.isPad ? vs(14) : vs(12), fontWeight: '600', width: '100%'}}>{item?.name}</Text>
             </View>
+
         </TouchableOpacity>
       ))}
     </View>
@@ -62,7 +65,6 @@ const SubjectsGrid = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginBottom: 150,
     flexWrap: 'wrap',
   },
   card: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetTimetable } from '../../../api/methods/timetable/timetable';
 
-export const getTimetable = () => {
+export const getTimetable = (month: any, year: any) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [timetable, setTimetable] = useState<Array<{ date: string, subjects: any[] }>>([])
@@ -10,10 +10,8 @@ export const getTimetable = () => {
     useEffect(() => {
         const fetchTimetable = async () => {
             try {
-                const today = new Date();
-                const month = String(today.getMonth() + 1).padStart(2, '0');
-                const year = today.getFullYear();
-                const formattedDate = `${month}.${year}`;   
+                const formattedMonth = (month + 1).toString().padStart(2, '0');
+                const formattedDate = `${formattedMonth}.${year}`;
                 
                 const response = await GetTimetable(formattedDate);
                 const raw = response?.data?.data;
