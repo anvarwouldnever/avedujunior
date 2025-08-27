@@ -9,6 +9,7 @@ import Sections from './Student/Sections'
 import GeneralInfo from './Student/GeneralInfo'
 import Parents from './Student/Parents'
 import DevelopmentMap from './Student/DevelopmentMap'
+import ReadinessMap from './Student/ReadinessMap'
 
 const StudentScreen = () => {
 
@@ -35,10 +36,14 @@ const StudentScreen = () => {
 
                         <Parents />
                     
-                    : section === 'Карта развития' &&
+                    : section === 'Карта развития' ?
 
                         <DevelopmentMap />
-                        
+
+                    : section === 'Карта готовности' &&
+
+                        <ReadinessMap />
+
                     }
 
                 </View>

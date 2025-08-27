@@ -115,14 +115,14 @@ const Map = () => {
             <View style={{ width: '100%', height: 'auto' }}>
                 
                 {map.map((item, domainIndex) => {
-                    const number = domainIndex + 1;
+                    const domainNumber = domainIndex + 1;
 
                     return (
                         <View style={{ height: 'auto', width: '100%' }} key={domainIndex}>
                             
                             <View style={{ paddingHorizontal: vs(10), flexDirection: 'row', backgroundColor: '#271B8F', paddingVertical: vs(5), height: 'auto' }}>
 
-                                <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600' }}>{number}</Text>
+                                <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600' }}>{domainNumber}</Text>
 
                                 <Text style={{  width: '55%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600'  }}>{item?.domain}</Text>
 
@@ -137,7 +137,7 @@ const Map = () => {
                                             
                                             <View style={{ paddingHorizontal: vs(10), flexDirection: 'row', backgroundColor: '#858494', paddingVertical: vs(5), height: 'auto' }}>
                                                 
-                                                <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600' }}>{number}.{number}.</Text>
+                                                <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600' }}>{domainNumber}.{number}.</Text>
 
                                                 <Text style={{  width: '55%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'white', fontWeight: '600'  }}>{item?.subdomain}</Text>
 
@@ -148,9 +148,10 @@ const Map = () => {
                                                     const number = fieldIndex + 1;
 
                                                     return (
-                                                        <View key={fieldIndex} style={{ paddingHorizontal: vs(5), width: '100%', borderBottomWidth: 1, flexDirection: 'row', backgroundColor: 'white', height: 'auto', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <View key={fieldIndex} style={{ paddingHorizontal: vs(10), width: '100%', borderBottomWidth: 1, flexDirection: 'row', backgroundColor: 'white', height: 'auto', justifyContent: 'space-between', alignItems: 'center' }}>
                                                             
                                                             <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'black', fontWeight: '400' }}>{number}.</Text>
+                                                            
                                                             <Text style={{ width: '55%', fontSize: isPad ? vs(18) : vs(16), textAlign: 'left', color: 'black', fontWeight: '400' }}>{fieldItem?.field}</Text>
 
                                                 
@@ -161,6 +162,7 @@ const Map = () => {
 
                                                                     return (
                                                                         <TouchableOpacity
+                                                                            
                                                                             key={btnIndex}
                                                                             style={{
                                                                                 width: '25%',
@@ -170,6 +172,7 @@ const Map = () => {
                                                                                 borderLeftWidth: btnIndex === 0 ? 1 : 0,
                                                                                 justifyContent: 'center',
                                                                                 alignItems: 'center',
+                                                                                backgroundColor: isSelected ? '#DDEEFF' : ''
                                                                                 
                                                                             }}
                                                                             onPress={() => setSelectedButtons(prev => ({ ...prev, [key]: !prev[key] }))}
