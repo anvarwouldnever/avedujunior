@@ -20,7 +20,8 @@ export const getAccount = () => {
             try {
                 const response = await GetAccount();
                 cachedAccount = response?.data?.data;
-                setAccount(cachedAccount);
+                store.setBackgroundImage(cachedAccount?.background)
+                store.setPfp(cachedAccount?.avatar)
                 store.setJuridical(cachedAccount?.is_juridical)
                 store.setAccess(cachedAccount?.access_level)
                 if (!cachedAccount?.is_juridical) {
@@ -29,6 +30,7 @@ export const getAccount = () => {
                 } else {
                     store.setGroup(cachedAccount?.name)
                 }
+                setAccount(cachedAccount);
             } catch (e: any) {
                 console.log(e);
                 setError(e?.response?.data?.message || 'Ошибка загрузки аккаунта');

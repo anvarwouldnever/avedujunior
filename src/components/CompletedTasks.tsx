@@ -1,4 +1,4 @@
-import { Platform, Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import translations from '../../translations'
@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const CompletedTasks = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     const navigation = useNavigation()
 
@@ -17,7 +17,7 @@ const CompletedTasks = () => {
             
             <Ionicons name='star' color={'yellow'} size={vs(24)}/>
             
-            <Text style={{fontSize: Platform.isPad ? vs(18) : vs(16), color: 'white', fontWeight: '600'}}>{translations[store.language].пройденныетемы}</Text>
+            <Text style={{fontSize: isTablet ? vs(18) : vs(16), color: 'white', fontWeight: '600'}}>{translations[store.language].пройденныетемы}</Text>
 
         </TouchableOpacity>
     )

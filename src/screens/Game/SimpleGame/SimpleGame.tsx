@@ -9,7 +9,7 @@ const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpaci
 
 const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPlaying, playingIndex, setPlayingIndex, gameType, chosenOptions, setChosenOptions, passed, answers }) => {
 
-    const { s, vs, windowWidth } = useScale();
+    const { s, vs, windowWidth, isTablet } = useScale();
 
     const columnGap = s(10);
     const rowGap = vs(35);
@@ -18,7 +18,7 @@ const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPla
         return content ? Object.values(content).slice().sort(() => Math.random() - 0.5) : [];
     }, [content]);
 
-    const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50);
+    const contSize = ((windowWidth - (isTablet? s(20) : s(30))) * 0.82) - vs(50);
     const contHeight = s(90);
 
     const effectiveBorder = vs(1);

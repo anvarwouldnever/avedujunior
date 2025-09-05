@@ -4,7 +4,7 @@ import { useScale } from '../../hooks/useScale'
 
 const Sections = ({ section, setSection }) => {
     
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     const sections = [
         { key: 'info', label: 'Общая информация' },
@@ -19,7 +19,7 @@ const Sections = ({ section, setSection }) => {
                 const isActive = section === item?.label
                 return (
                     <TouchableOpacity key={item.key} onPress={() => setSection(item?.label)} style={{ backgroundColor: isActive ? '#6A5AE0' : '#EFEEFC', justifyContent: 'center', alignItems: 'center', padding: vs(14), borderRadius: vs(16) }}>
-                        <Text style={{ fontSize: Platform.isPad ? vs(18) : vs(16), color: isActive ? 'white' : '#17104B', fontWeight: isActive ? '600' : '500' }}>{item.label}</Text>
+                        <Text style={{ fontSize: isTablet ? vs(18) : vs(16), color: isActive ? 'white' : '#17104B', fontWeight: isActive ? '600' : '500' }}>{item.label}</Text>
                     </TouchableOpacity>
                 )
             })}

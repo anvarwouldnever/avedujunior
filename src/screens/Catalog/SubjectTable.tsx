@@ -1,4 +1,4 @@
-import { View, Text, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useScale } from '../../hooks/useScale'
 import { Ionicons } from '@expo/vector-icons'
@@ -16,7 +16,7 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
         setExpandedTopicId(prev => (prev === id ? null : id))
     }
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const { subjectDocs, error, loading } = getSubjectDocs(selectedId)
 
@@ -30,9 +30,9 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
 
     return (
         <View style={{ width: '100%', backgroundColor: 'white', height: 'auto', marginTop: vs(20), borderRadius: vs(20), paddingVertical: vs(40), paddingHorizontal: vs(20), marginBottom: vs(70) }}>
-            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: Platform.isPad? vs(16) : s(16), fontWeight: '600'}}>{name}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: isTablet? vs(16) : s(16), fontWeight: '600'}}>{name}</Text>
             <View style={{width: '100%', backgroundColor: '#EFEEFC', height: vs(2), borderRadius: 20, marginVertical: vs(20)}}/>
-            <Text style={{color: '#65628B', marginBottom: vs(20), fontSize: Platform.isPad? vs(14) : s(14)}}>№ {translations[store.language].тема}</Text>
+            <Text style={{color: '#65628B', marginBottom: vs(20), fontSize: isTablet? vs(14) : s(14)}}>№ {translations[store.language].тема}</Text>
             
             <View style={{ height: 'auto', width: '100%', gap: vs(12) }}>
                 {subjectDocs?.map((topic, index) => {
@@ -49,13 +49,13 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
                     const tagsFromPdf = pdfTagMap .filter(({ key }) => topic?.[key]).map(({ name, color }) => ({ name, backgroundColor: color }));
 
                     return (
-                        <AnimatedTouchableOpacity activeOpacity={1} onPress={() => toggleTopic(index)} layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: Platform.isPad? vs(80) : s(80), height: 'auto', borderRadius: vs(20), borderWidth: 2, borderColor: '#EFEEFC', padding: vs(15), flexDirection: 'column' }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: Platform.isPad? vs(15) : s(15)}}>
-                                <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{index + 1}</Text>
-                                <Text style={{ fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{topic?.theme}</Text>
+                        <AnimatedTouchableOpacity activeOpacity={1} onPress={() => toggleTopic(index)} layout={LinearTransition.duration(200)} key={index} style={{ width: '100%', minHeight: isTablet? vs(80) : s(80), height: 'auto', borderRadius: vs(20), borderWidth: 2, borderColor: '#EFEEFC', padding: vs(15), flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: isTablet? vs(15) : s(15)}}>
+                                <Text style={{ fontWeight: '600', fontSize: isTablet? vs(14) : s(14) }}>{index + 1}</Text>
+                                <Text style={{ fontWeight: '600', fontSize: isTablet? vs(14) : s(14) }}>{topic?.theme}</Text>
                             </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: Platform.isPad? vs(15) : s(15)}}>
-                                <View style={{gap: Platform.isPad? vs(8) : s(8), flexDirection: 'row'}}>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: isTablet? vs(15) : s(15)}}>
+                                <View style={{gap: isTablet? vs(8) : s(8), flexDirection: 'row'}}>
                                 {tagsFromPdf.slice(0, 2).map((tag, index) => (
                                     <View style={{ width: 'auto', height: 'auto', paddingHorizontal: vs(15), paddingVertical: vs(5), borderRadius: 7, backgroundColor: tag.backgroundColor }} key={index}>
                                         <Text style={{fontSize: vs(12)}}>{tag?.name}</Text>
@@ -71,7 +71,7 @@ const SubjectTable = ({ selectedId, expandedTopicId, setExpandedTopicId, name })
                                 {pdfTagMap
                                     .filter(({ key }) => topic?.[key])
                                     .map(({ key, name }, pdfIndex) => (
-                                        <Animated.View entering={FadeIn.duration(500)} style={{ flexDirection: 'row', alignItems: 'center', width: Platform.isPad? '20%' : '70%', justifyContent: 'space-between' }} key={key}>
+                                        <Animated.View entering={FadeIn.duration(500)} style={{ flexDirection: 'row', alignItems: 'center', width: isTablet? '20%' : '70%', justifyContent: 'space-between' }} key={key}>
                                             <Text style={{ fontSize: vs(14), fontWeight: '600', color: '#333' }}>{name}:</Text>
                                             <TouchableOpacity onPress={() => openPdf(topic[key])} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFEEFC', borderRadius: 12, }}>
                                                 <Text style={{color: '#6A5AE0', fontWeight: '700', margin: vs(10), fontSize: vs(12)}}>{translations[store?.language].скачать}</Text>

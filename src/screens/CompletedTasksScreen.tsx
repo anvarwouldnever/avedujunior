@@ -1,4 +1,4 @@
-import { ImageBackground, Platform, ScrollView, Text } from 'react-native'
+import { ImageBackground, ScrollView, Text } from 'react-native'
 import React, { useState } from 'react'
 import { store } from '../store/store'
 import { bgAssets } from '../components/BgAssets'
@@ -15,13 +15,13 @@ import useLock from '../hooks/useLock'
 
 const CompletedTasksScreen = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     useLock()
 
-    const { subjects, error, loading } = getSubjects()
+    const { subjects, error, loading } = getSubjects();
 
-    const [selectedSubject, setSelectedSubject] = useState<number | null>(0)
+    const [selectedSubject, setSelectedSubject] = useState<number | null>(0);
 
     const id = subjects[selectedSubject].id;
     const name = subjects[selectedSubject].name;
@@ -31,7 +31,7 @@ const CompletedTasksScreen = () => {
             
             <ScrollView contentContainerStyle={{ rowGap: vs(25) }} style={{ flex: 1, padding: vs(20) }}>
                 
-                <Text style={{color: 'black', fontSize: Platform.isPad ? vs(22) : s(22), fontWeight: '700'}}>{translations[store.language].предметы}</Text>
+                <Text style={{color: 'black', fontSize: isTablet ? vs(22) : s(22), fontWeight: '700'}}>{translations[store.language].предметы}</Text>
                 
                 <Subjects selectedId={selectedSubject} setSelectedId={setSelectedSubject} subjects={subjects} />
 

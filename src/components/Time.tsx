@@ -1,10 +1,10 @@
-import { Text, Platform } from 'react-native'
+import { Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useScale } from '../hooks/useScale'
 
 const Time = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     const [formattedDate, setFormattedDate] = useState('')
     
@@ -27,7 +27,7 @@ const Time = () => {
         return () => clearInterval(interval)
     }, [])
     
-    return <Text style={{ fontSize: Platform.isPad ? vs(26) : vs(20), fontWeight: '600', color: '#0C092A' }}>{formattedDate}</Text>
+    return <Text style={{ fontSize: isTablet ? vs(26) : vs(20), fontWeight: '600', color: '#0C092A' }}>{formattedDate}</Text>
 }
 
 export default Time

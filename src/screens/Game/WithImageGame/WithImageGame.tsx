@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Image } from 'expo-image'
@@ -9,7 +9,7 @@ const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpaci
 
 const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content, gameType, chosenOptions, setChosenOptions, play, stop, isPlaying, playingIndex, setPlayingIndex, passed, answers }) => {
 
-    const { s, vs, windowWidth } = useScale();
+    const { s, vs, windowWidth, isTablet } = useScale();
 
     const images = useMemo(() => {
         return content ? Object.values(content).slice().sort(() => Math.random() - 0.5) : [];
@@ -18,7 +18,7 @@ const WithImageGame = ({ setSelectedImage, setFullImage, questionImage, content,
     const columnGap = s(13);
     const rowGap = vs(35);
 
-    const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50)
+    const contSize = ((windowWidth - (isTablet ? s(20) : s(30))) * 0.82) - vs(50)
     const contHeight = vs(420);
 
     const effectiveBorder = vs(1);

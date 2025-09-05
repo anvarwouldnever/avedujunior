@@ -1,4 +1,4 @@
-import { Platform, View, Text } from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -14,7 +14,7 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
 
     // console.log(content)
 
-    const { s, vs, windowWidth } = useScale();
+    const { s, vs, windowWidth, isTablet } = useScale();
     const dropZones = useRef<View[]>([]);
 
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
@@ -22,7 +22,7 @@ const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex
     const columnGap = s(13);
     const rowGap = vs(45);
 
-    const contSize = ((windowWidth - (Platform.isPad ? s(20) : s(30))) * 0.82) - vs(50);
+    const contSize = ((windowWidth - (isTablet ? s(20) : s(30))) * 0.82) - vs(50);
     const contHeight = vs(420);
 
     const effectiveBorder = vs(1);

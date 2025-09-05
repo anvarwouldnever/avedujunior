@@ -17,7 +17,7 @@ interface AnimatedPopUpProps {
 
 const AnimatedPopUp: React.FC<AnimatedPopUpProps> = ({ popUp, passed, setPopUp, gameType, answers, chosenOptions }) => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
     const [text, setText] = useState('');
 
     const opacity = useSharedValue(0);
@@ -146,7 +146,7 @@ const AnimatedPopUp: React.FC<AnimatedPopUpProps> = ({ popUp, passed, setPopUp, 
                     alignItems: 'center',
                 }, animatedStyle]}
             >
-                <Text style={{ fontSize: Platform.isPad ? s(8) : s(7), color: 'white', fontWeight: '800', textAlign: 'center' }}>{text}</Text>
+                <Text style={{ fontSize: isTablet ? s(8) : s(7), color: 'white', fontWeight: '800', textAlign: 'center' }}>{text}</Text>
             </Animated.View>
         
         </View>

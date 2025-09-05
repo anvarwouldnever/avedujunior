@@ -1,5 +1,5 @@
 // GeneralInfo.tsx
-import { View, Text, TextInput, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { useScale } from '../../hooks/useScale';
 import Calendar from './GeneralInfo/Calendar';
@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const GeneralInfo = () => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const [lastName, setLastName] = useState<string>('')
     const [gender, setGender] = useState<string>('')
@@ -36,7 +36,7 @@ const GeneralInfo = () => {
         { key: 'ticketEndDate', label: 'Дата окончания путевки', placeholder: 'дд.мм.гггг', value: ticketEndDate, onChange: setTicketEndDate, isCalendar: true },
     ];    
 
-    const isPad = Platform.isPad;
+    const isPad = isTablet;
 
     return (
         <View style={{ width: '100%', height: 'auto', rowGap: vs(15), flexWrap: isPad ? 'wrap' : 'nowrap', flexDirection: isPad ? 'row' : 'column', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -44,19 +44,19 @@ const GeneralInfo = () => {
             {fields?.map(field => (
                 <View key={field?.key} style={{ width: isPad ? '32%' : '100%', height: 'auto', rowGap: vs(10) }}>
                     
-                    <Text style={{ fontSize: Platform.isPad ? vs(16) : vs(14), fontWeight: '500' }}>{field?.label}</Text>
+                    <Text style={{ fontSize: isTablet ? vs(16) : vs(14), fontWeight: '500' }}>{field?.label}</Text>
                     
                     {!field.isCalendar ?
                         <TextInput
                             value={field?.value}
                             onChangeText={field?.onChange}
                             placeholder={field?.placeholder}
-                            style={{ paddingHorizontal: vs(16), paddingVertical: vs(14), borderWidth: 2, borderColor: '#EFEEFC', fontSize: Platform.isPad ? vs(16) : vs(14), borderRadius: vs(20), fontWeight: '500' }}
+                            style={{ paddingHorizontal: vs(16), paddingVertical: vs(14), borderWidth: 2, borderColor: '#EFEEFC', fontSize: isTablet ? vs(16) : vs(14), borderRadius: vs(20), fontWeight: '500' }}
                         />
                     :
                         <TouchableOpacity onPress={() => { setActiveField(field.key); setShow(true); }} style={{ paddingHorizontal: vs(16), paddingVertical: vs(14), borderWidth: 2, borderColor: '#EFEEFC', borderRadius: vs(20), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             
-                            <Text style={{fontSize: Platform.isPad ? vs(16) : vs(14), fontWeight: '500'}}>
+                            <Text style={{fontSize: isTablet ? vs(16) : vs(14), fontWeight: '500'}}>
                                 {field?.value ? field.value.toLocaleDateString("ru-RU") : field.placeholder}
                             </Text>
 

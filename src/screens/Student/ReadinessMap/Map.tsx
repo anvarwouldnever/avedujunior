@@ -1,68 +1,45 @@
-import { View, Text, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { useScale } from '../../../hooks/useScale';
 import { Ionicons } from '@expo/vector-icons';
 import Header from './Map/Header';
 
-const Map = () => {
+const Map = ({ map }) => {
 
-    const { s, vs } = useScale()
-    const isPad = Platform.isPad;
+    const { s, vs, isTablet, windowWidth } = useScale()
+    const isPad = isTablet;
     const [selectedButtons, setSelectedButtons] = useState({});
 
-    const map = [
-        {
-            domain: 'Физическое развитие и формирование здорового образа жизни',
-            fields: [
-                { field: 'поднимает голову и грудь' },
-                { field: 'сидит без поддержки' },
-                { field: 'ищет ножки и тянет их ко рту' },
-                { field: 'ползает в различных направлениях' },
-                { field: 'передвигается на четвереньках' },
-            ]
-        },
-        {
-            domain: 'Социально-эмоциональное развитие',
-            fields: [
-                { field: 'поднимает голову и грудь' },
-                { field: 'сидит без поддержки' },
-                { field: 'ищет ножки и тянет их ко рту' },
-                { field: 'ползает в различных направлениях' },
-                { field: 'передвигается на четвереньках' },
-            ]
-        }
-    ]
-
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: vs(1135), flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: '#F5F5F5' }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: windowWidth - vs(80), flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: '#F5F5F5' }}>
             
             <Header />
 
             <View style={{ width: '100%' }}>
-                {map.map((item, domainIndex) => (
+                {map?.map((item, domainIndex) => (
                     <View key={domainIndex} style={{ width: '100%' }}>
                     
                         <View style={{ flexDirection: 'row', backgroundColor: '#271B8F', paddingVertical: vs(5) }}>
                         
                             <Text style={{ width: '3%', fontSize: isPad ? vs(18) : vs(16), color: 'white', fontWeight: '600', textAlign: 'center' }}>{domainIndex + 1}</Text>
 
-                            <Text style={{ width: '55%', fontSize: isPad ? vs(18) : vs(16), color: 'white', fontWeight: '600' }}>{item?.domain}</Text>
+                            <Text style={{ width: '55%', fontSize: isPad ? vs(18) : vs(16), color: 'white', fontWeight: '600' }}>{item?.name}</Text>
 
                         </View>
 
                     
-                        <View style={{ width: '100%', backgroundColor: 'white' }}>
+                        <View style={{ width: '100%', backgroundColor: 'white', alignItems: 'stretch' }}>
 
-                            {item.fields.map((fieldItem, fieldIndex) => {
+                            {item?.properties?.map((fieldItem, fieldIndex) => {
 
                                 const keyPrefix = `${domainIndex}-${fieldIndex}`;
 
                                 return (
-                                    <View key={fieldIndex} style={{ width: '100%', borderBottomWidth: 1, flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <View key={fieldIndex} style={{ width: '100%', minHeight: vs(50), borderBottomWidth: 1, flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between', alignItems: 'stretch' }}>
                                         
-                                        <Text style={{ width: '3%',fontSize: isPad ? vs(18) : vs(16), color: 'black', fontWeight: '400', textAlign: 'center' }}>{fieldIndex + 1}.</Text>
+                                        <Text style={{ width: '3%',fontSize: isPad ? vs(18) : vs(16), color: 'black', fontWeight: '400', textAlign: 'center', alignSelf: 'center' }}>{fieldIndex + 1}.</Text>
 
-                                        <Text style={{ width: '55%', fontSize: isPad ? vs(18) : vs(16), color: 'black', fontWeight: '400' }}>{fieldItem.field}</Text>
+                                        <Text style={{ width: '55%', fontSize: isPad ? vs(18) : vs(16), color: 'black', fontWeight: '400', alignSelf: 'center', marginVertical: vs(10) }}>{fieldItem?.name}</Text>
                                         
                                         <View style={{ flexDirection: 'row', width: '40%' }}>
 
@@ -72,7 +49,7 @@ const Map = () => {
                                                 const isSelected = selectedButtons[key];
 
                                                 return (
-                                                    <TouchableOpacity key={btnIndex} style={{ width: '25%', height: vs(50), borderRightWidth: 1, borderLeftWidth: btnIndex === 0 ? 1 : 0, justifyContent: 'center', alignItems: 'center', backgroundColor: isSelected ? '#DDEEFF' : '' }} onPress={() => setSelectedButtons(prev => ({ ...prev, [key]: !prev[key] }))}>
+                                                    <TouchableOpacity key={btnIndex} style={{ width: '25%', flex: 1, borderRightWidth: 1, borderLeftWidth: btnIndex === 0 ? 1 : 0, justifyContent: 'center', alignItems: 'center', backgroundColor: isSelected ? '#DDEEFF' : '' }} onPress={() => setSelectedButtons(prev => ({ ...prev, [key]: !prev[key] }))}>
                                                         {isSelected && <Ionicons name="checkmark" size={vs(24)} color="black" />}
                                                     </TouchableOpacity>
                                                 );

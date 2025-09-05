@@ -1,4 +1,4 @@
-import { View, Text, Platform, TouchableOpacity, useWindowDimensions, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, useWindowDimensions, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { useScale } from '../../hooks/useScale'
 import { useNavigation } from '@react-navigation/native'
@@ -13,16 +13,16 @@ const TasksList = ({ id, name }) => {
 
     const { tasks, error, loading } = useTasks(id);
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     const navigation = useNavigation();
 
     const { width } = useWindowDimensions();
     const padding = vs(40);
 
-    const columns = Platform.OS === 'ios' && Platform.isPad ? 3 : width - padding >= 738 ? 2 : 1;
+    const columns = isTablet ? 3 : width - padding >= 738 ? 2 : 1;
 
-    const subjectWidth = Platform.OS === 'ios' && Platform.isPad
+    const subjectWidth = isTablet
         ? (width - padding - vs(20) * 2) / 3
         : columns === 2
         ? (width - padding) / 2
@@ -61,11 +61,11 @@ const TasksList = ({ id, name }) => {
                                             <Text adjustsFontSizeToFit numberOfLines={1} ellipsizeMode='tail' style={{ color: color.secondary, fontWeight: '600', margin: vs(8)}}>{name}</Text>
                                         </View>
 
-                                        <View style={{width: '100%', height: Platform.isPad? vs(80) : s(80), flexDirection: 'row', alignItems: 'center', gap: vs(15)}}>
-                                            <ProgressBorder size={columns === 2? (Platform.isPad? vs(70) : s(70)) : (Platform.isPad? vs(80) : s(80))} percent={Math.round(topic?.finished_percent)} baseColor={color.primary} color={color.secondary}/>
+                                        <View style={{width: '100%', height: isTablet? vs(80) : s(80), flexDirection: 'row', alignItems: 'center', gap: vs(15)}}>
+                                            <ProgressBorder size={columns === 2? (isTablet? vs(70) : s(70)) : (isTablet? vs(80) : s(80))} percent={Math.round(topic?.finished_percent)} baseColor={color.primary} color={color.secondary}/>
 
                                             <View style={{height: '100%', width: '60%', justifyContent: 'center', gap: vs(10)}}>
-                                                <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: Platform.isPad? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
+                                                <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: isTablet? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
                                                 <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: name, topic: topic.name, id: topic?.id, tasksId: id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(6), paddingVertical: vs(8), width: '60%'}}>
                                                     <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>{translations[store.language].пройти} →</Text>
@@ -73,19 +73,19 @@ const TasksList = ({ id, name }) => {
                                             </View>
                                         </View>
 
-                                        <View style={{ width: '90%', alignSelf: 'center', height: Platform.isPad? vs(35) : s(35), flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <View style={{ width: '90%', alignSelf: 'center', height: isTablet? vs(35) : s(35), flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
-                                                <Text style={{fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12)}}>{topic?.passed_tests_count} / {topic?.test_count}</Text>
+                                                <Text style={{fontWeight: '800', fontSize: isTablet? vs(12) : s(12)}}>{topic?.passed_tests_count} / {topic?.test_count}</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>{translations[store.language].тестоврешено}</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{translations[store.language].тестоврешено}</Text>
                                             </View>
 
                                             <View style={{height: '100%', backgroundColor: '#EFEEFC', width: 1, borderRadius: 20}}/>
 
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
-                                                <Text style={{ fontWeight: '800', fontSize: Platform.isPad? vs(12) : s(12) }}>{Math.round(topic?.finished_percent)}%</Text>
+                                                <Text style={{ fontWeight: '800', fontSize: isTablet? vs(12) : s(12) }}>{Math.round(topic?.finished_percent)}%</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: Platform.isPad? vs(12) : s(12)}}>{translations[store.language].пройдено}</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{translations[store.language].пройдено}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

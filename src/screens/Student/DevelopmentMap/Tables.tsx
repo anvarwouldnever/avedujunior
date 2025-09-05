@@ -1,11 +1,11 @@
-import { View, Text, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useScale } from '../../../hooks/useScale'
 
 const Tables = () => {
 
-    const { vs } = useScale()
-    const isPad = Platform.isPad;
+    const { vs, isTablet } = useScale()
+    const isPad = isTablet;
 
     const tables = [
         { id: 1, title: 'Карта развития ребенка 0-1 год' },

@@ -12,7 +12,7 @@ import { store } from '../store/store'
 
 const RegisterScreen = () => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const [errorMessage, setErrorMessage] = useState<string>(null);
 
@@ -50,8 +50,8 @@ const RegisterScreen = () => {
         };
 
         return (
-            <TouchableOpacity onPress={() => handlePress()} style={{ width: '100%', height: Platform.isPad? vs(45) : s(45), backgroundColor: '#6A5AE0', opacity: isButtonDisabled ? 0.5 : 1, borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{progress === 1 || progress === 2 ? translations[store.language].продолжить : progress === 3 && translations[store.language].зарегистрироватьребенкавсистеме}</Text>
+            <TouchableOpacity onPress={() => handlePress()} style={{ width: '100%', height: isTablet? vs(45) : s(45), backgroundColor: '#6A5AE0', opacity: isButtonDisabled ? 0.5 : 1, borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: isTablet? vs(14) : s(14) }}>{progress === 1 || progress === 2 ? translations[store.language].продолжить : progress === 3 && translations[store.language].зарегистрироватьребенкавсистеме}</Text>
             </TouchableOpacity>
         )
     };
@@ -69,10 +69,10 @@ const RegisterScreen = () => {
         return (
             <View style={{width: '100%', height: 'auto', gap: vs(15)}}>
                 <View style={{gap: vs(10), width: '100%'}}>
-                    <Text style={{ fontSize: Platform.isPad? vs(12) : s(12) }}>{translations[store?.language]?.введитеномер}</Text>
-                    <View style={{ flexDirection: 'row', height: Platform.isPad? vs(40) : s(40), width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.введитеномер}</Text>
+                    <View style={{ flexDirection: 'row', height: isTablet? vs(40) : s(40), width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                         <TextInput
-                            style={{ width: '60%', backgroundColor: 'white', height: '100%', fontSize: Platform.isPad? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, borderRadius: 15, paddingHorizontal: 20}}
+                            style={{ width: '60%', backgroundColor: 'white', height: '100%', fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, borderRadius: 15, paddingHorizontal: 20}}
                             placeholder={translations[store?.language]?.введитеваштелефон}
                             onChangeText={(text) => setPassword(text)}
                             autoCapitalize="none"

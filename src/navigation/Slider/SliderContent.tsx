@@ -20,7 +20,7 @@ const menuItems = [
 
 const SliderContent = () => {
     const navigation = useNavigation();
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const handleNavigate = (screen: string) => {
         if (navigationStore.currentRoute !== screen) {
@@ -45,7 +45,7 @@ const SliderContent = () => {
               style={[
                 styles.item,
                 isActive && styles.itemActive,
-                {marginBottom: Platform.isPad? vs(20) : s(20), padding: Platform.isPad? vs(14) : s(14),}
+                {marginBottom: isTablet? vs(20) : s(20), padding: isTablet? vs(14) : s(14),}
               ]}
             >
             <Ionicons
@@ -53,7 +53,7 @@ const SliderContent = () => {
                 size={vs(20)}
                 color={isActive ? '#FFFFFF' : '#B390EF'}
             />
-            <Text style={[styles.text, { color: isActive ? '#FFFFFF' : '#B390EF', fontSize: Platform.isPad? vs(16) : s(16), marginLeft: Platform.isPad? vs(15) : s(15)}]}>
+            <Text style={[styles.text, { color: isActive ? '#FFFFFF' : '#B390EF', fontSize: isTablet? vs(16) : s(16), marginLeft: isTablet? vs(15) : s(15)}]}>
                 {item?.label}
             </Text>
             </Pressable>

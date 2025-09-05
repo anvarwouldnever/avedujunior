@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { useScale } from '../../hooks/useScale'
@@ -25,7 +25,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
     const monthName = format(new Date(year, month), 'LLLL', { locale });
     const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     return (
         <View style={{ borderWidth: 2, borderColor: '#EFEEFC', height: vs(360), borderRadius: 20, padding: vs(15), backgroundColor: 'white', justifyContent: 'space-between', marginBottom: 100}}>
@@ -38,7 +38,7 @@ const MonthTopics = ({ days, name, changeTopic, id }) => {
                     {days?.map((topic, index) => {
                         return (
                             <TouchableOpacity onPress={() => changeTopic(topic?.id)} key={index} style={{backgroundColor: id === topic?.id ? '#6A5AE0' : 'white', borderWidth: 2, width: '100%', borderColor: '#EFEEFC', borderRadius: 20, height: vs(130), padding: vs(15), justifyContent: 'space-between'}}>
-                                <Image source={require('../../screens/Catalog/staticAssets/static3.jpg')} style={{width: Platform.isPad? vs(40) : s(40), height: vs(40), borderRadius: 10}}/>
+                                <Image source={require('../../screens/Catalog/staticAssets/static3.jpg')} style={{width: isTablet? vs(40) : s(40), height: vs(40), borderRadius: 10}}/>
                                 <View style={{width: '100%', height: vs(40), justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
                                     <View style={{justifyContent: 'space-between', height: '100%'}}>
                                         <Text style={{ fontSize: vs(14), fontWeight: '600', color: id === topic?.id ? 'white' : 'black' }}>{topic?.theme}</Text>

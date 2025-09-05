@@ -1,12 +1,12 @@
-import { View, Text, Platform, ScrollView } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { useScale } from '../../../hooks/useScale';
 
 const Conditions = () => {
     
-    const { vs } = useScale();
+    const { vs, isTablet } = useScale();
 
-    const isPad = Platform.isPad;
+    const isPad = isTablet;
 
     const conditions = [
         { key: 'notAble', label: 'Не умеет' },

@@ -1,8 +1,7 @@
-// hooks/useChangePassword.ts
 import { useState } from 'react';
-import { ChangeUser } from '../../../api/methods/profile/user';
+import { ChangePassword } from '../../../api/methods/profile/user';
 
-export const changeUser = () => {
+export const putPassword = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -23,7 +22,7 @@ export const changeUser = () => {
                 setError('Пароли должны совпадать');
                 return;
             }
-            const response = await ChangeUser(oldPassword, newPassword);
+            const response = await ChangePassword(oldPassword, newPassword);
             console.log(response?.data)
             
             if (response?.data?.data?.access_level) {

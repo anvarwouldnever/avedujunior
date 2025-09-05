@@ -23,9 +23,9 @@ const Slider = ({
   children?: React.ReactNode;
 }) => {
 
-  const { s, vs, windowWidth } = useScale()
+  const { s, vs, windowWidth, isTablet } = useScale()
 
-  const SLIDER_WIDTH = Platform.isPad? windowWidth * 0.3 : windowWidth * 0.75;
+  const SLIDER_WIDTH = isTablet? windowWidth * 0.3 : windowWidth * 0.75;
 
   const translateX = useSharedValue(-SLIDER_WIDTH);
 
@@ -46,9 +46,9 @@ const Slider = ({
             <Pressable style={[styles.backdrop, {left: SLIDER_WIDTH}]} onPress={() => navigationStore.setOpenSlider(false)} />
           )}
 
-          <Animated.View style={[styles.slider, sliderStyle, {width: SLIDER_WIDTH, paddingTop: Platform.isPad ? vs(10) : vs(20), rowGap: vs(10)}]}>
+          <Animated.View style={[styles.slider, sliderStyle, {width: SLIDER_WIDTH, paddingTop: isTablet ? vs(10) : vs(20), rowGap: vs(10)}]}>
           
-            { !Platform.isPad && <Time />}
+            { !isTablet && <Time />}
             
             {children ?? (
               <Text style={{ color: 'white', fontSize: 18 }}>Пусто</Text>

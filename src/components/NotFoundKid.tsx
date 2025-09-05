@@ -1,11 +1,11 @@
-import { View, Text, Platform } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 import { useScale } from '../hooks/useScale'
 import LottieView from 'lottie-react-native'
 
 const NotFoundKid = ({ text }) => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     return (
         <View style={{ marginVertical: vs(20) }}>
@@ -16,7 +16,7 @@ const NotFoundKid = ({ text }) => {
                 loop
             />
 
-            <Text style={{ fontSize: Platform.isPad? vs(16) : vs(16), fontWeight: '600', alignSelf: 'center' }}>{text}</Text>
+            <Text style={{ fontSize: isTablet? vs(16) : vs(16), fontWeight: '600', alignSelf: 'center' }}>{text}</Text>
         </View>
     )
 }

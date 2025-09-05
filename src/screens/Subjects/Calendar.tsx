@@ -1,4 +1,4 @@
-import { View, Text, Platform, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useMemo } from 'react'
 import { useScale } from '../../hooks/useScale';
 import { getTimetable } from './hooks/getTimetable';
@@ -7,22 +7,22 @@ import { store } from '../../store/store';
 
 const Calendar = () => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const today = new Date();
     let year = today.getFullYear();
     let month = today.getMonth();
 
-    if (store.access === 2 || store.access === 4) {
+    if (store?.access === 2 || store?.access === 4) {
         if (month < 8) {
             year -= 1;
         }
         month = 8;
     }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    const { timetable, hasFifthWeek } = getTimetable(month, year);
 
-    const { timetable, hasFifthWeek, error, loading } = getTimetable(month, year);
-
-    const navigation = useNavigation()
+    const navigation = useNavigation();
 
     const hexToHSL = (hex: string) => {
         hex = hex.replace(/^#/, "");
@@ -254,22 +254,22 @@ const Calendar = () => {
                                 >
                                     <Text
                                         style={{
-                                            fontSize: Platform.isPad? vs(14) : s(14),
+                                            fontSize: isTablet? vs(14) : s(14),
                                             color: date.getMonth() === month ? 'black' : '#aaa'
                                         }}
                                     >
                                         {date.getDate()}
                                     </Text>
                                     
-                                    <View style={{width: '100%', height: '90%', padding: vs(10), gap: Platform.isPad? vs(10) : s(10)}}>
+                                    <View style={{width: '100%', height: '90%', padding: vs(10), gap: isTablet? vs(10) : s(10)}}>
                                         {subjects?.slice().sort((a, b) => a?.name.localeCompare(b?.name)).map((subject, index) => {
                                             const primaryColor = lightenColorHSL(subject.color, 93);
                                             const secondaryColor = subject.color; 
                                             
                                             return (
-                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', { id: subject?.id, topic: subject?.theme, name: subject?.name, tasksId: subject?.tasksId })} key={index} style={{backgroundColor: primaryColor, width: '100%', height: Platform.isPad? vs(20) : s(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: Platform.isPad? vs(8) : s(8)}}>
-                                                    <View style={{backgroundColor: secondaryColor, width: Platform.isPad? vs(7) : s(7), height: Platform.isPad? vs(7) : s(7), borderRadius: 100}}/>
-                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={{ width: '95%', fontSize: Platform.isPad? vs(12) : vs(12) }}>{subject?.name} ({subject?.theme})</Text>
+                                                <TouchableOpacity onPress={() => navigation.navigate('PreGame', { id: subject?.id, topic: subject?.theme, name: subject?.name, tasksId: subject?.tasksId })} key={index} style={{backgroundColor: primaryColor, width: '100%', height: isTablet? vs(20) : s(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: isTablet? vs(8) : s(8)}}>
+                                                    <View style={{backgroundColor: secondaryColor, width: isTablet? vs(7) : s(7), height: isTablet? vs(7) : s(7), borderRadius: 100}}/>
+                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={{ width: '95%', fontSize: isTablet? vs(12) : vs(12) }}>{subject?.name} ({subject?.theme})</Text>
                                                 </TouchableOpacity> 
                                             )
                                         })}

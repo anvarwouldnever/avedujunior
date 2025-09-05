@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/HomeScreen';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import SubjectsScreen from '../../screens/SubjectsScreen';
 import OurGroupScreen from '../../screens/OurGroupScreen';
 import CatalogScreen from '../../screens/CatalogScreen';
@@ -30,7 +30,7 @@ const Stack = createStackNavigator();
 
 const Navigation = () => {
 
-    const { vs } = useScale();
+    const { vs, isTablet, windowWidth } = useScale();
     
     const token = SecureStore.getItem('access_token');
 
@@ -52,51 +52,44 @@ const Navigation = () => {
                 return {
                     animation: 'default',
                     title: menuItem ? menuItem?.label : route?.name,
+                    headerTitleContainerStyle: { position: 'absolute', justifyContent: 'center', left: 0, right: 0, alignSelf: 'center'},
                     headerTitleStyle: {
                         fontSize: vs(12),
                         alignSelf: 'center',
-                        maxWidth: vs(100)
+                        maxWidth: vs(100),
                     },
 
                     headerTitle: () => (
-                        <Text
-                            style={{
-                                fontSize: Platform.isPad ? vs(20) : vs(14),
-                                fontWeight: '700',
-                                color: '#6A5AE0',
-                                textAlign: 'center',
-                                maxWidth: Platform.isPad ? vs(300) : vs(125)
-                            }}
-                            numberOfLines={2}
-                            ellipsizeMode="tail"
-                        >
-                          {menuItem ? menuItem.label : ''}
-                        </Text>
+                        <View style={{ position: 'absolute', width: windowWidth, justifyContent: 'center', alignItems: 'center', left: 0}}>
+                            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', maxWidth: vs(400), color: '#6A5AE0', textAlign: 'center'}} numberOfLines={2} ellipsizeMode="tail">
+                                {menuItem ? menuItem.label : ''}
+                            </Text>
+                        </View>
                     ),
 
                     headerStyle: {
-                        height: Platform.isPad ? 130 : vs(130),
+                        height: isTablet ? 130 : vs(130),
                     },
 
                     headerRight: () => 
-                        <View style={{ flexDirection: 'row', columnGap: vs(25), alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', columnGap: vs(25), alignItems: 'center'}}>
                             
-                            { Platform.isPad && <CompletedTasks />}
+                            { isTablet && <CompletedTasks /> }
 
                             <HeaderRight />
 
-                        </View>,
+                        </View>
+                    ,
 
                     headerLeft: () => 
                         <View style={{flexDirection: 'row', alignItems: 'center', columnGap: vs(25)}}>
 
                             <Logo />
 
-                            { Platform.isPad && <Time />}
+                            { isTablet && <Time />}
 
                         </View>
                     ,
-
                 }
             }} initialRouteName={token? "Home" : "LoginScreen"}>
             <Stack.Screen name="Home" component={HomeScreen} />

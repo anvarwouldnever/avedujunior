@@ -6,10 +6,10 @@ import { store } from '../../store/store'
 
 const ChooseLanguage = ({ thinking }) => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     return (
-        <View style={{ width: '100%', height: Platform.isPad? vs(40) : s(40), gap: s(5), flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{ width: '100%', height: isTablet? vs(40) : s(40), gap: s(5), flexDirection: 'row', justifyContent: 'center' }}>
             <TouchableOpacity activeOpacity={0.8} onPress={thinking? () => {return} : () => store.setLanguage('ru')} style={{ borderWidth: 2, borderColor: '#6A5AE0', borderRadius: 8, backgroundColor: store.language === 'ru'? '#6A5AE0' : '#EFEEFC', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: store.language === 'ru'? 'white' : '#6A5AE0', fontWeight: '600', marginHorizontal: vs(20), fontSize: vs(14) }}>Ru</Text>
             </TouchableOpacity>

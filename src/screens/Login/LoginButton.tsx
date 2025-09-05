@@ -10,7 +10,7 @@ import { store } from '../../store/store'
 const LoginButton = ({ id, password, setErrorMessage, setThinking, thinking, selectedRole }) => {
 
     const navigation = useNavigation();
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const loginGroup = async() => {
         try {
@@ -57,11 +57,11 @@ const LoginButton = ({ id, password, setErrorMessage, setThinking, thinking, sel
     }
 
     return (
-        <TouchableOpacity onPress={thinking || !id || !password ? () => {} : selectedRole === translations[store.language]?.организация? () => loginGroup() : () => loginChild()} style={{ width: '100%', height: Platform.isPad? vs(45) : s(45), opacity: !id || !password ? 0.5 : 1, backgroundColor: '#6A5AE0', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity onPress={thinking || !id || !password ? () => {} : selectedRole === translations[store.language]?.организация? () => loginGroup() : () => loginChild()} style={{ width: '100%', height: isTablet? vs(45) : s(45), opacity: !id || !password ? 0.5 : 1, backgroundColor: '#6A5AE0', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
             {thinking ? (
                 <ActivityIndicator size="small" color="#fff" />
             ) : (
-                <Text style={{ color: 'white', fontWeight: '600', fontSize: Platform.isPad? vs(14) : s(14) }}>{translations[store.language].войти}</Text>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: isTablet? vs(14) : s(14) }}>{translations[store.language].войти}</Text>
             )}
         </TouchableOpacity>
     )

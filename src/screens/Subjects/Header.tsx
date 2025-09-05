@@ -1,4 +1,4 @@
-import { View, Text, Platform, Image } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { useScale } from '../../hooks/useScale';
 import { store } from '../../store/store';
@@ -6,7 +6,7 @@ import CompletedTasks from '../../components/CompletedTasks';
 
 const Header = () => {
 
-    const { s, vs  } = useScale()
+    const { s, vs, isTablet } = useScale()
 
     const today = new Date();
     let year = today.getFullYear();
@@ -28,16 +28,16 @@ const Header = () => {
     const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
     return (
-        <View style={{ width: '100%', height: Platform.isPad? vs(250) : s(250), justifyContent: 'center', alignItems: 'center',  gap: vs(5) }}>
+        <View style={{ width: '100%', height: isTablet? vs(250) : s(250), justifyContent: 'center', alignItems: 'center',  gap: vs(5) }}>
             
-            <Text style={{ fontSize: Platform.isPad? vs(20) : s(20) }}>
+            <Text style={{ fontSize: isTablet? vs(20) : s(20) }}>
                 <Text style={{ fontWeight: 'bold' }}>
                     {capitalizedMonth}
                 </Text>{' '}
                 {year}
             </Text>
             
-            <Image style={{width: Platform.isPad? vs(150) : s(140), height: Platform.isPad? vs(140) : s(140), resizeMode: 'contain'}} source={require('../../../assets/subjectsCar.png')}/>
+            <Image style={{width: isTablet? vs(150) : s(140), height: isTablet? vs(140) : s(140), resizeMode: 'contain'}} source={require('../../../assets/subjectsCar.png')}/>
             
             <CompletedTasks />
 

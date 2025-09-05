@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, ScrollView, Platform } from 'react-native'
+import { View, Text, ImageBackground, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { useScale } from '../hooks/useScale'
 import { store } from '../store/store'
@@ -15,7 +15,7 @@ import SliderContent from '../navigation/Slider/SliderContent'
 
 const ProfileScreen = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale();
 
     const [currentSection, setCurrentSection] = useState<string>(translations[store.language].мойпрофиль)
 
@@ -31,6 +31,9 @@ const ProfileScreen = () => {
     const name = account?.kindergarten?.name;
     const region = account?.kindergarten?.region?.name;
 
+    const background = account?.background
+    const avatar = account?.avatar
+
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
@@ -38,19 +41,19 @@ const ProfileScreen = () => {
                     
                     <Sections currentSection={currentSection} setCurrentSection={setCurrentSection}/>
             
-                    <Text style={{ fontSize: Platform.isPad? vs(18 + 4) : vs(18), fontWeight: '600' }}>{currentSection}</Text>
+                    <Text style={{ fontSize: isTablet? vs(18 + 4) : vs(18), fontWeight: '600' }}>{currentSection}</Text>
                 
                     {
                         currentSection === translations[store.language].мойпрофиль ?
-                        <MyProfileSection birth_date={birth_date} first_name={first_name} last_name={last_name} middle_name={middle_name} />
+                            <MyProfileSection birth_date={birth_date} first_name={first_name} last_name={last_name} middle_name={middle_name} background={background} avatar={avatar}/>
                         :
                         currentSection === translations[store.language].образовательноеучереждение
                         ?
-                        <EducationalFacilitySection city={city} name={name} region={region} />
+                            <EducationalFacilitySection city={city} name={name} region={region} />
                         :
                         currentSection === translations[store.language].сменапароля
                         &&
-                        <PasswordChangeSection />
+                            <PasswordChangeSection />
                     }
                     
                 </View>

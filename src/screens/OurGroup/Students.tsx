@@ -10,7 +10,7 @@ const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpaci
 
 const Students = ({ students }) => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const navigation = useNavigation()
 
@@ -26,7 +26,7 @@ const Students = ({ students }) => {
         });
     }
 
-    const isPad = Platform.isPad
+    const isPad = isTablet;
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: 'auto', rowGap: vs(15)}}>
@@ -48,9 +48,9 @@ const Students = ({ students }) => {
                             
                             <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: vs(12), flex: 1 }}>
                                 
-                                <Text style={{ fontSize: Platform.isPad ? vs(18) : vs(16), color: '#0C092A', fontWeight: '500' }}>{number}</Text>
+                                <Text style={{ fontSize: isTablet ? vs(18) : vs(16), color: '#0C092A', fontWeight: '500' }}>{number}</Text>
                                 
-                                <Text ellipsizeMode="tail" numberOfLines={1} style={{ fontSize: Platform.isPad ? vs(18) : vs(16), color: '#0C092A', fontWeight: '500', flexShrink: 1 }}>{name}</Text>
+                                <Text ellipsizeMode="tail" numberOfLines={1} style={{ fontSize: isTablet ? vs(18) : vs(16), color: '#0C092A', fontWeight: '500', flexShrink: 1 }}>{name}</Text>
 
                             </View>
 
@@ -66,55 +66,55 @@ const Students = ({ students }) => {
 
                                 <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center', alignItems: isPad ? 'center' : 'flex-start', }}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>ФИО:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>ФИО:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{name}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{name}</Text>
 
                                 </View>
 
                                 {mother && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Мама ребенка:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Мама ребенка:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${mother?.last_name} ${mother?.first_name} ${mother?.middle_name}`}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${mother?.last_name} ${mother?.first_name} ${mother?.middle_name}`}</Text>
 
                                 </View>}
 
                                 {mother && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between': 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Номер мамы:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Номер мамы:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{mother?.phone}</Text>
-
-                                </View>}
-
-                                {father && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
-                                    
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Отец ребенка:</Text>
-
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${father?.last_name} ${father?.first_name} ${father?.middle_name}`}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{mother?.phone}</Text>
 
                                 </View>}
 
                                 {father && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Номер отца:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Отец ребенка:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{father?.phone}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${father?.last_name} ${father?.first_name} ${father?.middle_name}`}</Text>
+
+                                </View>}
+
+                                {father && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
+                                    
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Номер отца:</Text>
+
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{father?.phone}</Text>
 
                                 </View>}
 
                                 {gender && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Пол ребенка:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Пол ребенка:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: Platform.isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{gender === "M" ? "Мужчина" : "Женщина"}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{gender === "M" ? "Мужчина" : "Женщина"}</Text>
 
                                 </View>}
 
                                 {age !== '' && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                         
-                                        <Text style={{ color: '#858494', fontSize: Platform.isPad ? vs(18) : vs(14), fontWeight: '400' }}>Возраст:</Text>
+                                        <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Возраст:</Text>
                                         
                                         <Text style={{ color: '#49465F', fontSize: isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>
                                             {age}

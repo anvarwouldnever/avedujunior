@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Sections = ({currentSection, setCurrentSection}) => {
 
-    const { s, vs } = useScale();
+    const { s, vs, isTablet } = useScale();
 
     const navigation = useNavigation();
 
@@ -28,11 +28,11 @@ const Sections = ({currentSection, setCurrentSection}) => {
 
     return (
         <View style={{ gap: vs(15) }}>
-            <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: s(15) }} horizontal style={{ width: '100%', height: Platform.isPad? vs(25) : s(25) }}>
+            <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: s(15) }} horizontal style={{ width: '100%', height: isTablet? vs(25) : s(25) }}>
                 {sections?.map((section, index) => {
                     return (
                         <TouchableOpacity activeOpacity={0.8} onPress={() => setCurrentSection(section?.name)} key={index} style={{ justifyContent: 'center'}}>
-                            <Text style={{ fontSize: Platform.isPad? vs(16 + 4) : vs(16), color: currentSection === section?.name ? '#9087E5' : 'black', fontWeight: '500' }}>{section.name}</Text>
+                            <Text style={{ fontSize: isTablet? vs(16 + 4) : vs(16), color: currentSection === section?.name ? '#9087E5' : 'black', fontWeight: '500' }}>{section.name}</Text>
                         </TouchableOpacity>
                     )
                 })}
@@ -41,7 +41,7 @@ const Sections = ({currentSection, setCurrentSection}) => {
             <View style={{ borderWidth: 1, borderColor: '#F2F0FF' }} />
 
             <TouchableOpacity onPress={() => logout()} style={{ justifyContent: 'center', width: '60%' }}>
-                <Text style={{ color: 'red', fontSize: Platform.isPad? vs(16 + 4) : vs(16), fontWeight: '400' }}>{translations[store.language].выходизсистемы}</Text>
+                <Text style={{ color: 'red', fontSize: isTablet? vs(16 + 4) : vs(16), fontWeight: '400' }}>{translations[store.language].выходизсистемы}</Text>
             </TouchableOpacity>
         </View>
     )

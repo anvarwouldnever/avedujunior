@@ -5,9 +5,9 @@ import NotFoundKid from '../../components/NotFoundKid';
 
 const Parents = () => {
 
-    const { s, vs } = useScale()
+    const { s, vs, isTablet } = useScale()
 
-    const isPad = Platform.isPad
+    const isPad = isTablet
 
     return (
         <View style={{ width: '100%', height: 'auto', rowGap: vs(15), flexWrap: isPad ? 'nowrap' : 'nowrap', flexDirection: isPad ? 'column' : 'column', justifyContent: 'space-between', alignItems: 'center' }}>
