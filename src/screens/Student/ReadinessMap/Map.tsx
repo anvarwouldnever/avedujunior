@@ -11,11 +11,11 @@ const Map = ({ map }) => {
     const [selectedButtons, setSelectedButtons] = useState({});
 
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: windowWidth - vs(80), flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: '#F5F5F5' }}>
-            
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: isTablet ? windowWidth - vs(82) : vs(1000), flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: 'white' }}>
+
             <Header />
 
-            <View style={{ width: '100%' }}>
+            {<View style={{ width: '100%' }}>
                 {map?.map((item, domainIndex) => (
                     <View key={domainIndex} style={{ width: '100%' }}>
                     
@@ -65,10 +65,9 @@ const Map = ({ map }) => {
 
                     </View>
                 ))}
-            </View>
+            </View>}
 
         </ScrollView>
-
     );
 };
 

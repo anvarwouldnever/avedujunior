@@ -3,21 +3,23 @@ import React, { useState } from 'react'
 import { useScale } from '../../../hooks/useScale';
 import Header from './Map/Header';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { Extrapolate, interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Inputs from './Map/Inputs';
 
-const Map = ({ map }) => {
+const Map = ({ map, scrollY }) => {
 
-    const { s, vs, isTablet, windowWidth } = useScale()
+    const { s, vs, isTablet, windowWidth, windowHeight } = useScale()
 
     const isPad = isTablet;
 
     const [selectedButtons, setSelectedButtons] = useState({});
 
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: windowWidth - vs(80), height: 'auto', flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: '#F5F5F5' }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ width: isTablet ? windowWidth - vs(82) : vs(1000), height: 'auto', flexDirection: 'column', rowGap: vs(5), paddingVertical: vs(5) }} style={{ backgroundColor: 'white' }}>
             
             <Header />
 
-            {<View style={{ width: '100%', height: 'auto' }}>
+            {<View style={{ width: '85%', height: 'auto' }}>
                 
                 {map?.map((item, sectionIndex) => {
                     const sectionNumber = sectionIndex + 1;
@@ -105,6 +107,8 @@ const Map = ({ map }) => {
                 })}
 
             </View>}
+
+            <Inputs scrollY={scrollY} />
 
         </ScrollView>
     )

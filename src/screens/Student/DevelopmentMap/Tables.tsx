@@ -28,7 +28,7 @@ const Tables = () => {
                     </Text>
 
                     <TouchableOpacity style={{ padding: vs(10), borderRadius: vs(16), justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-                        <Text style={{ fontSize: isPad ? vs(16) : vs(14), color: '#6A5AE0', fontWeight: '600' }}>Скачать таблицу</Text>
+                        <Text adjustsFontSizeToFit style={{ fontSize: isPad ? vs(16) : vs(14), color: '#6A5AE0', fontWeight: '600' }}>Скачать таблицу</Text>
                     </TouchableOpacity>
 
                 </TouchableOpacity>

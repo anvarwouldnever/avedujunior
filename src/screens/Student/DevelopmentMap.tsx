@@ -7,7 +7,7 @@ import Map from './DevelopmentMap/Map';
 import Tables from './DevelopmentMap/Tables';
 import { getMap } from './hooks/getMap';
 
-const DevelopmentMap = () => {
+const DevelopmentMap = ({ scrollY }) => {
 
     const { s, vs, isTablet } = useScale()
 
@@ -26,7 +26,7 @@ const DevelopmentMap = () => {
 
             <Conditions />
 
-            <Map map={map} />
+            <Map map={map} scrollY={scrollY} />
 
         </View>
     )

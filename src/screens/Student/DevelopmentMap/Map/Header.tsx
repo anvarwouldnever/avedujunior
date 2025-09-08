@@ -9,7 +9,7 @@ const Header = () => {
     const isPad = Platform.isPad;
 
     return (
-        <View style={{ flexDirection: 'row', paddingHorizontal: vs(5), width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', paddingHorizontal: vs(5), width: '85%', alignItems: 'center', justifyContent: 'space-between' }}>
                     
             <Text style={{ fontSize: isPad ? vs(18) : vs(16), width: '2%', textAlign: 'center', }}>№</Text>
 

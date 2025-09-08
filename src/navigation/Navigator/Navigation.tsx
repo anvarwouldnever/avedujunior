@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/HomeScreen';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import SubjectsScreen from '../../screens/SubjectsScreen';
 import OurGroupScreen from '../../screens/OurGroupScreen';
 import CatalogScreen from '../../screens/CatalogScreen';
@@ -52,7 +52,8 @@ const Navigation = () => {
                 return {
                     animation: 'default',
                     title: menuItem ? menuItem?.label : route?.name,
-                    headerTitleContainerStyle: { position: 'absolute', justifyContent: 'center', left: 0, right: 0, alignSelf: 'center'},
+                    headerTitleContainerStyle: { position: Platform.OS === 'android' ? 'absolute' : 'relative', justifyContent: 'center', left: 0, right: 0, alignSelf: 'center'},
+                    headerTitleAlign: Platform.OS === 'android' ? 'left' : 'center',
                     headerTitleStyle: {
                         fontSize: vs(12),
                         alignSelf: 'center',
@@ -60,8 +61,8 @@ const Navigation = () => {
                     },
 
                     headerTitle: () => (
-                        <View style={{ position: 'absolute', width: windowWidth, justifyContent: 'center', alignItems: 'center', left: 0}}>
-                            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', maxWidth: vs(400), color: '#6A5AE0', textAlign: 'center'}} numberOfLines={2} ellipsizeMode="tail">
+                        <View style={{ position: Platform.OS === 'android' ? 'absolute' : 'relative', width: Platform.OS === 'android' ? windowWidth : 'auto', justifyContent: 'center', alignItems: 'center', left: 0}}>
+                            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', maxWidth: vs(120), color: '#6A5AE0', textAlign: 'center'}} numberOfLines={2} ellipsizeMode="tail">
                                 {menuItem ? menuItem.label : ''}
                             </Text>
                         </View>
