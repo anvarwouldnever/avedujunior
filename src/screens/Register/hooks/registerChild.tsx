@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { RegisterChild } from '../../../api/methods/auth/auth';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const registerChild = () => {
     const [loading, setLoading] = useState(false);
@@ -10,6 +12,9 @@ export const registerChild = () => {
         setError(null);
         
         try {
+
+            const network = await checkNetwork()
+            if (!network) { alertHandler("LoginScreen"); return; }
 
             let digits = phone.replace(/\D/g, '');
             const formatted = `+${digits}`;

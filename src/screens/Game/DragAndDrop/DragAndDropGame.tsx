@@ -12,8 +12,6 @@ type Cell = { index: number, img: any | null }
 
 const DragAndDropGame = ({ setSelectedImage, setFullImage, content, playingIndex, play, stop, isPlaying, setPlayingIndex, setChosenOptions, passed, answers }) => {
 
-    // console.log(content)
-
     const { s, vs, windowWidth, isTablet } = useScale();
     const dropZones = useRef<View[]>([]);
 

@@ -17,7 +17,7 @@ const CompletedTasks = () => {
             
             <Ionicons name='star' color={'yellow'} size={vs(24)}/>
             
-            <Text style={{fontSize: isTablet ? vs(18) : vs(16), color: 'white', fontWeight: '600'}}>{translations[store.language].пройденныетемы}</Text>
+            <Text style={{fontSize: isTablet ? vs(18) : vs(16), color: 'white', fontWeight: '600'}}>{translations[store.language]?.пройденныетемы}</Text>
 
         </TouchableOpacity>
     )

@@ -10,6 +10,9 @@ const Calendar = ({ calendarVisible, setDate, setBirthdate, formatDate, setCalen
 
     const [tempDate, setTempDate] = useState(new Date())
 
+    // функция с fallback по ключу
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey] || fallbackKey;
+
     const handleChange = (event, selectedDate) => {
         if (Platform.OS === 'android') {
             // На андроиде сразу закрываем модалку
@@ -55,12 +58,12 @@ const Calendar = ({ calendarVisible, setDate, setBirthdate, formatDate, setCalen
                             <TouchableOpacity 
                                 onPress={cancelDate} 
                                 style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#ccc', borderRadius: 10 }}>
-                                <Text style={{ color: '#333' }}>{translations[store?.language]?.отмена}</Text>
+                                <Text style={{ color: '#333' }}>{label('cancel', 'отмена')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 onPress={confirmDate} 
                                 style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#2097EF', borderRadius: 10 }}>
-                                <Text style={{ color: 'white' }}>{translations[store?.language]?.готово}</Text>
+                                <Text style={{ color: 'white' }}>{label('done', 'готово')}</Text>
                             </TouchableOpacity>
                         </View>
                     )}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetAvatars } from '../../../api/methods/profile/avatars';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getAvatars = () => {
 
@@ -10,6 +12,8 @@ export const getAvatars = () => {
     useEffect(() => {
         const fetchAvatars = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
                 const response = await GetAvatars();
                 setAvatars(response?.data?.data)
             } catch (e) {

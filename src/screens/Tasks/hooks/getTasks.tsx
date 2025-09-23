@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetTasks } from '../../../api/methods/subjects&tasks/tasks';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const useTasks = (id) => {
     const [loading, setLoading] = useState(true);
@@ -10,6 +12,8 @@ export const useTasks = (id) => {
         if (!id) return;
         const fetchTasks = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
                 setLoading(true);
                 const response = await GetTasks(id);
                 setTasks(response?.data?.data);

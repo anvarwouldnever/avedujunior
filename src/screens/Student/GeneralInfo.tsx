@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useScale } from '../../hooks/useScale';
 import Calendar from './GeneralInfo/Calendar';
 import { Ionicons } from '@expo/vector-icons';
+import { store } from '../../store/store';
 
 const GeneralInfo = () => {
 
@@ -24,18 +25,88 @@ const GeneralInfo = () => {
     const [activeField, setActiveField] = useState<string | null>(null)
 
     const fields = [
-        { key: 'lastName', label: 'Фамилия', placeholder: 'Фамилия', value: lastName, onChange: setLastName, isCalendar: false },
-        { key: 'gender', label: 'Пол', placeholder: 'Пол', value: gender, onChange: setGender, isCalendar: false },
-        { key: 'firstName', label: 'Имя', placeholder: 'Имя', value: firstName, onChange: setFirstName, isCalendar: false },
-        { key: 'fatherName', label: 'Отчество', placeholder: 'Отчество', value: fatherName, onChange: setFatherName, isCalendar: false },
-        { key: 'birthDate', label: 'Дата рождения', placeholder: 'дд.мм.гггг', value: birthDate, onChange: setBirthDate, isCalendar: true },
-        { key: 'address', label: 'Домашний адрес', placeholder: 'Домашний адрес', value: address, onChange: setAddress, isCalendar: false },
-        { key: 'metricNumber', label: 'Номер метрики', placeholder: 'Номер метрики', value: metricNumber, onChange: setMetricNumber, isCalendar: false },
-        { key: 'ticketNumber', label: 'Номер путевки', placeholder: 'Номер путевки', value: ticketNumber, onChange: setTicketNumber, isCalendar: false },
-        { key: 'ticketIssueDate', label: 'Дата выдачи путевки', placeholder: 'дд.мм.гггг', value: ticketIssueDate, onChange: setTicketIssueDate, isCalendar: true },
-        { key: 'ticketEndDate', label: 'Дата окончания путевки', placeholder: 'дд.мм.гггг', value: ticketEndDate, onChange: setTicketEndDate, isCalendar: true },
-    ];    
-
+        { 
+          key: 'lastName', 
+          label: store.labels?.lastName, 
+          placeholder: store.labels?.lastName, 
+          value: lastName, 
+          onChange: setLastName, 
+          isCalendar: false 
+        },
+        { 
+          key: 'gender', 
+          label: store.labels?.gender, 
+          placeholder: store.labels?.gender, 
+          value: gender, 
+          onChange: setGender, 
+          isCalendar: false 
+        },
+        { 
+          key: 'firstName', 
+          label: store.labels?.firstName, 
+          placeholder: store.labels?.firstName, 
+          value: firstName, 
+          onChange: setFirstName, 
+          isCalendar: false 
+        },
+        { 
+          key: 'fatherName', 
+          label: store.labels?.patronymic, 
+          placeholder: store.labels?.patronymic, 
+          value: fatherName, 
+          onChange: setFatherName, 
+          isCalendar: false 
+        },
+        { 
+          key: 'birthDate', 
+          label: store.labels?.dateOfBirth, 
+          placeholder: 'дд.мм.гггг', 
+          value: birthDate, 
+          onChange: setBirthDate, 
+          isCalendar: true 
+        },
+        { 
+          key: 'address', 
+          label: store.labels?.homeAddress,   // ⚠️ в JSON есть homeAddress: "Домашний адрес"
+          placeholder: store.labels?.homeAddress, 
+          value: address, 
+          onChange: setAddress, 
+          isCalendar: false 
+        },
+        { 
+          key: 'metricNumber', 
+          label: store.labels?.metricNumber, 
+          placeholder: store.labels?.metricNumber, 
+          value: metricNumber, 
+          onChange: setMetricNumber, 
+          isCalendar: false 
+        },
+        { 
+          key: 'ticketNumber', 
+          label: store.labels?.voucherNumber, 
+          placeholder: store.labels?.voucherNumber, 
+          value: ticketNumber, 
+          onChange: setTicketNumber, 
+          isCalendar: false 
+        },
+        { 
+          key: 'ticketIssueDate', 
+          label: store.labels?.voucherIssueDate, 
+          placeholder: 'дд.мм.гггг', 
+          value: ticketIssueDate, 
+          onChange: setTicketIssueDate, 
+          isCalendar: true 
+        },
+        { 
+          key: 'ticketEndDate', 
+          label: store.labels?.voucherExpiryDate, 
+          placeholder: 'дд.мм.гггг', 
+          value: ticketEndDate, 
+          onChange: setTicketEndDate, 
+          isCalendar: true 
+        },
+    ];
+      
     const isPad = isTablet;
 
     return (
@@ -51,6 +122,7 @@ const GeneralInfo = () => {
                             value={field?.value}
                             onChangeText={field?.onChange}
                             placeholder={field?.placeholder}
+                            placeholderTextColor="#999"
                             style={{ paddingHorizontal: vs(16), paddingVertical: vs(14), borderWidth: 2, borderColor: '#EFEEFC', fontSize: isTablet ? vs(16) : vs(14), borderRadius: vs(20), fontWeight: '500' }}
                         />
                     :

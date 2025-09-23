@@ -35,9 +35,9 @@ const CatalogScreen = () => {
     return (
         <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView style={{flex: 1,  padding: isTablet ? vs(20) : vs(20)}}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
                 
-                <Text style={{color: 'black', fontSize: isTablet ? vs(22) : s(22), fontWeight: '700', marginVertical: vs(20)}}>{getMonthYear()}</Text>
+                <Text style={{color: 'black', fontSize: isTablet ? vs(22) : vs(22), fontWeight: '700'}}>{getMonthYear()}</Text>
                 
                 <Subjects selectedId={selectedId} setSelectedId={setSelectedId} subjects={subjects}/>
 

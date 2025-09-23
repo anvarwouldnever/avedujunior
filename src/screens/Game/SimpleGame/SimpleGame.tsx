@@ -1,5 +1,5 @@
 import { View, Text, Platform, TouchableOpacity } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'
@@ -8,7 +8,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 
 const SimpleGame = ({ setSelectedImage, setFullImage, content, play, stop, isPlaying, playingIndex, setPlayingIndex, gameType, chosenOptions, setChosenOptions, passed, answers }) => {
-
+    
     const { s, vs, windowWidth, isTablet } = useScale();
 
     const columnGap = s(10);

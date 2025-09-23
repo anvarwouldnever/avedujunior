@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { GetAccount } from '../../../api/methods/profile/account';
 import { store } from '../../../store/store';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 let cachedAccount: any = null;
 
@@ -14,10 +16,17 @@ export const getAccount = () => {
     const [account, setAccount] = useState<any>(cachedAccount);
 
     useEffect(() => {
-        if (cachedAccount) return; 
+        if (cachedAccount) {
+            setAccount(cachedAccount);
+            setLoading(false);
+            return;
+        }
 
         const fetchAccount = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); setLoading(false); return; }
+
                 const response = await GetAccount();
                 cachedAccount = response?.data?.data;
                 store.setBackgroundImage(cachedAccount?.background)

@@ -1,38 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import { navigationStore } from '../NavigationStore';
 import { useScale } from '../../hooks/useScale';
 import translations from '../../../translations';
 import { store } from '../../store/store';
-
-const menuItems = [
-  { screen: 'Home', icon: 'home', label: translations[store.language].главная },
-  { screen: 'Subjects', icon: 'document', label: translations[store.language].предметы },
-  { screen: 'OurGroup', icon: 'people', label: translations[store.language].нашагруппа },
-  { screen: 'Catalog', icon: 'folder', label: translations[store.language].каталогматериалов },
-  { screen: 'FreeActivity', icon: 'pencil-outline', label: translations[store.language].свободнаядеятельность },
-  { screen: 'CompletedTasks', icon: 'star', label: translations[store.language].пройденныетемы },
-  { screen: 'Profile', icon: 'person', label: translations[store.language].мойпрофиль },
-];
+import { navigationReset } from '../Navigator/utils/navigate';
 
 const SliderContent = () => {
-    const navigation = useNavigation();
     const { s, vs, isTablet } = useScale();
 
     const handleNavigate = (screen: string) => {
         if (navigationStore.currentRoute !== screen) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: screen }],
-            })
-          );
+          navigationReset(screen)
         };
         navigationStore.setOpenSlider(false)
     };
+
+    const menuItems = [
+      { screen: 'Home', icon: 'home', label: store.labels?.home || translations[store.language]?.главная },
+      { screen: 'Subjects', icon: 'document', label: store.labels?.subjects || translations[store.language]?.предметы },
+      { screen: 'OurGroup', icon: 'people', label: store.labels?.ourGroup || translations[store.language]?.нашагруппа },
+      { screen: 'Catalog', icon: 'folder', label: store.labels?.lessonMaterialsCatalog || translations[store.language]?.каталогматериалов },
+      { screen: 'FreeActivity', icon: 'pencil-outline', label: store.labels?.activityText || translations[store.language]?.свободнаядеятельность },
+      { screen: 'CompletedTasks', icon: 'star', label: store.labels?.completedLessons || translations[store.language]?.пройденныетемы },
+      { screen: 'Profile', icon: 'person', label: store.labels?.myProfile || translations[store.language]?.мойпрофиль },
+    ];
   
     return (
       <View style={{ padding: vs(14), backgroundColor: '#FFFFFF', width: '100%', borderRadius: 30}}>
@@ -40,7 +34,7 @@ const SliderContent = () => {
           const isActive = navigationStore.currentRoute === item.screen;
           return (
             <Pressable
-              key={item.screen}
+              key={item?.screen}
               onPress={() => handleNavigate(item.screen)}
               style={[
                 styles.item,

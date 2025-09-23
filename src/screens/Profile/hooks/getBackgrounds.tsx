@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetBackgrounds } from '../../../api/methods/profile/backgrounds';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getBackgrounds = () => {
 

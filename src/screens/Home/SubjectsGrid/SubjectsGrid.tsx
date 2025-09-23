@@ -51,7 +51,7 @@ const SubjectsGrid = () => {
         <View style={[{columnGap: columnGap, rowGap: vs(15), justifyContent: 'flex-start', marginBottom: vs(25), flexDirection: 'row', flexWrap: 'wrap',}]}>
             {subjects?.map((item, index) => {
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate('TasksList', {name: item?.name, id: item?.id, key: Date.now()})} key={index} style={[{ width: cardWidth, borderRadius: 20, alignItems: 'center', justifyContent: 'flex-start', height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Tasks', {name: item?.name, id: item?.id, key: Date.now()})} key={index} style={[{ width: cardWidth, borderRadius: 20, alignItems: 'center', justifyContent: 'flex-start', height: 'auto', backgroundColor: 'white', borderWidth: 1, borderColor: '#e2cef2'}]}>
                     
                         <View style={{width: '100%', height: isTablet? vs(130) : s(100), backgroundColor: item.color, borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: 'center', alignItems: 'center'}}>
                             

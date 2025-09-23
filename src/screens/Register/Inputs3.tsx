@@ -5,6 +5,7 @@ import { store } from '../../store/store';
 import { useScale } from '../../hooks/useScale';
 import { withTiming } from 'react-native-reanimated';
 import PhoneAndCode from './Inputs3/PhoneAndCode';
+import { observer } from 'mobx-react-lite';
 
 const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode, translateY, parentName, setParentName, parentSurname, setParentSurname, parentFathersName, setParentFathersName, parentWho, setParentWho, address, setAddress }) => {
 
@@ -12,15 +13,19 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
 
     const [isCodeCorrect, setIsCodeCorrect] = useState<boolean>(false)
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-
     const [isCodeSent, setIsCodeSent] = useState<boolean>(false)
+
+    // вспомогательная функция для выбора текста с приоритетом store.labels
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey];
 
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15)}}>
             
             <View style={{gap: vs(10), width: '100%'}}>
                 
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{ isCodeSent ? translations[store?.language]?.введитекод : translations[store?.language]?.введитеномер}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>
+                    { isCodeSent ? label('enterCode', 'введитекод') : label('enterNumber', 'введитеномер') }
+                </Text>
                 
                 <PhoneAndCode setisCodeCorrect={setIsCodeCorrect} isCodeSent={isCodeSent} setIsCodeSent={setIsCodeSent} code={code} setCode={setCode} phone={phone} setPhone={setPhone} setErrorMessage={setErrorMessage} isCodeCorrect={isCodeCorrect} errorMessage={errorMessage} />
 
@@ -30,11 +35,12 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
                     <>
                         <View style={{gap: vs(10), width: '100%'}}>
                             
-                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.фамилия}</Text>
+                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('lastName', 'фамилия')}</Text>
                             
                             <TextInput 
                                 style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                                placeholder={translations[store?.language]?.фамилия}
+                                placeholder={label('lastName', 'фамилия')}
+                                placeholderTextColor="#999"
                                 onChangeText={(text) => setParentSurname(text)}
                                 autoCorrect={false}
                                 onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -43,11 +49,12 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
 
                         <View style={{gap: vs(10), width: '100%'}}>
                             
-                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.имя}</Text>
+                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('firstName', 'имя')}</Text>
                             
                             <TextInput 
                                 style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                                placeholder={translations[store?.language]?.имя}
+                                placeholder={label('firstName', 'имя')}
+                                placeholderTextColor="#999"
                                 onChangeText={(text) => setParentName(text)}
                                 autoCorrect={false}
                                 onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -57,11 +64,12 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
 
                         <View style={{gap: vs(10), width: '100%'}}>
                             
-                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.отчество}</Text>
+                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('patronymic', 'отчество')}</Text>
                             
                             <TextInput 
                                 style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                                placeholder={translations[store?.language]?.отчество}
+                                placeholder={label('patronymic', 'отчество')}
+                                placeholderTextColor="#999"
                                 onChangeText={(text) => setParentFathersName(text)}
                                 autoCorrect={false}
                                 onFocus={() => {
@@ -77,11 +85,12 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
 
                         <View style={{gap: vs(10), width: '100%'}}>
                             
-                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.адрес}</Text>
+                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('address', 'адрес')}</Text>
                             
                             <TextInput 
                                 style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                                placeholder={translations[store?.language]?.адрес}
+                                placeholder={label('address', 'адрес')}
+                                placeholderTextColor="#999"
                                 onChangeText={(text) => setAddress(text)}
                                 autoCorrect={false}
                                 onFocus={() => {
@@ -97,18 +106,20 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
 
                         <View style={{gap: vs(10), width: '100%'}}>
                             
-                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.выберитеродителя}</Text>
+                            <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('selectParent', 'выберитеродителя')}</Text>
                             
                             <TouchableOpacity onPress={() => {
                                 Keyboard.dismiss()
                                 setShowDropdown(!showDropdown)
                             }} style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, justifyContent: 'center' }}>
-                                <Text style={{ fontSize: isTablet? vs(12) : s(12), color: !parentWho ? '#C7C7CD' : 'black' }}>{parentWho === '0' ? 'Мама' : 'Папа'}</Text>
+                                <Text style={{ fontSize: isTablet? vs(12) : s(12), color: !parentWho ? '#C7C7CD' : 'black' }}>
+                                    {parentWho === '0' ? label('mom', 'Мама') : label('dad', 'Папа')}
+                                </Text>
                             </TouchableOpacity>
 
                             {showDropdown && (
                                 <View style={{ position: 'absolute', zIndex: 1000, top: vs(75), width: '100%', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#ccc', overflow: 'hidden' }}>
-                                    {['Мама', 'Папа'].map((item, index) => (
+                                    {[label('mom', 'Мама'), label('dad', 'Папа')].map((item, index) => (
                                         <TouchableOpacity key={item} style={{ padding: vs(10), backgroundColor: parentWho === index.toString() ? 'rgb(234, 244, 255)' : 'white' }}
                                             onPress={() => {
                                                 setParentWho(index.toString());
@@ -131,4 +142,4 @@ const Inputs3 = ({ setErrorMessage, errorMessage, phone, setPhone, code, setCode
     )
 };
 
-export default Inputs3
+export default observer(Inputs3)

@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { useScale } from '../../../hooks/useScale';
+import { store } from '../../../store/store';
 
 const Conditions = () => {
     
@@ -9,10 +10,10 @@ const Conditions = () => {
     const isPad = isTablet;
 
     const conditions = [
-        { key: 'notAble', label: 'Не умеет' },
-        { key: 'sometimes', label: 'Иногда' },
-        { key: 'often', label: 'Часто' },
-        { key: 'able', label: 'Умеет' },
+        { key: 'notAble', label: store.labels?.cannotDo },
+        { key: 'sometimes', label: store.labels?.sometimes },
+        { key: 'often', label: store.labels?.often },
+        { key: 'able', label: store.labels?.canDo },
     ];
 
     return (

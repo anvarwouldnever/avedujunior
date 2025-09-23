@@ -1,5 +1,5 @@
 import { Text, ImageBackground, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useScale } from '../hooks/useScale'
 import Activities from './FreeActivity/Activities';
 import ActivityItems from './FreeActivity/ActivityItems';
@@ -21,8 +21,8 @@ const FreeActivityScreen = () => {
     return (
         <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView style={{flex: 1, padding: vs(20)}}>
-                <Text style={{color: 'black', fontSize: vs(22), fontWeight: '700', marginVertical: vs(20)}}>{translations[store.language].свободнаядеятельность}</Text>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
+                <Text style={{color: 'black', fontSize: vs(22), fontWeight: '700'}}>{store?.labels?.activityText || translations[store.language]?.свободнаядеятельность}</Text>
                 <Activities activity={activity} setActivity={setActivity}/>
 
                 <ActivityItems activity={activity} activities={activities}/>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetTask } from '../../../api/methods/subjects&tasks/tasks';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getPreGame = (id) => {
 
@@ -10,6 +12,9 @@ export const getPreGame = (id) => {
     useEffect(() => {
         const fetchPreGame = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+                
                 const response = await GetTask(id);
                 setPreGame(response?.data)
             } catch (e) {

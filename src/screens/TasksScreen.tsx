@@ -21,9 +21,9 @@ const TasksScreen = ({ route }) => {
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView style={{flex: 1, padding: vs(20)}}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{flex: 1, padding: vs(20)}}>
                 
-                <Text style={{color: 'black', fontSize: vs(22), fontWeight: '700', marginVertical: vs(20)}}>{translations[store.language].предмет}: {name}</Text>
+                <Text style={{color: 'black', fontSize: vs(22), fontWeight: '700', marginVertical: vs(20)}}>{store.labels?.subject || translations[store.language].предмет}: {name}</Text>
                 
                 <TasksList route={route}/>
                 

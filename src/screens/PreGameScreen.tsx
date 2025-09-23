@@ -13,6 +13,8 @@ import SliderContent from '../navigation/Slider/SliderContent'
 
 const PreGameScreen = ({ route }) => {
 
+    useLock();
+
     const { vs } = useScale();
 
     const defaultId = route?.params?.id
@@ -34,12 +36,10 @@ const PreGameScreen = ({ route }) => {
         }
     };
 
-    useLock();
-
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView contentContainerStyle={{ gap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: vs(20), flexGrow: 1 }} style={{ padding: vs(20)}}>
                 
                 <GamePreview preGame={preGame?.data} tasksId={tasksId} id={id} name={name} topic={topic} />
 

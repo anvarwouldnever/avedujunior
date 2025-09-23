@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { GetGames } from '../../../api/methods/game/games';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const useGames = (id) => {
 
@@ -10,7 +12,9 @@ export const useGames = (id) => {
     useEffect(() => {
         const fetchPreGame = async () => {
             try {
-                console.log('fetching games')
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+
                 const response = await GetGames(id);
                 setGames(response?.data?.data)
             } catch (e) {

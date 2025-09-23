@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetSubjects } from '../../../../api/methods/subjects&tasks/subjects';
 import { homeScreenStore } from '../../HomeScreenStore';
+import { checkNetwork } from '../../../../network/checkNetwork';
 
 export const getSubjects = () => {
 
@@ -10,6 +11,9 @@ export const getSubjects = () => {
     useEffect(() => {
         const fetchSubjects = async () => {
           try {
+            const network = await checkNetwork()
+            if (!network) return; 
+            
             if (homeScreenStore.subjects.length > 0) return
             const response = await GetSubjects();
             homeScreenStore.setSubjects(response?.data?.data)

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import ObjectMatchingGame from './ObjectMatching/ObjectMatchingGame'
 import LinesAndDrawingParent from './ObjectMatching/LinesAndDrawingParent'
@@ -28,6 +28,8 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
     const [chosenOptions, setChosenOptions] = useState<Array<string>>([]);
 
+    const [resetKey, setResetKey] = useState(0);
+
     const lineStartX = useSharedValue(0);
     const lineStartY = useSharedValue(0);
     const lineEndX = useSharedValue(0);
@@ -42,6 +44,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     const answers = game?.answer;
 
     useEffect(() => {
+        setResetKey(Date.now()); 
         setChosenOptions([]);
         setPopUp(false);
         setLines([]);
@@ -99,7 +102,6 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
             if (!isAnswer) return setPopUp(true);
     
             const correct = chosenOptions.every(({ fromKey, toKey }) => fromKey === toKey);
-            console.log(correct);
             return correct ? await handleCorrect() : await handleWrong();
         }
     
@@ -143,7 +145,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
 
                     <TouchableOpacity onPress={() => navigation.goBack()} style={{width: '15%', borderWidth: 2, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderColor: '#EFEEFC', borderRadius: 10, gap: vs(5)}}>
                         <Ionicons name='chevron-back' color={'#6A5ADE'} size={s(10)} />
-                        <Text style={{ fontWeight: '600', color: '#6A5ADE', fontSize: isTablet? vs(20) : s(7)}}>{translations[store.language].назад}</Text>
+                        <Text style={{ fontWeight: '600', color: '#6A5ADE', fontSize: isTablet? vs(20) : s(7)}}>{store.labels?.back || translations[store.language].назад}</Text>
                     </TouchableOpacity>
                 </View>
             }
@@ -155,17 +157,17 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                     game?.type === 3 ? 
                         <>
                             <LinesAndDrawingParent passed={passed} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} lines={lines} />
-                            <ObjectMatchingGame playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} answers={answers} passed={passed} setChosenOptions={setChosenOptions} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
+                            <ObjectMatchingGame key={resetKey} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} answers={answers} passed={passed} setChosenOptions={setChosenOptions} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
                         </>
                     : 
                     game?.type === 6 ? 
-                        <DragAndDropGame answers={answers} passed={passed} setChosenOptions={setChosenOptions} key={chosenGame} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
+                        <DragAndDropGame key={resetKey} answers={answers} passed={passed} setChosenOptions={setChosenOptions} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />
                     :
                     (game?.type === 1 && !questionImage) || (game?.type === 2 && !questionImage) ?
-                        <SimpleGame answers={answers} passed={passed} content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} /> 
+                        <SimpleGame key={resetKey} answers={answers} passed={passed} content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} /> 
                     :
                     (game?.type === 1 && questionImage) || (game?.type === 2 && questionImage) ? (
-                        <WithImageGame answers={answers} passed={passed} questionImage={questionImage} content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />)   
+                        <WithImageGame key={resetKey} answers={answers} passed={passed} questionImage={questionImage} content={content} chosenOptions={chosenOptions} setChosenOptions={setChosenOptions} gameType={game?.type} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} setFullImage={setFullImage} setSelectedImage={setSelectedImage} />)   
                     : 
                         null
             }
@@ -182,7 +184,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                         <Ionicons name='chevron-back' color={'red'} size={20}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={passed === 1 ? () => {return} : () => checkAnswer(chosenOptions, answers, game?.type)} style={{width: '60%', backgroundColor: passed === 1? "lightgrey" : '#EFF8FF', borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{color: passed === 1? "#0C092A" : '#2097EF', fontWeight: '600', fontSize: isTablet? vs(20) : s(6)}}>{translations[store.language].ответить}</Text>
+                        <Text style={{color: passed === 1? "#0C092A" : '#2097EF', fontWeight: '600', fontSize: isTablet? vs(20) : s(6)}}>{store.labels?.answer || translations[store.language].ответить}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { if (chosenGame < games.length) {setChosenGame(chosenGame + 1)} else {setChosenGame(1)}}} style={{ width: '15%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#0EAF0021', borderRadius: 10 }}>
                         <Ionicons name='chevron-forward' color={'green'} size={20}/>

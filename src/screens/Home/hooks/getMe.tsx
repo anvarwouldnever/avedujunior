@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetMe } from '../../../api/methods/auth/me';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getMe = () => {
 
@@ -10,6 +12,9 @@ export const getMe = () => {
     useEffect(() => {
         const fetchMe = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+                
                 const response = await GetMe();
                 setMe(response?.data?.data)
             } catch (e) {

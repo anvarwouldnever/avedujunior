@@ -21,8 +21,8 @@ const MenuGirlContainer = () => {
             <View style={{flexDirection: isInline ? 'row' : 'column', alignItems: isInline ? 'center' : 'flex-start', gap: s(15)}}>
                 <Image transition={300} style={{ borderRadius: vs(30), width: imageWidth, height: isTablet ? vs(150) : s(150), resizeMode: 'contain', margin: -vs(10)}} source={store.pfp?.second_image?.url? { uri: store?.pfp?.second_image.url } : undefined} contentFit='contain' />
                 <View style={{flexShrink: 1, gap: isTablet ? vs(10) : s(10)}}>
-                    <Text style={{fontSize: isTablet ? vs(20) : s(18), color: 'white', fontWeight: '600', lineHeight: isTablet ? vs(22) : s(22), marginBottom: vs(5)}}>Добро пожаловать, {store.juridical ? store?.group : store?.name}!</Text>
-                    <Text style={{fontSize: isTablet ? vs(18) : s(16), color: 'white', fontWeight: '400', lineHeight: isTablet ? vs(22) : s(22)}}>Не забудьте проверить своё расписание занятий на завтра! Все ли задания вы сделали?</Text>
+                    <Text style={{fontSize: isTablet ? vs(20) : s(18), color: 'white', fontWeight: '600', lineHeight: isTablet ? vs(22) : vs(20), marginBottom: vs(5)}}>{store.labels?.welcome}, {store.juridical ? store?.group : store?.name}!</Text>
+                    <Text style={{fontSize: isTablet ? vs(18) : s(16), color: 'white', fontWeight: '400', lineHeight: isTablet ? vs(22) : vs(20)}}>{store.labels?.taskReminder}</Text>
                 </View>
             </View>
         </View>

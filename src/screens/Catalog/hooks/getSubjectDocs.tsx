@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetSubjectsDocs } from '../../../api/methods/subjects&tasks/subjects';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getSubjectDocs = (id: number) => {
 
@@ -10,6 +12,9 @@ export const getSubjectDocs = (id: number) => {
     useEffect(() => {
         const fetchDocs = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+
                 const response = await GetSubjectsDocs(id);
                 setSubjectDocs(response?.data?.data)
             } catch (e) {

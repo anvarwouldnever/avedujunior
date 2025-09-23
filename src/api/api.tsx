@@ -1,12 +1,16 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import { store } from "../store/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BASE_URL = 'https://api.yangidunyo.uz/api';
 
 const api = axios.create({
     baseURL: BASE_URL,
 });
+
+async function getLanguage() {
+    return (await AsyncStorage.getItem('language')) || 'ru';
+}
 
 api.interceptors.request.use(
     async (config: any) => {
@@ -17,7 +21,7 @@ api.interceptors.request.use(
             }
         }
 
-        config.headers['X-Localization'] = store?.language || 'ru';
+        config.headers['X-Localization'] = await getLanguage();
         
         return config;
     },

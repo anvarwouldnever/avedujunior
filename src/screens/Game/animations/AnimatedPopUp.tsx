@@ -58,16 +58,21 @@ const AnimatedPopUp: React.FC<AnimatedPopUpProps> = ({ popUp, passed, setPopUp, 
         let timeout: NodeJS.Timeout;
 
         if (popUp) {
-            
-            play(passed === 1 ? require('../../../../assets/correct.mp3') : require('../../../../assets/wrong.mp3'));
+
+            passed === 1 ? play(require('../../../../assets/correct.mp3')) : play(require('../../../../assets/wrong.mp3'));
 
             let message: string | undefined;
-
-            if (!chosenOptions?.length) {
+            
+            if (passed === 1) {
+                const randomIndex = Math.floor(Math.random() * successPhrases.length);
+                message = successPhrases[randomIndex];
+            } else if (!chosenOptions?.length) {
                 message = 'Укажите ответ';
             } else if (gameType === 1 || gameType === 2) {
-                if (chosenOptions.length !== answers?.length) {
+                if (chosenOptions.length === 0) {
                     message = 'Укажите ответ';
+                } else if (chosenOptions.length < answers.length) {
+                    message = 'Укажите все ответы';
                 }
             } else if (gameType === 3 && chosenOptions.length !== 4) {
                 message = 'Укажите все ответы';
@@ -76,7 +81,6 @@ const AnimatedPopUp: React.FC<AnimatedPopUpProps> = ({ popUp, passed, setPopUp, 
                     message = 'Укажите все ответы';
                 } else {
                     const allImgsNull = chosenOptions.every(el => el.img === null);
-
                     if (allImgsNull) {
                         message = 'Укажите ответ';
                     } else {
@@ -84,21 +88,19 @@ const AnimatedPopUp: React.FC<AnimatedPopUpProps> = ({ popUp, passed, setPopUp, 
                             const match = el.key?.match(/\d+$/);
                             return match && !isNaN(parseInt(match[0], 10));
                         });
-
                         if (!hasAllKeys) {
                             message = 'Укажите все ответы';
                         }
                     }
                 }
             }
-
+            
             if (!message) {
-                const phrases = passed === 1 ? successPhrases : failurePhrases;
-                const randomIndex = Math.floor(Math.random() * phrases?.length);
-                message = phrases[randomIndex];
+                const randomIndex = Math.floor(Math.random() * failurePhrases.length);
+                message = failurePhrases[randomIndex];
             }
-
-            setText(message);
+            
+            setText(message);      
 
             opacity.value = withTiming(1, { duration: 500 });
             translateY.value = withTiming(0, { duration: 300 });

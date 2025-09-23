@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useScale } from '../../../hooks/useScale';
 import { getDocs } from './hooks/getDocs';
@@ -28,10 +28,10 @@ const TodayMaterialsCard = () => {
           
           <View style={{ marginBottom: isTablet ? vs(8) : s(8) }}>
             
-            <Text style={[styles.title, {fontSize: isTablet ? vs(18) : s(18), lineHeight: isTablet  ? vs(30) : s(30), marginBottom: isTablet ? vs(12) : s(12),}]}>{translations[store.language].материалыдля}</Text>
+            <Text style={[styles.title, {fontSize: isTablet ? vs(18) : s(18), lineHeight: isTablet  ? vs(30) : s(30), marginBottom: isTablet ? vs(12) : s(12),}]}>{store.labels?.todaysLessonMaterials || translations[store.language]?.материалыдля}</Text>
             
             <TouchableOpacity onPress={() => navigation.navigate('Catalog')}>
-              <Text style={[styles.link, {fontSize: isTablet ? vs(16) : vs(14)}]}>{translations[store.language].посмотретьвсе}</Text>
+              <Text style={[styles.link, {fontSize: isTablet ? vs(16) : vs(14)}]}>{store.labels?.viewAll || translations[store.language]?.посмотретьвсе}</Text>
             </TouchableOpacity>
 
           </View>

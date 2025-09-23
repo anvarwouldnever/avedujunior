@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetDocs } from '../../../../api/methods/docs/docs';
+import { checkNetwork } from '../../../../network/checkNetwork';
 
 export const getDocs = () => {
 
@@ -10,6 +11,9 @@ export const getDocs = () => {
     useEffect(() => {
         const fetchDocs = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) return;
+                
                 const response = await GetDocs();
                 setDocs(response?.data?.data)
             } catch (e) {

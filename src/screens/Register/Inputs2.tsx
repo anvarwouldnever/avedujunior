@@ -4,6 +4,7 @@ import { useScale } from '../../hooks/useScale'
 import { Ionicons } from '@expo/vector-icons'
 import translations from '../../../translations'
 import { store } from '../../store/store'
+import { observer } from 'mobx-react-lite'
 
 const Inputs2 = ({ errorMessage, setErrorMessage, setPassword, setPassword2 }) => {
 
@@ -11,14 +12,17 @@ const Inputs2 = ({ errorMessage, setErrorMessage, setPassword, setPassword2 }) =
 
     const [isSecure, setIsSecure] = useState<boolean>(false)
 
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey];
+
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15)}}>
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.пароль}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('password', 'пароль')}</Text>
                 <View style={{ flexDirection: 'row', height: isTablet? vs(40) : s(40), width: '100%', borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, borderRadius: 15, paddingHorizontal: 20, backgroundColor: 'white', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TextInput
                         style={{ width: '85%', height: '100%', fontSize: isTablet? vs(12) : s(12)}}
-                        placeholder={translations[store?.language]?.пароль}
+                        placeholder={label('password', 'пароль')}
+                        placeholderTextColor="#999"
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={isSecure}
                         autoCapitalize="none"
@@ -30,11 +34,12 @@ const Inputs2 = ({ errorMessage, setErrorMessage, setPassword, setPassword2 }) =
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.повторитепароль}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('repeatPassword', 'повторитепароль')}</Text>
                 <View style={{ flexDirection: 'row', height: isTablet? vs(40) : s(40), width: '100%', borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, borderRadius: 15, paddingHorizontal: 20, backgroundColor: 'white', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TextInput
                         style={{ width: '85%', height: '100%', fontSize: isTablet? vs(12) : s(12)}}
-                        placeholder={translations[store?.language]?.повторитепароль}
+                        placeholder={label('repeatPassword', 'повторитепароль')}
+                        placeholderTextColor="#999"
                         onChangeText={(text) => setPassword2(text)}
                         secureTextEntry={isSecure}
                         autoCapitalize="none"
@@ -48,4 +53,4 @@ const Inputs2 = ({ errorMessage, setErrorMessage, setPassword, setPassword2 }) =
     )
 }
 
-export default Inputs2
+export default observer(Inputs2)

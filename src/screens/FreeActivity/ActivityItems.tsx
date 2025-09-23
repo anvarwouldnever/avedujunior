@@ -11,7 +11,7 @@ const ActivityItems = ({ activities, activity }) => {
 
     const { width } = useWindowDimensions()
     const gap = vs(12);
-    const padding = isTablet ? vs(40) : s(40);
+    const padding = vs(43);
     const containerWidth = width - padding * 2;
 
     const amount = isTablet ? 3 : Math.floor((containerWidth + gap) / (371.65 + gap));
@@ -28,15 +28,15 @@ const ActivityItems = ({ activities, activity }) => {
 
     const getActivityName = (id: number | null) => {
         switch (id) {
-            case 1: return translations[store.language].раскраски;
-            case 2: return `3D ${translations[store.language].модели}`;
-            case 3: return translations[store.language].режимдня;
+            case 1: return store.labels?.coloringPages || translations[store.language]?.раскраски;
+            case 2: return store.labels?.model3d || `3D ${translations[store.language]?.модели}`;
+            case 3: return store.labels?.dailySchedule || translations[store.language]?.режимдня;
             default: return 'Не выбрано';
         }
     };
 
     return (
-        <View style={{width: '100%', backgroundColor: 'white', height: 'auto', marginTop: vs(20), borderRadius: vs(20), paddingVertical: vs(40), paddingHorizontal: isTablet? vs(20) : s(20), marginBottom: vs(70), gap: isTablet? vs(40) : s(40)}}>
+        <View style={{width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: vs(20), padding: vs(20), marginBottom: vs(40), rowGap: vs(20), borderWidth: 2, borderColor: '#EFEEFC'}}>
             <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: isTablet? vs(20) : vs(18), fontWeight: '600'}}>{getActivityName(activity)}</Text>
             <View style={{flexWrap: 'wrap', height: 'auto', width: '100%', flexDirection: 'row', gap: vs(12)}}>
                 {activities?.map((item, index) => {
@@ -50,7 +50,7 @@ const ActivityItems = ({ activities, activity }) => {
                                 <Text numberOfLines={5} ellipsizeMode='tail' style={{fontWeight: '600', fontSize: isTablet? vs(14) : vs(12), maxWidth: '60%'}}>{item?.name}</Text>
                                 
                                 <TouchableOpacity onPress={() => openPdf(item?.file)} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFEEFC', borderRadius: 12}}>
-                                    <Text style={{color: '#6A5AE0', fontWeight: '700', margin: vs(12), fontSize: isTablet? vs(14) : vs(12)}}>{translations[store.language].скачать}</Text>
+                                    <Text style={{color: '#6A5AE0', fontWeight: '700', margin: vs(12), fontSize: isTablet? vs(14) : vs(12)}}>{store.labels?.download || translations[store.language].скачать}</Text>
                                 </TouchableOpacity>
 
                             </View>

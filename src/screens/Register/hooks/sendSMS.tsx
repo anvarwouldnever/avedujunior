@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { SendSMS } from '../../../api/methods/auth/auth';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const sendSMS = () => {
     const [loadingSend, setLoading] = useState(false);
@@ -10,6 +12,10 @@ export const sendSMS = () => {
         setError(null);
         
         try {
+
+            const network = await checkNetwork()
+            if (!network) { alertHandler("LoginScreen"); return; }
+
             let digits = phone.replace(/\D/g, '');
 
             if (!digits.startsWith('998')) {

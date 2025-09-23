@@ -25,6 +25,7 @@ import CompletedTasksScreen from '../../screens/CompletedTasksScreen';
 import CompletedTasks from '../../components/CompletedTasks';
 import Time from '../../components/Time';
 import StudentScreen from '../../screens/StudentScreen';
+import HeaderTitle from './HeaderTitle';
 
 const Stack = createStackNavigator();
 
@@ -35,13 +36,13 @@ const Navigation = () => {
     const token = SecureStore.getItem('access_token');
 
     const menuItems = [
-        { screen: 'Home', label: translations[store.language].главная },
-        { screen: 'Subjects', label: translations[store.language].предметы },
-        { screen: 'OurGroup', label: translations[store.language].нашагруппа },
-        { screen: 'Catalog', label: translations[store.language].каталогматериалов },
-        { screen: 'FreeActivity', label: translations[store.language].свободнаядеятельность },
-        { screen: 'Profile', label: translations[store.language].мойпрофиль },
-        { screen: 'CompletedTasks', label: translations[store.language].пройденныетемы },
+        { screen: 'Home', label: translations[store.language]?.главная },
+        { screen: 'Subjects', label: translations[store.language]?.предметы },
+        { screen: 'OurGroup', label: translations[store.language]?.нашагруппа },
+        { screen: 'Catalog', label: translations[store.language]?.каталогматериалов },
+        { screen: 'FreeActivity', label: translations[store.language]?.свободнаядеятельность },
+        { screen: 'Profile', label: translations[store.language]?.мойпрофиль },
+        { screen: 'CompletedTasks', label: translations[store.language]?.пройденныетемы },
     ];
 
     return (
@@ -60,13 +61,7 @@ const Navigation = () => {
                         maxWidth: vs(100),
                     },
 
-                    headerTitle: () => (
-                        <View style={{ position: Platform.OS === 'android' ? 'absolute' : 'relative', width: Platform.OS === 'android' ? windowWidth : 'auto', justifyContent: 'center', alignItems: 'center', left: 0}}>
-                            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', maxWidth: vs(120), color: '#6A5AE0', textAlign: 'center'}} numberOfLines={2} ellipsizeMode="tail">
-                                {menuItem ? menuItem.label : ''}
-                            </Text>
-                        </View>
-                    ),
+                    headerTitle: () => <HeaderTitle value={menuItem ? menuItem.label : ''} />,
 
                     headerStyle: {
                         height: isTablet ? 130 : vs(130),
@@ -95,11 +90,11 @@ const Navigation = () => {
             }} initialRouteName={token? "Home" : "LoginScreen"}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Subjects" component={SubjectsScreen} />
-            <Stack.Screen name="TasksList" component={TasksScreen} />
+            <Stack.Screen name="Tasks" options={({ route }) => ({headerTitle: () => <HeaderTitle value={route?.params?.name ?? ''} />})} component={TasksScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="PreGame" component={PreGameScreen} />
             <Stack.Screen name="Test" component={TestScreen} />
-            <Stack.Screen options={{ headerShown: false }} name="Game" component={GameScreen} />
+            <Stack.Screen options={{ headerShown: false,  animation: isTablet? 'default' : 'reveal_from_bottom' }} name="Game" component={GameScreen} />
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={LoginScreen} />
             <Stack.Screen options={{ headerShown: false }} name="RegisterScreen" component={RegisterScreen} />
             <Stack.Screen name="OurGroup" component={OurGroupScreen} />

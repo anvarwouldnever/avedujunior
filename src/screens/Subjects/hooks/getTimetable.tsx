@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetTimetable } from '../../../api/methods/timetable/timetable';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getTimetable = (month: any, year: any) => {
     const [loading, setLoading] = useState(true);
@@ -10,6 +12,9 @@ export const getTimetable = (month: any, year: any) => {
     useEffect(() => {
         const fetchTimetable = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+                
                 const formattedMonth = (month + 1).toString().padStart(2, '0');
                 const formattedDate = `${formattedMonth}.${year}`;
                 

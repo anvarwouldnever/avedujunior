@@ -11,21 +11,34 @@ import translations from '../../translations';
 import { store } from '../store/store';
 import { observer } from 'mobx-react-lite';
 import { clearAccountCache } from './Profile/hooks/getAccount';
+import { getLabels } from './Login/hooks/getLabels';
+import * as SplashScreen from 'expo-splash-screen';
+
+type Role = 'organization' | 'personal';
 
 const LoginScreen = () => {
 
+    const { loading, error } = getLabels()
+
     const { s, vs } = useScale()
+    
     const [id, setId] = useState<string>(null);
     const [password, setPassword] = useState<string>(null);
     const [errorMessage, setErrorMessage] = useState<string>(null);
     const [thinking, setThinking] = useState<boolean>(false);
-    const [selectedRole, setSelectedRole] = useState<string>(translations[store?.language]?.организация);
+    const [selectedRole, setSelectedRole] = useState<Role>('organization');
 
     const navigation = useNavigation();
 
     useEffect(() => {
         clearAccountCache()
     }, [])
+
+    useEffect(() => {
+        if (!loading) {
+            SplashScreen.hideAsync();
+        }
+    }, [loading])
 
     const RegisterText = () => {
         return (
@@ -47,7 +60,9 @@ const LoginScreen = () => {
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#EFEEFC' }}>
-            <View style={{ flex: 1, paddingHorizontal: vs(20), paddingVertical: vs(60), gap: vs(25), backgroundColor: '#EFEEFC', height: 'auto'}}>
+            
+            <View style={{ flex: 1, paddingHorizontal: vs(20), paddingVertical: vs(60), rowGap: vs(25), backgroundColor: '#EFEEFC', height: 'auto'}}>
+                
                 <ChooseLanguage thinking={thinking} />
 
                 <ChooseRole thinking={thinking} selectedRole={selectedRole} setSelectedRole={setSelectedRole}/>
@@ -58,8 +73,10 @@ const LoginScreen = () => {
 
                 <LoginButton id={id} password={password} setErrorMessage={setErrorMessage} setThinking={setThinking} thinking={thinking} selectedRole={selectedRole}/>
 
-                {selectedRole != translations[store?.language]?.организация && <RegisterText />}
+                {selectedRole != 'organization' && <RegisterText />}
+
             </View>
+
         </SafeAreaView>
     )
 }

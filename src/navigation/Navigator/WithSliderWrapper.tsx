@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Navigation from './Navigation';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { navigationStore } from '../NavigationStore';
 import { observer } from 'mobx-react-lite';
 import ProfileModal from '../../components/ProfileModal';
+import { navigationRef } from './utils/navigate';
 
 const WithSliderWrapper = () => {
-
-    const navigationRef = useNavigationContainerRef();
 
     useEffect(() => {
         const unsubscribe = navigationRef.addListener('state', () => {

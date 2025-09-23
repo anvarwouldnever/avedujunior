@@ -12,17 +12,17 @@ const Activities = ({ activity, setActivity }) => {
     const activities = [
         {   
             id: 1, 
-            name: translations[store.language].раскраски, 
+            name: store.labels?.coloringPages || translations[store.language].раскраски, 
             pic: require('../../screens/FreeActivity/staticAssets/static1.png'), 
         },
         {
             id: 2,
-            name: `3D ${translations[store.language].модели}`, 
+            name: store.labels?.model3d || `3D ${translations[store.language].модели}`, 
             pic: require('../../screens/FreeActivity/staticAssets/static2.png'), 
         },
         {
             id: 3,
-            name: translations[store.language].режимдня, 
+            name: store.labels?.dailySchedule || translations[store.language].режимдня, 
             pic: require('../../screens/FreeActivity/staticAssets/static3.png'), 
         }
     ]

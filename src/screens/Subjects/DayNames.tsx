@@ -7,8 +7,18 @@ import { store } from '../../store/store';
 
 const DayNames = () => {
 
-    const dayNames = [translations[store.language].понедельник, translations[store.language].вторник, translations[store.language].среда, translations[store.language].четверг, translations[store.language].пятница];
     const { s, vs, isTablet } = useScale();
+
+    // label с fallback
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey];
+
+    const dayNames = [
+        label('monday', 'понедельник'), 
+        label('tuesday', 'вторник'), 
+        label('wednesday', 'среда'), 
+        label('thursday', 'четверг'), 
+        label('friday', 'пятница')
+    ];
 
     return (
         <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ flexDirection: 'row' }}>
@@ -22,7 +32,6 @@ const DayNames = () => {
                         borderColor: '#000',
                         textAlign: 'center',
                         paddingVertical: isTablet? vs(14) : s(14),
-                        
                     }}
                 >
                     {item}

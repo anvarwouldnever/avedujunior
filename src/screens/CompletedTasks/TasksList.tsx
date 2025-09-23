@@ -8,7 +8,6 @@ import { colors } from '../../components/Colors'
 import translations from '../../../translations'
 import { store } from '../../store/store'
 
-
 const TasksList = ({ id, name }) => {
 
     const { tasks, error, loading } = useTasks(id);
@@ -30,24 +29,17 @@ const TasksList = ({ id, name }) => {
 
     if (loading) {
         return (
-            <View
-                style={{
-                    height: vs(1000),
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    paddingTop: vs(100)
-                }}
-            >
+            <View style={{ height: vs(1000), alignItems: 'center', justifyContent: 'flex-start', paddingTop: vs(100)}}>
                 <ActivityIndicator size="large" color="#6A5AE0" />
             </View>
         )
     }
 
     return (
-        <View style={{width: '100%', height: 'auto', rowGap: vs(25), marginBottom: 100}}>
+        <View style={{width: '100%', height: 'auto', rowGap: vs(20), marginBottom: vs(40)}}>
             {tasks?.monthes?.map((month, index) => {
                 return (
-                    <View style={{width: '100%', rowGap: vs(25)}} key={index}>
+                    <View style={{width: '100%', rowGap: vs(20)}} key={index}>
 
                         <Text style={{ color: 'black', fontSize: vs(18), fontWeight: '700'}}>{month?.name}</Text>
 
@@ -68,7 +60,7 @@ const TasksList = ({ id, name }) => {
                                                 <Text adjustsFontSizeToFit numberOfLines={3} ellipsizeMode='tail' style={{color: 'black', fontSize: isTablet? vs(14) : s(14), fontWeight: '600'}}>{topic?.name}</Text>
 
                                                 <TouchableOpacity onPress={() => navigation.navigate('PreGame', {name: name, topic: topic.name, id: topic?.id, tasksId: id })} style={{ backgroundColor: color.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20, paddingHorizontal: s(6), paddingVertical: vs(8), width: '60%'}}>
-                                                    <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>{translations[store.language].пройти} →</Text>
+                                                    <Text style={{ color: 'white', fontWeight: '700', flexDirection: 'row'}}>{store.labels?.proceedNext || translations[store.language].пройти} →</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
@@ -77,7 +69,7 @@ const TasksList = ({ id, name }) => {
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
                                                 <Text style={{fontWeight: '800', fontSize: isTablet? vs(12) : s(12)}}>{topic?.passed_tests_count} / {topic?.test_count}</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{translations[store.language].тестоврешено}</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{store.labels?.testsSolved || translations[store.language].тестоврешено}</Text>
                                             </View>
 
                                             <View style={{height: '100%', backgroundColor: '#EFEEFC', width: 1, borderRadius: 20}}/>
@@ -85,7 +77,7 @@ const TasksList = ({ id, name }) => {
                                             <View style={{ height: '100%', justifyContent: 'space-between', width: '45%', alignItems: 'center' }}>
                                                 <Text style={{ fontWeight: '800', fontSize: isTablet? vs(12) : s(12) }}>{Math.round(topic?.finished_percent)}%</Text>
 
-                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{translations[store.language].пройдено}</Text>
+                                                <Text adjustsFontSizeToFit style={{color: '#8D8D8D', fontSize: isTablet? vs(12) : s(12)}}>{store.labels?.completedTest || translations[store.language].пройдено}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

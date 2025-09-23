@@ -77,11 +77,11 @@ const MiniCalendar = () => {
 
       <View style={styles.weekRow}>
         <View style={{width: vs(20), height: vs(20)}}/>
-        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language].пн}</Text>
-        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language].вт}</Text>
-        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language].ср}</Text>
-        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language].чт}</Text>
-        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language].пт}</Text>
+        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language]?.пн}</Text>
+        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language]?.вт}</Text>
+        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language]?.ср}</Text>
+        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language]?.чт}</Text>
+        <Text style={[styles.dayName, {fontSize:  isTablet ? vs(18) : vs(16)}]}>{translations[store?.language]?.пт}</Text>
         <View style={{width: vs(20), height: vs(20)}}/>
       </View>
 

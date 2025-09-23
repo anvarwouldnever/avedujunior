@@ -6,6 +6,7 @@ import { withTiming } from 'react-native-reanimated';
 import translations from '../../../translations';
 import { store } from '../../store/store';
 import Calendar from './Inputs/Calendar';
+import { observer } from 'mobx-react-lite';
 
 const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMessage, setHomeAddress, errorMessage, translateY }) => {
 
@@ -17,18 +18,20 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
     const formatDate = (date: Date) => {
         const day = ('0' + date.getDate()).slice(-2)
         const month = ('0' + (date.getMonth() + 1)).slice(-2)
-        
         const year = date.getFullYear()
         return `${day}.${month}.${year}`
     }
 
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey];
+
     return (
         <View style={{width: '100%', height: 'auto', gap: vs(15), justifyContent: 'center'}}>
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.фамилия}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('lastName', 'фамилия')}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={translations[store?.language]?.фамилия}
+                    placeholder={label('lastName', 'фамилия')}
+                    placeholderTextColor="#999"
                     onChangeText={(text) => setSurname(text)}
                     autoCorrect={false}
                     onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -36,10 +39,11 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.имя}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('firstName', 'имя')}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={translations[store?.language]?.имя}
+                    placeholder={label('firstName', 'имя')}
+                    placeholderTextColor="#999"
                     onChangeText={(text) => setName(text)}
                     autoCorrect={false}
                     onFocus={() => setErrorMessage(prev => (prev != null ? null : prev))}
@@ -47,10 +51,11 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.отчество}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('patronymic', 'отчество')}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={translations[store?.language]?.отчество}
+                    placeholder={label('patronymic', 'отчество')}
+                    placeholderTextColor="#999"
                     onChangeText={(text) => setFathersName(text)}
                     autoCorrect={false}
                     onFocus={() => {
@@ -64,11 +69,12 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.датарождения}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('dateOfBirth', 'датарождения')}</Text>
                 <View style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20,  borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                     <TextInput
                         style={{ fontSize: isTablet? vs(12) : s(12), width: '90%', height: '100%' }}
                         placeholder={`дд.мм.гггг`}
+                        placeholderTextColor="#999"
                         value={formatDate(date)}
                         editable={false}
                         pointerEvents="none"
@@ -78,10 +84,11 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
             </View>
 
             <View style={{gap: vs(10), width: '100%'}}>
-                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{translations[store?.language]?.домашнийадрес}</Text>
+                <Text style={{ fontSize: isTablet? vs(12) : s(12) }}>{label('homeAddress', 'домашнийадрес')}</Text>
                 <TextInput 
                     style={{ backgroundColor: 'white', width: '100%', height: isTablet? vs(40) : s(40), borderRadius: 15, paddingHorizontal: 20, fontSize: isTablet? vs(12) : s(12), borderColor: errorMessage? '#EB265D' : 'white', borderWidth: 2 }}
-                    placeholder={translations[store?.language]?.домашнийадрес}
+                    placeholder={label('homeAddress', 'домашнийадрес')}
+                    placeholderTextColor="#999"
                     onChangeText={(text) => setHomeAddress(text)}
                     autoCorrect={false}
                     onFocus={() => {
@@ -100,4 +107,4 @@ const Inputs = ({ setSurname, setName, setFathersName, setBirthdate, setErrorMes
     )
 }
 
-export default Inputs;
+export default observer(Inputs);

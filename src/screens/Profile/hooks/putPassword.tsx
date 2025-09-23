@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ChangePassword } from '../../../api/methods/profile/user';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const putPassword = () => {
     const [loading, setLoading] = useState(false);
@@ -22,6 +24,10 @@ export const putPassword = () => {
                 setError('Пароли должны совпадать');
                 return;
             }
+
+            const network = await checkNetwork()
+            if (!network) { alertHandler(); return; }
+
             const response = await ChangePassword(oldPassword, newPassword);
             console.log(response?.data)
             

@@ -15,7 +15,7 @@ import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native
 const StudentScreen = () => {
 
     const { s, vs, isTablet } = useScale();
-    const [section, setSection] = useState<string>('Общая информация');
+    const [section, setSection] = useState<string>('info');
 
     const scrollY = useSharedValue(0);
 
@@ -23,31 +23,30 @@ const StudentScreen = () => {
         scrollY.value = event.contentOffset.y
     });
     
-    
     return (
         <ImageBackground style={{ flex: 1, justifyContent: 'center'}} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <Animated.ScrollView onScroll={scrollHandler} showsVerticalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
+            <Animated.ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} onScroll={scrollHandler} showsVerticalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(20) }} style={{flex: 1, padding: vs(20)}}>
                 
                 <View style={{ width: '100%', backgroundColor: 'white', height: 'auto', borderRadius: vs(20), padding: vs(20), gap: vs(20), marginBottom: vs(40), borderWidth: 1, borderColor: '#e2cef2' }}>
 
-                    <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: isTablet? vs(20) : vs(18), fontWeight: '600'}}>Воспитанник:</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={{fontSize: isTablet? vs(20) : vs(18), fontWeight: '600'}}>{store.labels?.pupil || 'Воспитанник'}:</Text>
 
                     <Sections section={section} setSection={setSection} />
 
-                    { section === 'Общая информация' ?
+                    { section === 'info' ?
 
                         <GeneralInfo />
 
-                    : section === 'Родители' ?
+                    : section === 'parents' ?
 
                         <Parents />
 
-                    : section === 'Карта развития' ?
+                    : section === 'development' ?
 
                         <DevelopmentMap scrollY={scrollY} />
 
-                    : section === 'Карта готовности' &&
+                    : section === 'readiness' &&
 
                         <ReadinessMap />
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity} from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, View, Image, TouchableOpacity } from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useScale } from '../hooks/useScale';
@@ -21,7 +21,7 @@ const TestScreen = () => {
             setModalVisible(!modalVisible);
           }}>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-                    <View style={{width: s(100), height: vs(150), backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
+                <View style={{width: s(100), height: vs(150), backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
                         <TouchableOpacity style={{ zIndex: 2, width: s(15), height: vs(70), position: 'absolute', left: 5, top: 5, alignItems: 'center', justifyContent: 'center'}}>
                             <Ionicons name='close-circle-outline' size={vs(70)}/>
                         </TouchableOpacity>
@@ -31,7 +31,7 @@ const TestScreen = () => {
                                 source={selectedImage} 
                             />
                         )}
-                    </View>
+                </View>
             </View>
         </Modal>
         <Pressable

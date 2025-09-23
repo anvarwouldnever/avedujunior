@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetStudents } from '../../../api/methods/students/students';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const getStudents = () => {
 
@@ -10,6 +12,9 @@ export const getStudents = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
+                const network = await checkNetwork()
+                if (!network) { alertHandler(); return; }
+                
                 const response = await GetStudents();
                 setStudents(response?.data?.data)
             } catch (e) {

@@ -78,30 +78,29 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
         removeLine();
     };
      
-    const checkIfMatched = (absX: any, absY: any, lineStartX: { value: any; }, lineStartY: { value: any; }, bottomCenters: string | any[], addCurvedLine: (arg0: { x1: any; y1: any; x2: any; y2: any; color: string; }) => void, fromKey: any) => {
+    const checkIfMatched = (absX: any, absY: any, lineStartX: { value: any; }, lineStartY: { value: any; }, bottomCenters: string | any[], fromKey: any) => {
         for (let i = 0; i < bottomCenters.length; i++) {
             const center = bottomCenters[i];
-            if (center && isWithin(absX, absY, center.centerX, center.centerY)) {
-        
-            const toKey = center?.key ?? 'unknown';
-        
-            addCurvedLine({
-                x1: lineStartX.value,
-                y1: lineStartY.value,
-                x2: center.centerX,
-                y2: center.centerY,
-                color: "#504297",
-                fromKey: fromKey,
-                toKey: toKey
-            });
-        
-            return;
+                if (center && isWithin(absX, absY, center.centerX, center.centerY)) {
+            
+                const toKey = center?.key ?? 'unknown';
+            
+                addCurvedLine({
+                    x1: lineStartX.value,
+                    y1: lineStartY.value,
+                    x2: center.centerX,
+                    y2: center.centerY,
+                    fromKey: fromKey,
+                    toKey: toKey
+                });
+            
+                return;
             }
         }
     
         removeLine();
     };
-
+      
     const removeLine = () => {
         lineStartX.value = 0;
         lineStartY.value = 0;
@@ -147,13 +146,12 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
             .onEnd((event) => {
                 if (passed === 1) return
                 runOnJS(checkIfMatched)(
-                event.absoluteX - paddingHorizontal,
-                event.absoluteY - paddingVertical,
-                lineStartX,
-                lineStartY,
-                bottomCenters,
-                addCurvedLine,
-                fromKey
+                    event.absoluteX - paddingHorizontal,
+                    event.absoluteY - paddingVertical,
+                    lineStartX,
+                    lineStartY,
+                    bottomCenters,
+                    fromKey
                 );
         });
     };
@@ -216,6 +214,7 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
     return (
         <View style={{width: contSize, height: 'auto', flexDirection: 'row', rowGap: rowGap, columnGap: columnGap, flexWrap: 'wrap'}}>
+            
             {images1?.map((img, index) => {
                 return (
                     <GestureDetector key={index} gesture={gestures[index]}>
@@ -260,7 +259,8 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
                             }}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
                         </View>
                     </GestureDetector>
-                )})}
+                )
+            })}
 
             {images2?.map((img, index) => {
                 return (
@@ -310,7 +310,9 @@ const ObjectMatchingGame = ({ lineStartX, lineStartY, lineEndX, lineEndY, setLin
 
                         <Ionicons onPress={() => {setSelectedImage(img); setFullImage(true);}}  size={vs(45)} name='search-circle-outline' color={'#FFD600'} style={{position: 'absolute', left: 2, top: 2, }} />
                     </View>
-                )})}
+                )
+            })}
+
         </View>
     )
 }

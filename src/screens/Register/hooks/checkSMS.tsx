@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { CheckSMS } from '../../../api/methods/auth/auth';
+import { alertHandler } from '../../../network/alertHandler';
+import { checkNetwork } from '../../../network/checkNetwork';
 
 export const checkSMS = () => {
     const [loadingCheck, setLoading] = useState(false);
@@ -10,6 +12,9 @@ export const checkSMS = () => {
         setError(null);
         
         try {
+
+            const network = await checkNetwork()
+            if (!network) { alertHandler("LoginScreen"); return; }
 
             let digits = phone.replace(/\D/g, '');
             const formatted = `+${digits}`;

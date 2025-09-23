@@ -2,6 +2,7 @@ import { View, Text, Platform } from 'react-native'
 import React from 'react'
 import { useScale } from '../../hooks/useScale';
 import NotFoundKid from '../../components/NotFoundKid';
+import { store } from '../../store/store';
 
 const Parents = () => {
 
@@ -12,7 +13,7 @@ const Parents = () => {
     return (
         <View style={{ width: '100%', height: 'auto', rowGap: vs(15), flexWrap: isPad ? 'nowrap' : 'nowrap', flexDirection: isPad ? 'column' : 'column', justifyContent: 'space-between', alignItems: 'center' }}>
             
-            <NotFoundKid text={'Тут пока что пусто'} />
+            <NotFoundKid text={store.labels?.emptyContent} />
 
         </View>
     )

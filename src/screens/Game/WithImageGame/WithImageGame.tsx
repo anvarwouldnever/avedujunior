@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useScale } from '../../../hooks/useScale'
 import { Image } from 'expo-image'
 import { Ionicons } from '@expo/vector-icons'

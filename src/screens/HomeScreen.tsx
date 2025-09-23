@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, ImageBackground } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useScale } from '../hooks/useScale'
 import MiniCalendar from './Home/MiniCalendar'
 import MenuGirlContainer from './Home/MenuGirlContainer'
@@ -13,27 +13,34 @@ import translations from '../../translations'
 import Slider from '../navigation/Slider/Slider'
 import SliderContent from '../navigation/Slider/SliderContent'
 import { getAccount } from './Profile/hooks/getAccount'
-import { getLabels } from './Home/hooks/getLabels'
+import { getLabels } from './Login/hooks/getLabels'
+import * as SplashScreen from 'expo-splash-screen';
 
 const HomeScreen = () => {
 
     const { s, vs, isTablet } = useScale();
 
     useLock();
-
     getAccount();
-    getLabels()
+
+    const { loading, error } = getLabels();
+
+    useEffect(() => {
+        if (!loading) {
+            SplashScreen.hideAsync();
+        }
+    }, [loading])
 
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1 }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
             <ScrollView contentContainerStyle={{ rowGap: vs(20), padding: vs(20) }} showsVerticalScrollIndicator={false} bounces={true} style={{ flex: 1 }}>
                 
-                <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].главная}</Text>
+                <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{store?.labels?.home || translations[store.language]?.главная}</Text>
                 
                 <MenuGirlContainer />
                 
-                { store.juridical && <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].доскапедагога}</Text>}
+                { store.juridical && <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{store?.labels?.teacherBoard || translations[store.language]?.доскапедагога}</Text>}
 
                 {   
                     store.juridical 
@@ -47,7 +54,7 @@ const HomeScreen = () => {
                     </View>
                 }
                 
-                <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{translations[store.language].предметы}</Text>
+                <Text style={{color: 'black', fontSize: isTablet ? vs(24) : vs(22), fontWeight: '700'}}>{store?.labels?.subjects || translations[store.language]?.предметы}</Text>
                 
                 <SubjectsGrid />
 

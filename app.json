@@ -1,22 +1,24 @@
 {
   "expo": {
-    "name": "avedu",
-    "slug": "avedu",
+    "name": "AVEDU Junior",
+    "slug": "avedujunior",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/aveduIcon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/aveduLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,
-      "bundleIdentifier": "com.anvarwouldnever3.avedu",
+      "bundleIdentifier": "com.avtech.avedujunior",
       "infoPlist": {
+        "CFBundleName": "AVEDU Junior",
+        "CFBundleDisplayName": "AVEDU Junior",
         "ITSAppUsesNonExemptEncryption": false,
         "UISupportedInterfaceOrientations~ipad": [
           "UIInterfaceOrientationLandscapeRight"
@@ -35,18 +37,32 @@
     },
     "plugins": [
       "expo-video",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/aveduLogo.png",
+          "dark": {
+            "image": "./assets/aveduLogo.png",
+            "backgroundColor": "#ffffff"
+          },
+          "imageWidth": 200
+        }
+      ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "f917edfa-3c55-4034-bf81-81afc7cf5871"
-      }
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/f917edfa-3c55-4034-bf81-81afc7cf5871"
+    },
+    "owner": "anvarwouldnever3",
+    "extra": {
+      "eas": {
+        "projectId": "78991642-a278-4dbf-a0cf-6366710efcb1"
+      }
     }
   }
 }

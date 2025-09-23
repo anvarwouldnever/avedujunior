@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import { getAge } from './utils/getAge'
 import { useNavigation } from '@react-navigation/native'
+import { store } from '../../store/store'
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 
@@ -27,6 +28,17 @@ const Students = ({ students }) => {
     }
 
     const isPad = isTablet;
+
+    const fioLabel = store.labels?.fullName || "ФИО:";
+    const motherLabel = store.labels?.mother || "Мама ребенка:";
+    const motherPhoneLabel = store.labels?.mothersNumber || "Номер мамы:";
+    const fatherLabel = store.labels?.father || "Отец ребенка:";
+    const fatherPhoneLabel = store.labels?.fathersNumber || "Номер отца:";
+    const genderLabel = store.labels?.gender || "Пол ребенка:";
+    const ageLabel = store.labels?.age || "Возраст:";
+    const detailsLabel = store.labels?.details || "Подробнее";
+    const maleText = store.labels?.male || "Мужчина";
+    const femaleText = store.labels?.female || "Женщина";
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', height: 'auto', rowGap: vs(15)}}>
@@ -66,7 +78,7 @@ const Students = ({ students }) => {
 
                                 <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center', alignItems: isPad ? 'center' : 'flex-start', }}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>ФИО:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{fioLabel}:</Text>
 
                                     <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{name}</Text>
 
@@ -74,7 +86,7 @@ const Students = ({ students }) => {
 
                                 {mother && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Мама ребенка:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{motherLabel}</Text>
 
                                     <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${mother?.last_name} ${mother?.first_name} ${mother?.middle_name}`}</Text>
 
@@ -82,7 +94,7 @@ const Students = ({ students }) => {
 
                                 {mother && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between': 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Номер мамы:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{motherPhoneLabel}:</Text>
 
                                     <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{mother?.phone}</Text>
 
@@ -90,7 +102,7 @@ const Students = ({ students }) => {
 
                                 {father && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Отец ребенка:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{fatherLabel}</Text>
 
                                     <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{`${father?.last_name} ${father?.first_name} ${father?.middle_name}`}</Text>
 
@@ -98,7 +110,7 @@ const Students = ({ students }) => {
 
                                 {father && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Номер отца:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{fatherPhoneLabel}:</Text>
 
                                     <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{father?.phone}</Text>
 
@@ -106,15 +118,15 @@ const Students = ({ students }) => {
 
                                 {gender && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                     
-                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Пол ребенка:</Text>
+                                    <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{genderLabel}:</Text>
 
-                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{gender === "M" ? "Мужчина" : "Женщина"}</Text>
+                                    <Text style={{ color: '#49465F', fontSize: isTablet ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>{gender === "M" ? maleText : femaleText}</Text>
 
                                 </View>}
 
                                 {age !== '' && <View style={{ width: isPad ? vs(500) : '100%', height: 'auto', flexDirection: isPad ? 'row' : 'column', rowGap: vs(5), justifyContent: isPad ? 'space-between' : 'center'}}>
                                         
-                                        <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>Возраст:</Text>
+                                        <Text style={{ color: '#858494', fontSize: isTablet ? vs(18) : vs(14), fontWeight: '400' }}>{ageLabel}:</Text>
                                         
                                         <Text style={{ color: '#49465F', fontSize: isPad ? vs(20) : vs(16), fontWeight: '500', width: isPad ? vs(300) : 'auto' }}>
                                             {age}
@@ -128,7 +140,7 @@ const Students = ({ students }) => {
 
                         {isChildChosen &&
                             <AnimatedTouchableOpacity onPress={() => navigation.navigate('Student')} entering={FadeIn.duration(400)} style={{ paddingHorizontal: vs(18), paddingVertical: vs(10), backgroundColor: '#EFEEFC', marginTop: vs(15), borderRadius: vs(13), alignSelf: 'flex-start' }}>
-                                <Text style={{ fontSize: isPad ? vs(16) : vs(14), color: '#6A5AE0', fontWeight: '500' }}>Подробнее</Text>
+                                <Text style={{ fontSize: isPad ? vs(16) : vs(14), color: '#6A5AE0', fontWeight: '500' }}>{detailsLabel}</Text>
                             </AnimatedTouchableOpacity>
                         }
                         

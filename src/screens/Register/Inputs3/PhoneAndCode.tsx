@@ -14,6 +14,9 @@ const PhoneAndCode = ({ code, setCode, phone, setPhone, setErrorMessage, isCodeC
     const { send, loadingSend } = sendSMS()
     const { check, loadingCheck } = checkSMS()
 
+    // функция с fallback по ключу, как в Inputs3
+    const label = (key: string, fallbackKey: string) => store.labels?.[key] || translations[store?.language]?.[fallbackKey] || fallbackKey;
+
     const digits = phone.replace(/\D/g, '')
     const isPhoneValid = digits.length === 12;
 
@@ -22,26 +25,23 @@ const PhoneAndCode = ({ code, setCode, phone, setPhone, setErrorMessage, isCodeC
             await send(phone)
             setIsCodeSent(true)
         } catch (error) {
-            setErrorMessage(error || 'Ошибка отправки смс')
+            setErrorMessage(error || label('smsError', 'ошибкасмс'))
         }
     }
 
     const handleCheckSMS = async() => {
         try {
-            const response = await check(phone, code)
-
+            await check(phone, code)
             Keyboard.dismiss();
             setisCodeCorrect(true);
         } catch (error) {
-            setErrorMessage(error ||'Ошибка проверки кода')
+            setErrorMessage(error || label('checkCodeError', 'ошибкапроверкикода'))
         }
     }
 
     return (
         <View style={{ flexDirection: 'row', height: vs(40), width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                    
             { isCodeSent ?
-
                 <>
                     <TextInput
                         editable={!isCodeCorrect}
@@ -71,7 +71,9 @@ const PhoneAndCode = ({ code, setCode, phone, setPhone, setErrorMessage, isCodeC
                         { loadingCheck ?
                             <ActivityIndicator size={'small'} color={'white'} />
                         :
-                            <Text style={{ color: 'white', fontSize: isTablet ? vs(16) : vs(14), fontWeight: '600', textAlign: 'center' }}>{translations[store?.language]?.подтвердитькод}</Text>
+                            <Text style={{ color: 'white', fontSize: isTablet ? vs(16) : vs(14), fontWeight: '600', textAlign: 'center' }}>
+                                {label('confirmCode', 'подтвердитькод')}
+                            </Text>
                         }
                     </TouchableOpacity>
                 </>
@@ -106,12 +108,13 @@ const PhoneAndCode = ({ code, setCode, phone, setPhone, setErrorMessage, isCodeC
                         { loadingSend ?
                             <ActivityIndicator size={'small'} color={'white'} />
                         :
-                            <Text style={{ color: 'white', fontSize: isTablet ? vs(16) : vs(14), fontWeight: '600' }}>{translations[store?.language]?.получитькод}</Text>
+                            <Text style={{ color: 'white', fontSize: isTablet ? vs(16) : vs(14), fontWeight: '600' }}>
+                                {label('getCode', 'получитькод')}
+                            </Text>
                         }
                     </TouchableOpacity>
                 </>
             }
-
         </View>
     )
 }

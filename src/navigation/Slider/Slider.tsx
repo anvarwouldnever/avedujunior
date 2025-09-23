@@ -1,17 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  Platform,
-  useWindowDimensions,
-} from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring
-} from 'react-native-reanimated';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { navigationStore } from '../NavigationStore';
 import { observer } from 'mobx-react-lite';
 import { useScale } from '../../hooks/useScale';
@@ -30,10 +19,7 @@ const Slider = ({
   const translateX = useSharedValue(-SLIDER_WIDTH);
 
   React.useEffect(() => {
-    translateX.value = withSpring(navigationStore.openSlider ? 0 : -SLIDER_WIDTH, {
-      damping: 25,
-      stiffness: 200,
-    });
+    translateX.value = withSpring(navigationStore.openSlider ? 0 : -SLIDER_WIDTH);
   }, [navigationStore.openSlider, SLIDER_WIDTH]);
 
   const sliderStyle = useAnimatedStyle(() => ({

@@ -1,11 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { Text, View } from 'react-native';
+import React, { useState } from 'react';
 import { useScale } from '../../hooks/useScale';
 import Sections from './DevelopmentMap/Sections';
 import Conditions from './DevelopmentMap/Conditions';
 import Map from './DevelopmentMap/Map';
 import Tables from './DevelopmentMap/Tables';
 import { getMap } from './hooks/getMap';
+import { store } from '../../store/store';
 
 const DevelopmentMap = ({ scrollY }) => {
 
@@ -20,7 +21,7 @@ const DevelopmentMap = ({ scrollY }) => {
 
             <Tables />
 
-            <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontSize: isTablet? vs(18) : vs(16), fontWeight: '500' }}>Карта развития ребенка 0-1 год</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontSize: isTablet? vs(18) : vs(16), fontWeight: '500' }}>{store.labels?.childDevelopmentMap} 0-1 год</Text>
 
             <Sections section={section} setSection={setSection} />
 

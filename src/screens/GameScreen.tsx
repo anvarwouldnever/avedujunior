@@ -1,4 +1,4 @@
-import { View, ImageBackground, TouchableOpacity} from 'react-native'
+import { View, ImageBackground} from 'react-native'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { useScale } from '../hooks/useScale'
 import { bgAssets } from '../components/BgAssets'
@@ -8,10 +8,8 @@ import { useFocusEffect } from '@react-navigation/native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import GameNumberList from './Game/GameNumberList'
 import GameView from './Game/GameView'
-import Modal from 'react-native-modal'
-import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
 import { useGames } from './Game/hooks/getGames';
+import FullImage from './Game/FullImage'
 
 const GameScreen = ({ route }) => {    
 
@@ -54,23 +52,7 @@ const GameScreen = ({ route }) => {
                 
                 <GameNumberList games={games} setChosenGame={setChosenGame} chosenGame={chosenGame}/>
                 
-                <Modal animationOutTiming={10} animationOut={'fadeOut'} isVisible={fullImage} style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: s(80), top: vs(45)}}>
-                    <View style={{width: s(150), height: vs(500), backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10, alignSelf: 'center'}}>
-                        
-                        <TouchableOpacity onPress={() => setFullImage(false)} style={{ zIndex: 2, width: vs(70), height: vs(70), position: 'absolute', left: 5, top: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
-                            <Ionicons name='close-circle-outline' size={vs(70)}/>
-                        </TouchableOpacity>
-
-                        {selectedImage && (
-                            <Image 
-                                style={{ width: s(100), height: vs(450)}} 
-                                source={selectedImage} 
-                                contentFit='contain' 
-                            />
-                        )}
-                        
-                    </View>
-                </Modal>
+                <FullImage selectedImage={selectedImage} setFullImage={setFullImage} fullImage={fullImage} />
 
             </View>
 

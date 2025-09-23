@@ -29,9 +29,9 @@ const CompletedTasksScreen = () => {
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView contentContainerStyle={{ rowGap: vs(25) }} style={{ flex: 1, padding: vs(20) }}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(20) }} style={{ flex: 1, padding: vs(20) }}>
                 
-                <Text style={{color: 'black', fontSize: isTablet ? vs(22) : s(22), fontWeight: '700'}}>{translations[store.language].предметы}</Text>
+                <Text style={{color: 'black', fontSize: isTablet ? vs(22) : vs(22), fontWeight: '700'}}>{store?.labels?.subjects || translations[store.language]?.предметы}</Text>
                 
                 <Subjects selectedId={selectedSubject} setSelectedId={setSelectedSubject} subjects={subjects} />
 
