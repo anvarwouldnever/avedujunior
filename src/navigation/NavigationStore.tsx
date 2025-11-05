@@ -1,22 +1,21 @@
-// src/stores/navigationStore.ts
 import { makeAutoObservable } from 'mobx';
 
 class NavigationStore {
 
-  currentRoute: string = 'Home';
-  openSlider: boolean = false;
+    currentRoute: string = 'Home';
+    openSlider: boolean = false;
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+    constructor() {
+        makeAutoObservable(this);
+    }
 
-  setRoute(name: string) {
-    this.currentRoute = name;
-  }
+    setRoute(name: string) {
+        this.currentRoute = name;
+    }
 
-  setOpenSlider(state: boolean) {
-    this.openSlider = state;
-  }
+    setOpenSlider(state: boolean) {
+        this.openSlider = state;
+    }
 }
 
 export const navigationStore = new NavigationStore();

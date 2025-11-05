@@ -29,20 +29,29 @@ const Header = React.memo(({ route, options }) => {
         <View style={{ paddingTop: insets.top, height: (isTablet ? 100 : vs(80)) + insets.top, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: options.headerStyle?.backgroundColor || '#fff', borderBottomWidth: Platform.OS === 'ios' ? 0.5 : 0, borderColor: '#ddd'}}>
         
             <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: vs(25) }}>
+                
                 <Logo />
+
                 {isTablet && <Time />}
+                
             </View>
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: vs(10)}}>
+                
                 <Text numberOfLines={2} ellipsizeMode="tail" style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', color: '#6A5AE0', textAlign: 'center'}}>
                     {title}
                 </Text>
+
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: vs(25) }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: vs(25), borderWidth: 1, justifyContent: 'center' }}>
+                
                 {isTablet && <CompletedTasks />}
+
                 <HeaderRight />
+
             </View>
+            
         </View>
     )
 })

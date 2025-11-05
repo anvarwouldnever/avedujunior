@@ -17,10 +17,13 @@
       "requireFullScreen": true,
       "bundleIdentifier": "com.avtech.avedujunior",
       "infoPlist": {
+        "CFBundleShortVersionString": "1.0.0",
+        "CFBundleVersion": "11",
         "CFBundleName": "AVEDU Junior",
         "CFBundleDisplayName": "AVEDU Junior",
         "ITSAppUsesNonExemptEncryption": false,
         "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationLandscapeRight",
           "UIInterfaceOrientationLandscapeRight"
         ]
       }
@@ -30,7 +33,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.avtech.avedujunior"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -56,7 +60,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/f917edfa-3c55-4034-bf81-81afc7cf5871"
+      "url": "https://u.expo.dev/78991642-a278-4dbf-a0cf-6366710efcb1"
     },
     "owner": "anvarwouldnever3",
     "extra": {

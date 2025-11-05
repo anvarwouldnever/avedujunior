@@ -228,6 +228,11 @@ const Calendar = () => {
         return map;
     }, [subjectsByDate, rows, workingDays, hasFifthWeek]);
 
+    const isSameDay = (d1: Date, d2: Date) =>
+        d1.getDate() === d2.getDate() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getFullYear() === d2.getFullYear();
+
     return (
         <ScrollView style={{ height: 'auto' }} horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ height: 'auto' }}>
@@ -237,39 +242,28 @@ const Calendar = () => {
 
                             const formattedDate = formatDate(date);
                             const subjects = filledSubjectsByDate[formattedDate];
+                            const isToday = isSameDay(date, today);
                             
                             return (
-                                <View
-                                    key={index}
-                                    style={{
-                                        padding: 10,
-                                        width: vs(220),
-                                        height: vs(220),
-                                        justifyContent: 'flex-start',
-                                        alignItems: 'center',
-                                        borderRightWidth: index !== row.length - 1 ? 1 : 0,
-                                        borderBottomWidth: rowIndex !== rows.length - 1 ? 1 : 0,
-                                        borderColor: '#c8cfce',
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontSize: isTablet? vs(14) : s(14),
-                                            color: date.getMonth() === month ? 'black' : '#aaa'
-                                        }}
-                                    >
+                                <View key={index} style={{ padding: vs(10), width: vs(220), height: vs(220), justifyContent: 'flex-start', alignItems: 'center', borderRightWidth: index !== row.length - 1 ? 1 : 0, borderBottomWidth: rowIndex !== rows.length - 1 ? 1 : 0, borderColor: '#c8cfce' }}>
+                                    
+                                    <Text style={{ fontSize: isTablet? vs(16) : vs(14), color: isToday ? 'white' : date.getMonth() === month ? 'black' : '#aaa', backgroundColor: isToday ? '#E05A9A' : 'white', paddingHorizontal: vs(15), paddingVertical: vs(3), borderRadius: 100, fontWeight: isToday ? '500' : '400' }}>
                                         {date.getDate()}
                                     </Text>
                                     
                                     <View style={{width: '100%', height: '90%', padding: vs(10), gap: isTablet? vs(10) : s(10)}}>
                                         {subjects?.slice().sort((a, b) => a?.name.localeCompare(b?.name)).map((subject, index) => {
+                                            
                                             const primaryColor = lightenColorHSL(subject.color, 93);
                                             const secondaryColor = subject.color; 
                                             
                                             return (
                                                 <TouchableOpacity onPress={() => navigation.navigate('PreGame', { id: subject?.id, topic: subject?.theme, name: subject?.name, tasksId: subject?.tasksId })} key={index} style={{backgroundColor: primaryColor, width: '100%', height: isTablet? vs(20) : s(20), borderRadius: vs(5), alignItems: 'center',  flexDirection: 'row', paddingHorizontal: vs(15), gap: isTablet? vs(8) : s(8)}}>
+                                                    
                                                     <View style={{backgroundColor: secondaryColor, width: isTablet? vs(7) : s(7), height: isTablet? vs(7) : s(7), borderRadius: 100}}/>
+                                                    
                                                     <Text numberOfLines={1} ellipsizeMode='tail' style={{ width: '95%', fontSize: isTablet? vs(12) : vs(12) }}>{subject?.name} ({subject?.theme})</Text>
+                                                
                                                 </TouchableOpacity> 
                                             )
                                         })}

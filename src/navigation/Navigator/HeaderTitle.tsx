@@ -8,9 +8,11 @@ const HeaderTitle = ({ value }) => {
 
     return (
         <View style={{ position: Platform.OS === 'android' ? 'absolute' : 'relative', width: Platform.OS === 'android' ? windowWidth : 'auto', justifyContent: 'center', alignItems: 'center', left: 0}}>
-            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', maxWidth: vs(120), color: '#6A5AE0', textAlign: 'center'}} numberOfLines={2} ellipsizeMode="tail">
+            
+            <Text style={{ fontSize: isTablet ? vs(20) : vs(14), fontWeight: '700', width: s(120), color: '#6A5AE0', textAlign: 'center' }} numberOfLines={2} ellipsizeMode="tail">
                 {value}
             </Text>
+
         </View>
     )
 }

@@ -46,12 +46,7 @@ const TasksList = ({ route }) => {
                                 <TouchableOpacity 
                                     key={index}
                                     activeOpacity={0.8} 
-                                    onPress={!opened ? () => {} : () => navigation.navigate('PreGame', {
-                                        name: route?.params?.name, 
-                                        topic: topic.name, 
-                                        id: topic?.id, 
-                                        tasksId: id 
-                                    })} 
+                                    onPress={!opened ? () => {} : () => navigation.navigate('PreGame', { name: route?.params?.name, topic: topic.name, id: topic?.id, tasksId: id })} 
                                     style={{
                                         width: subjectWidth, 
                                         height: vs(240), 

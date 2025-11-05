@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons'
 import ObjectMatchingGame from './ObjectMatching/ObjectMatchingGame'
 import LinesAndDrawingParent from './ObjectMatching/LinesAndDrawingParent'
 import { useScale } from '../../hooks/useScale'
-import { useNavigation } from '@react-navigation/native'
 import { useSharedValue } from 'react-native-reanimated'
 import DragAndDropGame from './DragAndDrop/DragAndDropGame'
 import SimpleGame from './SimpleGame/SimpleGame'
@@ -16,13 +15,12 @@ import AnimatedPopUp from './animations/AnimatedPopUp'
 import AllPassedView from './GameView/AllPassedView'
 import translations from '../../../translations'
 import { store } from '../../store/store'
+import Header from './GameView/Header'
 
 const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenGame, markGameAsPassed, games, tasksId, name}) => {
 
     const { s, vs, isTablet } = useScale()
     const { play, stop, isPlaying } = useAudio();
-
-    const navigation = useNavigation();
 
     const [popUp, setPopUp] = useState<boolean>(false);
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
@@ -126,28 +124,8 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
     return (
         <View style={{width: '82%', height: '100%', borderWidth: 2, borderColor: '#EFEEFC', backgroundColor: 'white', padding: vs(25), borderRadius: 20, gap: s(5), justifyContent: 'space-between'}}>   
             
-            {chosenGame !== -1 && 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', height: s(20)}}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '80%', justifyContent: 'space-between', gap: s(5), height: s(23) }}>
-                        <View style={{ backgroundColor: '#B390EF', width: s(15), height: s(15), borderRadius: 100, justifyContent: 'center', alignItems: 'center' }}>  
-                            <Ionicons onPress={() => { 
-                                if (playingIndex === 21) { 
-                                    stop(); 
-                                    setPlayingIndex(null);
-                                } else {
-                                    play(audio);
-                                    setPlayingIndex(21);
-                                } 
-                            }} name={isPlaying && playingIndex === 21? 'pause' : 'volume-high'} color={'white'} size={s(10)}/>
-                        </View>
-                        <Text ellipsizeMode='tail' adjustsFontSizeToFit style={{ fontSize: isTablet? vs(20) : vs(26), fontWeight: '600', width: '90%'}}>{question}</Text>
-                    </View>
-
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{width: '15%', borderWidth: 2, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderColor: '#EFEEFC', borderRadius: 10, gap: vs(5)}}>
-                        <Ionicons name='chevron-back' color={'#6A5ADE'} size={s(10)} />
-                        <Text style={{ fontWeight: '600', color: '#6A5ADE', fontSize: isTablet? vs(20) : s(7)}}>{store.labels?.back || translations[store.language].назад}</Text>
-                    </TouchableOpacity>
-                </View>
+            {chosenGame !== -1 &&
+                <Header playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} isPlaying={isPlaying} play={play} stop={stop} audio={audio} question={question} />
             }
             
             {
@@ -157,7 +135,7 @@ const GameView = ({ setFullImage, setSelectedImage, game, setChosenGame, chosenG
                     game?.type === 3 ? 
                         <>
                             <LinesAndDrawingParent passed={passed} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} lines={lines} />
-                            <ObjectMatchingGame key={resetKey} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} answers={answers} passed={passed} setChosenOptions={setChosenOptions} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
+                            <ObjectMatchingGame key={resetKey} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} play={play} stop={stop} isPlaying={isPlaying} passed={passed} setChosenOptions={setChosenOptions} content={content} setFullImage={setFullImage} setSelectedImage={setSelectedImage} lineEndX={lineEndX} lineEndY={lineEndY} lineStartX={lineStartX} lineStartY={lineStartY} setLines={setLines}/>
                         </>
                     : 
                     game?.type === 6 ? 

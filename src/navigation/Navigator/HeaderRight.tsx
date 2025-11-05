@@ -5,24 +5,22 @@ import { store } from '../../store/store'
 import { navigationStore } from '../NavigationStore'
 import { Image } from 'expo-image'
 import { observer } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
+import { useScale } from '../../hooks/useScale'
 
 const HeaderRight = () => {
 
     const [key, setKey] = useState<boolean>(false)
+
+    const { s, vs, isTablet } = useScale()
     
     useEffect(() => {
         setKey(prev => !prev)
     }, [store.pfp])
 
-    const navigation = useNavigation()
-
     return (
-        <View style={{marginRight: 15, flexDirection: 'row', gap: 10}}>
-            <TouchableOpacity
-                onPress={() => store.setModal(!store.profileModal)}
-                activeOpacity={0.8}
-            >
+        <View style={{ marginRight: vs(10), flexDirection: 'row' }}>
+            
+            <TouchableOpacity onPress={() => store.setModal(!store.profileModal)} activeOpacity={0.8}>
                 <Image
                     key={key}
                     source={
@@ -32,12 +30,14 @@ const HeaderRight = () => {
                     }
                     transition={300}
                     contentFit='contain'
-                    style={{ width: 50, height: 50 }}
+                    style={{ width: isTablet ? s(18) : vs(45), height: isTablet ? s(18) : vs(45) }}
                 />
             </TouchableOpacity> 
 
             <TouchableOpacity onPress={() => navigationStore.setOpenSlider(!navigationStore.openSlider)}>
-                <Ionicons name={navigationStore.openSlider ? 'close' : 'menu'} size={50} color="black" />
+                
+                <Ionicons name={navigationStore.openSlider ? 'close' : 'menu'} size={isTablet ? s(20) : vs(50)} color="black" />
+            
             </TouchableOpacity>
 
         </View>

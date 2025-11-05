@@ -10,6 +10,7 @@ import useLock from '../hooks/useLock'
 import { getPreGame } from './PreGame/hooks/getPreGame'
 import Slider from '../navigation/Slider/Slider'
 import SliderContent from '../navigation/Slider/SliderContent'
+import Back from './PreGame/Back'
 
 const PreGameScreen = ({ route }) => {
 
@@ -17,8 +18,8 @@ const PreGameScreen = ({ route }) => {
 
     const { vs } = useScale();
 
-    const defaultId = route?.params?.id
-    const defaultTopic = route?.params?.topic
+    const defaultId = route?.params?.id;
+    const defaultTopic = route?.params?.topic;
     
     const name = route?.params?.name;
     const tasksId = route?.params?.tasksId;
@@ -39,7 +40,9 @@ const PreGameScreen = ({ route }) => {
     return (
         <ImageBackground resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }} source={store?.backgroundImage?.image?.url ? { uri: store.backgroundImage.image.url } : bgAssets[1]}>
             
-            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: vs(20), flexGrow: 1 }} style={{ padding: vs(20)}}>
+            <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={{ rowGap: vs(15), flexGrow: 1 }} style={{ padding: vs(20) }}>
+                
+                <Back tasksId={tasksId} name={name} />
                 
                 <GamePreview preGame={preGame?.data} tasksId={tasksId} id={id} name={name} topic={topic} />
 

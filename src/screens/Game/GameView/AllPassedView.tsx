@@ -19,8 +19,10 @@ const AllPassedView = ({ tasksId, name }) => {
 
             <Text style={{ fontSize: s(10), fontWeight: '600', color: '#000000' }}>{store.labels?.taskCompleted || translations[store.language].заданиевыполнено}</Text>
 
-            <TouchableOpacity onPress={() => tasksId ? navigation.reset({ index: 0, routes: [{ name: 'TasksList', params: { id: tasksId, name: name } }]}) : navigation.goBack()} style={{ backgroundColor: '#6A5AE0', borderRadius: 20, width: '40%', height: s(20), justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => tasksId ? navigation.reset({ index: 0, routes: [{ name: 'Tasks', params: { id: tasksId, name: name } }]}) : navigation.goBack()} style={{ backgroundColor: '#6A5AE0', borderRadius: 20, width: '40%', height: s(20), justifyContent: 'center', alignItems: 'center' }}>
+                
                 <Text style={{ color: 'white', fontSize: s(7), fontWeight: '600' }}>{store.labels?.moreGames || translations[store.language].ещебольшеигр}</Text>
+            
             </TouchableOpacity>
 
         </View>
